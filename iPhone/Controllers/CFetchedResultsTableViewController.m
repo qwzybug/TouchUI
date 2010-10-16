@@ -42,7 +42,6 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 @synthesize managedObjectContext;
 @synthesize fetchRequest;
 @synthesize fetchedResultsController;
-@synthesize addButtonItem;
 @synthesize placeholderView;
 
 - (void)dealloc
@@ -115,15 +114,6 @@ if (fetchedResultsController == NULL)
 return(fetchedResultsController);
 }
 
-- (UIBarButtonItem *)addButtonItem
-{
-if (addButtonItem == NULL)
-	{
-	addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
-	}
-return(addButtonItem);
-}
-
 - (UIView *)placeholderView
 {
 if (placeholderView == NULL)
@@ -158,8 +148,6 @@ if (placeholderView != inPlaceholderView)
 fetchedResultsController.delegate = NULL;
 [fetchedResultsController release];
 fetchedResultsController = NULL;
-[addButtonItem release];
-addButtonItem = NULL;
 [placeholderView release];
 placeholderView = NULL;
 }
