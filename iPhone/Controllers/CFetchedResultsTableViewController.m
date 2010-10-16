@@ -48,8 +48,6 @@ fetchRequest = NULL;
 fetchedResultsController.delegate = NULL;
 [fetchedResultsController release];
 fetchedResultsController = NULL;
-[addButtonItem release];
-addButtonItem = NULL;
 [placeholderView release];
 placeholderView = NULL;
 //
@@ -57,20 +55,6 @@ placeholderView = NULL;
 }
 
 #pragma mark -
-
-- (void)setEditing:(BOOL)inEditing animated:(BOOL)inAnimated
-{
-[super setEditing:inEditing animated:inAnimated];
-//
-addButtonItem.enabled = !inEditing;
-}
-
-- (void)setEditing:(BOOL)inEditing
-{
-[super setEditing:inEditing];
-//
-addButtonItem.enabled = !inEditing;
-}
 
 #pragma mark -
 
