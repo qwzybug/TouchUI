@@ -42,4 +42,6 @@
 
 - (id)initWithParentViewController:(UIViewController *)inViewController URL:(NSURL *)inURL;
 
+- (void)addButtonsForURL:(NSURL *)inURL;
+
 @end

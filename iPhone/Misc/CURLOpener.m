@@ -35,8 +35,6 @@ static CURLOpener *gInstance = NULL;
 
 @interface CURLOpener ()
 @property (readwrite, nonatomic, retain) NSArray *selectors;
-
-- (void)addButtonsForURL:(NSURL *)inURL;
 @end
 
 #pragma mark -
