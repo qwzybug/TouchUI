@@ -35,7 +35,6 @@
 	NSManagedObjectContext *managedObjectContext;
 	NSFetchRequest *fetchRequest;
 	NSFetchedResultsController *fetchedResultsController;
-	UIBarButtonItem *addButtonItem;
 	UIView *placeholderView;
 }
 
