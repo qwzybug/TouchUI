@@ -50,7 +50,7 @@
 @property (readwrite, nonatomic, assign) BOOL dontChangeTitle;
 
 @property (readwrite, nonatomic, assign) NSURL *requestedURL;
-@property (readonly, nonatomic, retain) NSURL *currentURL;
+@property (readwrite, nonatomic, retain) NSURL *currentURL;
 @property (readonly, nonatomic, assign) BOOL isHome;
 
 @property (readonly, nonatomic, retain) IBOutlet UIWebView *webView;

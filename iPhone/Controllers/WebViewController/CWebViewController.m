@@ -32,8 +32,6 @@
 #import "CURLOpener.h"
 
 @interface CWebViewController ()
-@property (readwrite, nonatomic, retain) NSURL *currentURL;
-
 @property (readwrite, nonatomic, retain) IBOutlet UIWebView *webView;
 @property (readwrite, nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (readwrite, nonatomic, retain) IBOutlet UIBarButtonItem *homeButton;
@@ -72,7 +70,19 @@ return(self);
 
 - (void)dealloc
 {
+if (webView.delegate == self)
+	webView.delegate = nil;
 
+[homeURL release], homeURL = nil;
+[currentURL release], currentURL = nil;
+
+[webView release], webView = nil;
+[toolbar release], toolbar = nil;
+[homeButton release], homeButton = nil;
+[forwardsButton release], forwardsButton = nil;
+[reloadButton release], reloadButton = nil;
+[activitySpinnerButton release], activitySpinnerButton = nil;
+[actionButton release], actionButton = nil;
 //
 [super dealloc];
 }
@@ -95,7 +105,7 @@ CGRect theWebViewFrame = self.view.bounds;
 self.webView.frame = theWebViewFrame;
 [self.view addSubview:self.webView];
 
-if (YES)
+if (self.toolbar)
 	{
 	UIToolbar *theToolbar = self.toolbar;
 	CGRect theToolbarFrame = theToolbar.frame;
@@ -306,12 +316,26 @@ self.webView.frame = theFrame;
 
 - (void)hideToolbar
 {
-self.toolbar.hidden = YES;
+if (!self.toolbar.hidden)
+	{
+	CGRect theWebViewFrame = self.webView.frame;
+	CGRect theToolbarFrame = self.toolbar.frame;
+	theWebViewFrame.size.height += theToolbarFrame.size.height;
+	self.webView.frame = theWebViewFrame;
+	self.toolbar.hidden = YES;
+	}
 }
 
 - (void)showToolbar
 {
-self.toolbar.hidden = NO;
+if (self.toolbar.hidden)
+	{
+	CGRect theWebViewFrame = self.webView.frame;
+	CGRect theToolbarFrame = self.toolbar.frame;
+	theWebViewFrame.size.height -= theToolbarFrame.size.height;
+	self.webView.frame = theWebViewFrame;
+	self.toolbar.hidden = NO;
+	}
 }
 
 #pragma mark -
