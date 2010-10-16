@@ -41,9 +41,10 @@
 @property (readwrite, nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (readwrite, nonatomic, retain) NSFetchRequest *fetchRequest;
 @property (readwrite, nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (readonly, nonatomic, retain) UIBarButtonItem *addButtonItem;
 @property (readwrite, nonatomic, retain) UIView *placeholderView;
 
 - (IBAction)add:(id)inSender;
+
+- (void)updatePlaceholder:(BOOL)inAnimated;
 
 @end

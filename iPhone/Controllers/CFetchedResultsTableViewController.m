@@ -31,9 +31,6 @@
 
 const double kPlaceholderHideShowAnimationDuration = 0.4;
 
-@interface CFetchedResultsTableViewController ()
-- (void)updatePlacholder:(BOOL)inAnimated;
-@end
 
 #pragma mark -
 
@@ -95,7 +92,7 @@ if (fetchRequest != inFetchRequest)
 		[self.fetchedResultsController performFetch:NULL];
 		}
 		
-	[self updatePlacholder:YES];
+	[self updatePlaceholder:YES];
 
 	[self.tableView reloadData];
 	}
@@ -166,7 +163,7 @@ if (self.fetchedResultsController && [self.fetchedResultsController performFetch
 	
 [self.tableView reloadData];
 
-[self updatePlacholder:NO];
+[self updatePlaceholder:NO];
 
 if ([self.fetchedResultsController.fetchedObjects count] == 0)
 	{
@@ -187,7 +184,7 @@ else
 
 #pragma mark -
 
-- (void)updatePlacholder:(BOOL)inAnimated
+- (void)updatePlaceholder:(BOOL)inAnimated
 {
 if (inAnimated)
 	{
@@ -285,7 +282,7 @@ if ([self.fetchedResultsController.fetchedObjects count] == 0)
 	[self setEditing:NO animated:YES];
 	}
 	
-[self updatePlacholder:YES];
+[self updatePlaceholder:YES];
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -343,7 +340,7 @@ else
 	[self editButtonItem].enabled = YES;
 	}
 
-[self updatePlacholder:YES];
+[self updatePlaceholder:YES];
 }
  
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
