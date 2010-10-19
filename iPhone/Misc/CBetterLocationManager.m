@@ -161,7 +161,7 @@ self.locationManager.desiredAccuracy = inDesiredAccuracy;
 
 - (BOOL)startUpdatingLocation:(NSError **)outError
 {
-if (self.locationManager.locationServicesEnabled == YES)
+if ([CLLocationManager locationServicesEnabled] == YES)
 	{
 	NSData *theData = [[NSUserDefaults standardUserDefaults] objectForKey:@"BetterLocationManager_LastLocation"];
 	if (theData)
