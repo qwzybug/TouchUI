@@ -31,6 +31,8 @@
 
 @implementation CALayer (CALayer_Extensions)
 
+@dynamic name;
+
 - (id)initWithFrame:(CGRect)inFrame
 {
 if ((self = [self init]) != NULL)
