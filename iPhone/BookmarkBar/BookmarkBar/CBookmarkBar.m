@@ -218,9 +218,9 @@ if (self.scrollView == NULL)
 	self.scrollView.showsHorizontalScrollIndicator = NO;
 	self.scrollView.showsVerticalScrollIndicator = NO;
 
-	CGSize theSize = self.scrollView.bounds.size;
+//	CGSize theSize = self.scrollView.bounds.size;
 
-	CGRect theFrame = { .origin = { .x = self.gap1, .y = 0.0 }, .size = theSize };
+//	CGRect theFrame = { .origin = { .x = self.gap1, .y = 0.0 }, .size = theSize };
 	CGRect theScrollFrame = CGRectZero;
 	for (CBookmarkBarItem *theBookmarkItem in self.items)
 		{
