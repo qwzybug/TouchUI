@@ -72,6 +72,23 @@
     CGContextRef thumbBitmapCtxt = CGBitmapContextCreate(NULL, thumbSize.width, thumbSize.height, 8, (4 * thumbSize.width), genericColorSpace, kCGImageAlphaPremultipliedFirst);
     CGColorSpaceRelease(genericColorSpace);
     CGContextSetInterpolationQuality(thumbBitmapCtxt, kCGInterpolationHigh);
+	
+	// compensate for image orientation, as from a camera
+	switch (self.imageOrientation) {
+		case UIImageOrientationDown:
+			CGContextTranslateCTM(thumbBitmapCtxt, thumbSize.width, thumbSize.height);
+			CGContextRotateCTM(thumbBitmapCtxt, M_PI);
+			break;
+		case UIImageOrientationLeft:
+			CGContextTranslateCTM(thumbBitmapCtxt, thumbSize.width, 0);
+			CGContextRotateCTM(thumbBitmapCtxt, M_PI / 2);
+			break;
+		case UIImageOrientationRight:
+			CGContextTranslateCTM(thumbBitmapCtxt, 0, thumbSize.height);
+			CGContextRotateCTM(thumbBitmapCtxt, -M_PI / 2);
+			break;
+	}
+	
     CGContextDrawImage(thumbBitmapCtxt, destRect, srcImage);
     CGImageRef tmpThumbImage = CGBitmapContextCreateImage(thumbBitmapCtxt);
     CGContextRelease(thumbBitmapCtxt);
