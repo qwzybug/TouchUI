@@ -29,29 +29,56 @@
 
 #import "UIDevice_Extensions.h"
 
+#import "NSData_DigestExtensions.h"
+#import "NSData_Extensions.h"
+
+#import <CommonCrypto/CommonHMAC.h>
+
+#ifndef UNIQUE_IDENTIFIER_KEY
+//#warning No unique identifier key defined. Using my own.
+#define UNIQUE_IDENTIFIER_KEY @"AF91DE81-790E-4F0F-BD77-7D305922A28F"
+#endif
+
 @implementation UIDevice (UIDevice_Extensions)
 
-- (NSInteger)numericSystemVersion
-{
-static NSInteger sNumericSystemVersion = -1;
-@synchronized(@"-[UIDevice numericSystemVersion]")
+- (NSString *)obfuscatedUniqueIdentifier
 	{
-	if (sNumericSystemVersion == -1)
+	static NSString *theDigest = NULL;
+	if (theDigest == NULL)
 		{
-		NSString *theSystemVersion = self.systemVersion;
-		NSScanner *theScanner = [NSScanner scannerWithString:theSystemVersion];
-		[theScanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@""]];
+		NSData *theKey = [UNIQUE_IDENTIFIER_KEY dataUsingEncoding:NSUTF8StringEncoding];
+		NSData *theUniqueIDentifier = [self.uniqueIdentifier dataUsingEncoding:NSUTF8StringEncoding];
 
-		NSInteger theMajorVersion, theMinorVersion;
-
-		[theScanner scanInteger:&theMajorVersion];
-		[theScanner scanString:@"." intoString:NULL];
-		[theScanner scanInteger:&theMinorVersion];
+		UInt8 theMACBuffer[CC_SHA1_DIGEST_LENGTH];
+		CCHmac(kCCHmacAlgSHA1, theKey.bytes, theKey.length, theUniqueIDentifier.bytes, theUniqueIDentifier.length, theMACBuffer);
 		
-		sNumericSystemVersion = theMajorVersion * 10000 + theMinorVersion * 100;
+		NSData *theData = [NSData dataWithBytesNoCopy:theMACBuffer length:CC_SHA1_DIGEST_LENGTH freeWhenDone:NO];
+		theDigest = [theData hexString];
 		}
+	return(theDigest);
 	}
-return(sNumericSystemVersion);
-}
+
+- (NSInteger)numericSystemVersion
+	{
+	static NSInteger sNumericSystemVersion = -1;
+	@synchronized(@"-[UIDevice numericSystemVersion]")
+		{
+		if (sNumericSystemVersion == -1)
+			{
+			NSString *theSystemVersion = self.systemVersion;
+			NSScanner *theScanner = [NSScanner scannerWithString:theSystemVersion];
+			[theScanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@""]];
+
+			NSInteger theMajorVersion, theMinorVersion;
+
+			[theScanner scanInteger:&theMajorVersion];
+			[theScanner scanString:@"." intoString:NULL];
+			[theScanner scanInteger:&theMinorVersion];
+			
+			sNumericSystemVersion = theMajorVersion * 10000 + theMinorVersion * 100;
+			}
+		}
+	return(sNumericSystemVersion);
+	}
 
 @end

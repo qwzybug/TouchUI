@@ -31,6 +31,7 @@
 
 @interface UIDevice (UIDevice_Extensions)
 
+@property (nonatomic, readonly, assign) NSString *obfuscatedUniqueIdentifier;
 @property (nonatomic, readonly, assign) NSInteger numericSystemVersion;
 
 @end
