@@ -62,7 +62,7 @@
 
 - (id)init
 {
-if ((self = [super initWithNibName:NULL bundle:NULL]) != NULL)
+if ((self = [self initWithNibName:NULL bundle:NULL]) != NULL)
 	{
 	}
 return(self);

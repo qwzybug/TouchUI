@@ -52,7 +52,6 @@ if ((self = [super initWithTitle:NULL delegate:self cancelButtonTitle:NULL destr
 	parentViewController = inViewController;
 	URL = [inURL retain];
 
-
 	[self addButtonsForURL:inURL];
 
 	[self addButtonWithTitle:@"Cancel"];
@@ -68,6 +67,20 @@ if ((self = [super initWithTitle:NULL delegate:self cancelButtonTitle:NULL destr
 	}
 return(self);
 }
+
+- (void)dealloc
+{
+parentViewController = NULL;
+
+[URL release];
+URL = NULL;
+
+[selectors release];
+selectors = NULL;
+//
+[super dealloc];
+}
+
 
 - (void)addButtonsForURL:(NSURL *)inURL
 {
