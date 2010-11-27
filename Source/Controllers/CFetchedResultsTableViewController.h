@@ -36,15 +36,26 @@
 	NSFetchRequest *fetchRequest;
 	NSFetchedResultsController *fetchedResultsController;
 	UIView *placeholderView;
+	Class tableViewCellClass;
 }
 
 @property (readwrite, nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (readwrite, nonatomic, retain) NSFetchRequest *fetchRequest;
 @property (readwrite, nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (readwrite, nonatomic, retain) UIView *placeholderView;
+@property (readwrite, nonatomic, assign) Class tableViewCellClass;
 
 - (IBAction)add:(id)inSender;
 
 - (void)updatePlaceholder:(BOOL)inAnimated;
 
 @end
+
+#pragma mark -
+
+@protocol CManagedObjectTableViewCellProtocol
+
+@property (readwrite, nonatomic, retain) NSManagedObject *managedObject;
+
+@end
+
