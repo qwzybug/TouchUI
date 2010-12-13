@@ -35,14 +35,14 @@
 	NSManagedObjectContext *managedObjectContext;
 	NSFetchRequest *fetchRequest;
 	NSFetchedResultsController *fetchedResultsController;
-	UIView *placeholderView;
+	IBOutlet UIView *placeholderView;
 	Class tableViewCellClass;
 }
 
 @property (readwrite, nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (readwrite, nonatomic, retain) NSFetchRequest *fetchRequest;
 @property (readwrite, nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (readwrite, nonatomic, retain) UIView *placeholderView;
+@property (readwrite, nonatomic, retain) IBOutlet UIView *placeholderView;
 @property (readwrite, nonatomic, assign) Class tableViewCellClass;
 
 - (IBAction)add:(id)inSender;
