@@ -224,10 +224,11 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 	{
 	NSInteger theNumberOfSections = [self.fetchedResultsController.sections count];
-	if (theNumberOfSections == 0)
-		{
-		theNumberOfSections = 1;
-		}
+	// not necessary on > 4.0
+//	if (theNumberOfSections == 0)
+//		{
+//		theNumberOfSections = 1;
+//		}
 	return(theNumberOfSections);
 	}
 
