@@ -39,6 +39,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 @synthesize managedObjectContext;
 @synthesize fetchRequest;
 @synthesize fetchedResultsController;
+@synthesize sectionNameKeyPath;
 @synthesize placeholderView;
 @synthesize tableViewCellClass;
 
@@ -49,6 +50,8 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	fetchedResultsController.delegate = NULL;
 	[fetchedResultsController release];
 	fetchedResultsController = NULL;
+	[sectionNameKeyPath release];
+	sectionNameKeyPath = NULL;
 	[placeholderView release];
 	placeholderView = NULL;
 	//
@@ -87,7 +90,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		{
 		if (self.fetchRequest)
 			{
-			fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:NULL cacheName:NULL];
+			fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:self.sectionNameKeyPath cacheName:NULL];
 			fetchedResultsController.delegate = self;
 			}
 		}

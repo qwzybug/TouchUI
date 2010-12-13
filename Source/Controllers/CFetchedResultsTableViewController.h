@@ -35,6 +35,7 @@
 	NSManagedObjectContext *managedObjectContext;
 	NSFetchRequest *fetchRequest;
 	NSFetchedResultsController *fetchedResultsController;
+	NSString *sectionNameKeyPath;
 	IBOutlet UIView *placeholderView;
 	Class tableViewCellClass;
 }
@@ -42,6 +43,7 @@
 @property (readwrite, nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (readwrite, nonatomic, retain) NSFetchRequest *fetchRequest;
 @property (readwrite, nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (readwrite, nonatomic, retain) NSString *sectionNameKeyPath;
 @property (readwrite, nonatomic, retain) IBOutlet UIView *placeholderView;
 @property (readwrite, nonatomic, assign) Class tableViewCellClass;
 
