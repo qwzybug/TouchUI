@@ -53,7 +53,7 @@
 		CCHmac(kCCHmacAlgSHA1, theKey.bytes, theKey.length, theUniqueIDentifier.bytes, theUniqueIDentifier.length, theMACBuffer);
 		
 		NSData *theData = [NSData dataWithBytesNoCopy:theMACBuffer length:CC_SHA1_DIGEST_LENGTH freeWhenDone:NO];
-		theDigest = [theData hexString];
+		theDigest = [[theData hexString] retain];
 		}
 	return(theDigest);
 	}
