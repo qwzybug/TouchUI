@@ -34,7 +34,7 @@
 #include <UIKit/UIKit.h>
 #endif
 
-CGImageRef CGImageCreateImageNamed(CFStringRef inName)
+CGImageRef CGImageCreateImageNamed(NSString *inName)
 {
 CGImageRef theImage = NULL;
 #if TARGET_OS_IPHONE == 0
@@ -45,7 +45,7 @@ CGImageRef theImage = NULL;
 	theImage = CGImageSourceCreateImageAtIndex(theImageSource, 0, NULL);
 	CFRelease(theImageSource);
 #else
-	UIImage *theUIKitImage = [UIImage imageNamed:(NSString *)inName];
+	UIImage *theUIKitImage = [UIImage imageNamed:inName];
 	theImage = [theUIKitImage CGImage];
 #endif
 return(theImage);

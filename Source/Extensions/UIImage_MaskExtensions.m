@@ -69,8 +69,6 @@ return(theNewImage);
 CGImageRef theImage = self.CGImage;
 CGImageRef theMask = CGImageMaskCreate(CGImageGetWidth(theImage), CGImageGetHeight(theImage), CGImageGetBitsPerComponent(theImage), CGImageGetBitsPerPixel(theImage), CGImageGetBytesPerRow(theImage), CGImageGetDataProvider(theImage), NULL, YES);
 
-[(id)theMask autorelease];
-
 return(theMask);
 }
 

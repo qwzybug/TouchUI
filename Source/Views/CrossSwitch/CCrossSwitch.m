@@ -51,7 +51,8 @@ if ((self = [super initWithCoder:inCoder]) != nil)
 
 	self.imageLayer = [[[CALayer alloc] init] autorelease];
 	self.imageLayer.frame = self.bounds;
-	self.imageLayer.contents = (id)[UIImage imageNamed:@"CrossSwitchButton.png"].CGImage;
+//    #warning TODO
+//	self.imageLayer.contents = (id)[UIImage imageNamed:@"CrossSwitchButton.png"].CGImage;
 	if (on == YES)
 		{
 		CATransform3D theTransform = CATransform3DIdentity;

@@ -29,7 +29,7 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 
-extern CGImageRef CGImageCreateImageNamed(CFStringRef inName);
+extern CGImageRef CGImageCreateImageNamed(NSString *inName);
 extern void CGContextAddHorizontalLine(CGContextRef inContext, CGFloat X);
 extern void CGContextAddVerticalLine(CGContextRef inContext, CGFloat Y);
 extern void CGContextAddRelativeLine(CGContextRef inContext, CGFloat X, CGFloat Y);
