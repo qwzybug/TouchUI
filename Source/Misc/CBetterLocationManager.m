@@ -97,9 +97,7 @@ return(self);
 self.timer = NULL;
 
 self.locationManager = NULL;
-self.startedUpdatingAtTime = NULL;
 
-[super dealloc];
 }
 
 #pragma mark -
@@ -125,7 +123,6 @@ if (locationManager != inLocationManager)
 	if (locationManager)
 		{
 		locationManager.delegate = NULL;
-		[locationManager release];
 		locationManager = NULL;
 		}
 

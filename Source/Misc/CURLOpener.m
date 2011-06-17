@@ -50,7 +50,7 @@ static CURLOpener *gInstance = NULL;
 if ((self = [super initWithTitle:NULL delegate:self cancelButtonTitle:NULL destructiveButtonTitle:NULL otherButtonTitles:NULL, NULL]) != NULL)
 	{
 	parentViewController = inViewController;
-	URL = [inURL retain];
+	URL = inURL;
 
 	[self addButtonsForURL:inURL];
 
@@ -59,11 +59,10 @@ if ((self = [super initWithTitle:NULL delegate:self cancelButtonTitle:NULL destr
 	
 	if (gInstance)
 		{
-		[gInstance release];
 		gInstance = NULL;
 		}
 
-	gInstance = [self retain];
+	gInstance = self;
 	}
 return(self);
 }
@@ -72,13 +71,8 @@ return(self);
 {
 parentViewController = NULL;
 
-[URL release];
-URL = NULL;
 
-[selectors release];
-selectors = NULL;
 //
-[super dealloc];
 }
 
 
@@ -110,7 +104,7 @@ self.selectors = theSelectors;
 
 - (void)mailURL:(NSURL *)inURL
 {
-MFMailComposeViewController *theViewController = [[[MFMailComposeViewController alloc] init] autorelease];
+MFMailComposeViewController *theViewController = [[MFMailComposeViewController alloc] init];
 theViewController.mailComposeDelegate = self;
 [theViewController setMessageBody:[inURL absoluteString] isHTML:NO];
 

@@ -33,7 +33,7 @@
 @class CBookmarkBarItem;
 
 @interface CBookmarkBarItemView : UIButton {
-	CBookmarkBar *bookmarkBar;
+	CBookmarkBar *__unsafe_unretained bookmarkBar;
 	CBookmarkBarItem *item;
 	UILabel *label;
 }

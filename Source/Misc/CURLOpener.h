@@ -32,7 +32,7 @@
 #import <MessageUI/MessageUI.h>
 
 @interface CURLOpener : UIActionSheet <UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
-	UIViewController *parentViewController;
+	UIViewController *__unsafe_unretained parentViewController;
 	NSURL *URL;
 	NSArray *selectors;
 }

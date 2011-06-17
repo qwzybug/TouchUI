@@ -57,12 +57,10 @@ return(self);
 
 - (void)dealloc
 {
-self.autoHideViews = NULL;
 //
 [self.autoHideTimer invalidate];
 self.autoHideTimer = NULL;
 //
-[super dealloc];
 }
 
 #pragma mark -

@@ -49,10 +49,6 @@ if (gInstance == NULL)
 return(gInstance);
 }
 
-- (void)dealloc
-{
-[super dealloc];
-}
 
 
 - (void)presentError:(NSError *)inError
@@ -76,7 +72,7 @@ NSString *theMessage = NULL;
 NSString *theLocalizedDescription = [inError.userInfo objectForKey:NSLocalizedDescriptionKey];
 if (theLocalizedDescription)
 	{
-	NSMutableString *theMutableMessage = [[theLocalizedDescription mutableCopy] autorelease];
+	NSMutableString *theMutableMessage = [theLocalizedDescription mutableCopy];
 	
 	NSString *theRecoverySuggestion = [inError.userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
 	if (theRecoverySuggestion != NULL)
@@ -94,7 +90,7 @@ if (theMessage == NULL)
 
 NSString *theCancelButtonTitle = @"OK";
 
-UIAlertView *theAlert = [[[UIAlertView alloc] initWithTitle:theTitle message:theMessage delegate:NULL cancelButtonTitle:theCancelButtonTitle otherButtonTitles:NULL, NULL] autorelease];
+UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:theTitle message:theMessage delegate:NULL cancelButtonTitle:theCancelButtonTitle otherButtonTitles:NULL, NULL];
 [theAlert show];
 }
 

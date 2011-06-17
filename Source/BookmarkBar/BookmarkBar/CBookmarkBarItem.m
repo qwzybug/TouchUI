@@ -56,16 +56,11 @@ return(self);
 - (void)dealloc
 {
 self.bookmarkBar = NULL;
-self.title = NULL;
-self.font = NULL;
-self.titleColor = NULL;
 self.action = NULL;
 self.target = NULL;
 self.tag = 0;
-self.representedObject = NULL;
 self.view = NULL;
 //
-[super dealloc];
 }
 
 @end

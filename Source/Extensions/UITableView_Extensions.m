@@ -37,7 +37,7 @@
 
 if (self.style == UITableViewStyleGrouped)
 	{
-	UILabel *theLabel = [[[UILabel alloc] initWithFrame:CGRectMake(20, 0, 280, kReallyBigNumber)] autorelease];
+	UILabel *theLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 280, kReallyBigNumber)];
 	theLabel.lineBreakMode = UILineBreakModeWordWrap;
 	theLabel.numberOfLines = 0;
 	theLabel.text = inText;
@@ -50,7 +50,7 @@ if (self.style == UITableViewStyleGrouped)
 	CGSize theSize = [theLabel.text sizeWithFont:theLabel.font constrainedToSize:theLabel.frame.size lineBreakMode:UILineBreakModeWordWrap];
 	theLabel.frame = CGRectMake(20, 10, 280, theSize.height);
 
-	UIView *theView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, CGRectGetMaxY(theLabel.frame))] autorelease];
+	UIView *theView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, CGRectGetMaxY(theLabel.frame))];
 	//theView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[theView addSubview:theLabel];
 
@@ -60,7 +60,7 @@ else
 	{
 	CGFloat theWidth = self.bounds.size.width;
 	
-	UILabel *theLabel = [[[UILabel alloc] initWithFrame:CGRectMake(20, 0, theWidth - 40.0, kReallyBigNumber)] autorelease];
+	UILabel *theLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, theWidth - 40.0, kReallyBigNumber)];
 	theLabel.textAlignment = UITextAlignmentCenter;
 	theLabel.lineBreakMode = UILineBreakModeWordWrap;
 	theLabel.numberOfLines = 0;
@@ -74,7 +74,7 @@ else
 	CGSize theSize = [theLabel.text sizeWithFont:theLabel.font constrainedToSize:theLabel.frame.size lineBreakMode:UILineBreakModeWordWrap];
 	theLabel.frame = CGRectMake(20, 10, theWidth - 40.0, theSize.height);
 
-	UIView *theView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, theWidth, CGRectGetMaxY(theLabel.frame) + 10)] autorelease];
+	UIView *theView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, theWidth, CGRectGetMaxY(theLabel.frame) + 10)];
 	theView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[theView addSubview:theLabel];
 
@@ -86,7 +86,7 @@ else
 {
 #define kReallyBigNumber 480 * 10
 
-UILabel *theLabel = [[[UILabel alloc] initWithFrame:CGRectMake(20, 0, 280, kReallyBigNumber)] autorelease];
+UILabel *theLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 280, kReallyBigNumber)];
 theLabel.lineBreakMode = UILineBreakModeWordWrap;
 theLabel.numberOfLines = 0;
 theLabel.text = inText;
@@ -99,7 +99,7 @@ theLabel.backgroundColor = [UIColor clearColor];
 CGSize theSize = [theLabel.text sizeWithFont:theLabel.font constrainedToSize:theLabel.frame.size lineBreakMode:UILineBreakModeWordWrap];
 theLabel.frame = CGRectMake(20, 0, 280, theSize.height);
 
-UIView *theView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, CGRectGetMaxY(theLabel.frame))] autorelease];
+UIView *theView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, CGRectGetMaxY(theLabel.frame))];
 //theView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 [theView addSubview:theLabel];
 

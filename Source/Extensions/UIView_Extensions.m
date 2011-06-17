@@ -57,11 +57,9 @@ if (inSuperview != self.superview)
 	{
 	CGRect theFrame = self.frame;
 	theFrame = [inSuperview convertRect:theFrame fromView:self.superview];
-	[self retain];
 	[self removeFromSuperview];
 	[inSuperview addSubview:self];
 	self.frame = theFrame;
-	[self release];
 	}
 }
 

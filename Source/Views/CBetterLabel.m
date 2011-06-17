@@ -43,10 +43,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-}
 
 - (UITextVerticalAlignment)verticalAlignment
 {

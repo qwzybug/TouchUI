@@ -32,7 +32,7 @@
 @interface CFullScreenView : UIView {
 	NSArray *autoHideViews;
 	BOOL autoHideStatusBar;
-	NSTimer *autoHideTimer;
+	NSTimer *__unsafe_unretained autoHideTimer;
 	NSTimeInterval autoHideDelay;
 }
 

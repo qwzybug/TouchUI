@@ -72,19 +72,6 @@ return(self);
 {
 if (webView.delegate == self)
 	webView.delegate = nil;
-
-[homeURL release], homeURL = nil;
-[currentURL release], currentURL = nil;
-
-[webView release], webView = nil;
-[toolbar release], toolbar = nil;
-[homeButton release], homeButton = nil;
-[forwardsButton release], forwardsButton = nil;
-[reloadButton release], reloadButton = nil;
-[activitySpinnerButton release], activitySpinnerButton = nil;
-[actionButton release], actionButton = nil;
-//
-[super dealloc];
 }
 
 #pragma mark UIViewController
@@ -96,7 +83,7 @@ if (webView.delegate == self)
 
 CGRect theFrame = [UIScreen mainScreen].applicationFrame;
 
-self.view = [[[UIView alloc] initWithFrame:theFrame] autorelease];
+self.view = [[UIView alloc] initWithFrame:theFrame];
 self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
 //
@@ -162,7 +149,7 @@ if (toolbar == NULL)
 		self.homeButton,
 		self.backButton,
 		self.forwardsButton,
-		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:NULL action:NULL] autorelease],
+		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:NULL action:NULL],
 		self.reloadButton,
 		self.actionButton,
 		NULL];
@@ -210,7 +197,7 @@ return(reloadButton);
 {
 if (activitySpinnerButton == NULL)
 	{
-	UIActivityIndicatorView *theSpinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
+	UIActivityIndicatorView *theSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 	[theSpinner startAnimating];
 	
 	activitySpinnerButton = [[UIBarButtonItem alloc] initWithCustomView:theSpinner];	
@@ -235,13 +222,12 @@ if (requestedURL != inURL)
 	{
 	if (requestedURL != NULL)
 		{
-		[requestedURL release];
 		requestedURL = NULL;
 		}
 	
 	if (inURL != NULL)
 		{
-		requestedURL = [inURL retain];
+		requestedURL = inURL;
 
 		NSURLRequest *theRequest = [NSURLRequest requestWithURL:inURL];
 		[self.webView loadRequest:theRequest];
@@ -260,10 +246,9 @@ return([self.currentURL isEqual:self.homeURL]);
 {
 if (requestedURL != NULL)
 	{
-	[requestedURL release];
 	requestedURL = NULL;
 	}
-requestedURL = [inURL retain];
+requestedURL = inURL;
 
 NSURLRequest *theRequest = [NSURLRequest requestWithURL:self.requestedURL];
 [self.webView loadRequest:theRequest];
@@ -281,7 +266,7 @@ self.actionButton.enabled = !self.webView.loading;
 if (self.webView.loading == YES)
 	{
 	UIBarButtonItem *theBarButtonItem = self.activitySpinnerButton;
-	NSMutableArray *theItems = [[self.toolbar.items mutableCopy] autorelease];
+	NSMutableArray *theItems = [self.toolbar.items mutableCopy];
 	NSInteger theIndex = [theItems indexOfObject:self.reloadButton];
 	if (theIndex != NSNotFound)
 		{
@@ -292,7 +277,7 @@ if (self.webView.loading == YES)
 else
 	{
 	UIBarButtonItem *theBarButtonItem = self.reloadButton;
-	NSMutableArray *theItems = [[self.toolbar.items mutableCopy] autorelease];
+	NSMutableArray *theItems = [self.toolbar.items mutableCopy];
 	NSInteger theIndex = [theItems indexOfObject:self.activitySpinnerButton];
 	if (theIndex != NSNotFound)
 		{
@@ -307,7 +292,6 @@ else
 CGRect theFrame = self.webView.frame;
 
 [webView removeFromSuperview];
-[webView release];
 webView = NULL;
 
 self.webView.frame = theFrame;
@@ -363,7 +347,7 @@ if (self.homeURL)
 
 - (IBAction)action:(id)inSender
 {
-CURLOpener *theActionSheet = [[[CURLOpener alloc] initWithParentViewController:self URL:self.currentURL] autorelease];
+CURLOpener *theActionSheet = [[CURLOpener alloc] initWithParentViewController:self URL:self.currentURL];
 
 if ([theActionSheet respondsToSelector:@selector(showFromBarButtonItem:animated:)])
 	[theActionSheet showFromBarButtonItem:inSender animated:YES];

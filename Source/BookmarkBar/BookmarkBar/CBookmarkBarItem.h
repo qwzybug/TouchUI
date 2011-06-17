@@ -35,17 +35,17 @@
 @class CBookmarkBarItemView;
 
 @interface CBookmarkBarItem : NSObject {
-	CBookmarkBar *bookmarkBar;
+	CBookmarkBar *__unsafe_unretained bookmarkBar;
 	NSString *title;
 	UIFont *font;
 	UIColor *titleColor;
 	UIImage *image;
 	BOOL selected;
 	SEL action;
-	id target;
+	id __unsafe_unretained target;
 	NSInteger tag;
 	id representedObject;
-	id view;
+	id __unsafe_unretained view;
 }
 
 @property (readwrite, nonatomic, assign) CBookmarkBar *bookmarkBar;

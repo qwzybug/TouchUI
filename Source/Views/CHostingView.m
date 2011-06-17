@@ -44,13 +44,12 @@ if (viewController != inViewController)
 		[viewController.view removeFromSuperview];
 		[viewController viewDidDisappear:NO];
 		
-		[viewController release];
 		viewController = NULL;
 		}
 	
 	if (inViewController)
 		{
-		viewController = [inViewController retain];
+		viewController = inViewController;
 		
 		viewController.view.frame = self.bounds;
 		viewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

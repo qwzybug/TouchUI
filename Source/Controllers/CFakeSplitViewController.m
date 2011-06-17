@@ -38,17 +38,14 @@
 
 - (void)dealloc
 {
-[masterViewController release];
 masterViewController = NULL;
-[detailViewController release];
 detailViewController = NULL;
 //
-[super dealloc];
 }
 
 - (void)loadView
 {
-UIView *theDrawingView = [[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame] autorelease];
+UIView *theDrawingView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
 
 CALayer *theLayer = [CALayer layer];
 theLayer.frame = theDrawingView.bounds;
@@ -65,9 +62,7 @@ self.view = theDrawingView;
 {
 [super viewDidUnload];
 //
-[masterViewController release];
 masterViewController = NULL;
-[detailViewController release];
 detailViewController = NULL;
 }
 
@@ -88,13 +83,12 @@ if (masterViewController != inMasterViewController)
 		[masterViewController.view removeFromSuperview];
 		[masterViewController viewDidDisappear:NO];
 		
-		[masterViewController release];
 		masterViewController = NULL;
 		}
 		
 	if (inMasterViewController != NULL)
 		{
-		masterViewController = [inMasterViewController retain];
+		masterViewController = inMasterViewController;
 		
 		[masterViewController viewWillAppear:NO];
 
@@ -119,13 +113,12 @@ if (detailViewController != inDetailViewController)
 		[detailViewController.view removeFromSuperview];
 		[detailViewController viewDidDisappear:NO];
 		
-		[detailViewController release];
 		detailViewController = NULL;
 		}
 		
 	if (inDetailViewController != NULL)
 		{
-		detailViewController = [inDetailViewController retain];
+		detailViewController = inDetailViewController;
 		
 		[detailViewController viewWillAppear:NO];
 

@@ -39,7 +39,7 @@ typedef enum {
 	ELayoutMode mode;
 	CGSize gap;
 	BOOL fitViews;
-	UIView *flexibleView;
+	UIView *__unsafe_unretained flexibleView;
 }
 
 @property (readwrite, nonatomic, assign) ELayoutMode mode;

@@ -153,7 +153,7 @@ CGFloat N = 0.0f;
 	} else if (mode == LayoutMode_HorizontalStack) {
 		CGFloat flexibleWidth = 0.0f;
 		if (flexibleView != nil) {
-			NSMutableArray *views = [[self.subviews mutableCopy] autorelease];
+			NSMutableArray *views = [self.subviews mutableCopy];
 			[views removeObject:flexibleView];
 			CGFloat staticWidth = 0.0f;
 			for (UIView *view in views) {

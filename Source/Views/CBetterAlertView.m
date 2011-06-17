@@ -34,11 +34,5 @@
 
 @synthesize userInfo;
 
-- (void)dealloc
-{
-self.userInfo = NULL;
-//
-[super dealloc];
-}
 
 @end

@@ -74,15 +74,6 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	return(self);
 	}
 
-- (void)dealloc
-	{
-	self.templateFilePath = NULL;
-	self.sections = NULL;
-	self.heightsForRows = NULL;
-	self.cellsByRow = NULL;
-	//
-	[super dealloc];
-	}
 
 - (void)awakeFromNib
 	{
@@ -98,7 +89,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 - (NSDictionary *)templateDictionary
 	{
 	NSAssert(self.templateFilePath.length > 0, @"No template path");
-	NSDictionary *theTemplateDictionary = [[[NSDictionary alloc] initWithContentsOfFile:self.templateFilePath] autorelease];
+	NSDictionary *theTemplateDictionary = [[NSDictionary alloc] initWithContentsOfFile:self.templateFilePath];
 	return(theTemplateDictionary);
 	}
 
@@ -106,7 +97,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	{
 	if (sections == NULL)
 		{
-		sections = [[self processTemplate] retain];
+		sections = [self processTemplate];
 		}
 	return(sections);
 	}
@@ -179,11 +170,11 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		if (theStyleName != NULL)
 			{
 			UITableViewCellStyle theTableViewCellStyle = UITableViewCellStyleForString(theStyleName);
-			theCell = [[[theClass alloc] initWithStyle:theTableViewCellStyle reuseIdentifier:theReuseIdentifier] autorelease];
+			theCell = [[theClass alloc] initWithStyle:theTableViewCellStyle reuseIdentifier:theReuseIdentifier];
 			}
 		else
 			{
-			theCell = [[[theClass alloc] initWithReuseIdentifier:theReuseIdentifier] autorelease];
+			theCell = [[theClass alloc] initWithReuseIdentifier:theReuseIdentifier];
 			}
 			
 		NSString *theOutletName = [theRow objectForKey:@"outlet"];
@@ -292,7 +283,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	Class thePushControllerClass = NSClassFromString(thePushControllerName);
 	if (thePushControllerClass)
 		{
-		UIViewController *theController = [[[thePushControllerClass alloc] init] autorelease];
+		UIViewController *theController = [[thePushControllerClass alloc] init];
 		[self.navigationController pushViewController:theController animated:YES];
 		}
 	}
@@ -378,7 +369,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 			NSString *theValueFormat = [theSetting objectForKey:theValueFormatKey];
 			if (theValueFormat)
 				{
-				CTrivialTemplate *theTemplate = [[[CTrivialTemplate alloc] initWithTemplate:theValueFormat] autorelease];
+				CTrivialTemplate *theTemplate = [[CTrivialTemplate alloc] initWithTemplate:theValueFormat];
 				NSError *theError = NULL;
 				theValue = [theTemplate transform:(NSDictionary *)self error:&theError];
 				}

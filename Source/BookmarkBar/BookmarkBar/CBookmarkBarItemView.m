@@ -54,9 +54,7 @@ return(theItem);
 - (void)dealloc
 {
 self.item = NULL;
-self.label = NULL;
 //
-[super dealloc];
 }
 
 #pragma mark -
@@ -70,8 +68,7 @@ return(item);
 {
 if (item != inItem)
 	{
-	[item autorelease];
-	item = [inItem retain];
+	item = inItem;
 
 	[self setNeedsLayout];
 	}
@@ -84,7 +81,7 @@ if (item != inItem)
 //
 if (self.label == NULL)
 	{
-	self.label = [[[UILabel alloc] initWithFrame:self.bounds] autorelease];
+	self.label = [[UILabel alloc] initWithFrame:self.bounds];
 	self.label.backgroundColor = [UIColor clearColor];
 
 	[self addSubview:self.label];

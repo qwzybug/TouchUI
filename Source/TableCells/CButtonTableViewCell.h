@@ -33,7 +33,7 @@
 
 @interface CButtonTableViewCell : UITableViewCell {
 	UIButton *button;
-	id target;
+	id __unsafe_unretained target;
 	SEL action;
 }
 

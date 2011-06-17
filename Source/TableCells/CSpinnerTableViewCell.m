@@ -37,18 +37,12 @@
 {
 if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) != NULL)
 	{
-	self.activityIndictor = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+	self.activityIndictor = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	self.activityIndictor.hidesWhenStopped = YES;
 	}
 return(self);
 }
 
-- (void)dealloc
-{
-self.activityIndictor = NULL;
-//
-[super dealloc];
-}
 
 - (BOOL)spinning
 {

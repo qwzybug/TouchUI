@@ -80,11 +80,7 @@ return(self);
 {
 self.items = NULL;
 self.selectedItem = NULL;
-self.defaultItemAttributes = NULL;
-self.selectedItemAttributes = NULL;
-self.scrollView = NULL;
 //
-[super dealloc];
 }
 
 #pragma mark -
@@ -103,7 +99,6 @@ if (items != inItems)
 		for (CBookmarkBarItem *theItem in items)
 			theItem.bookmarkBar = NULL;
 		//
-		[items autorelease];
 		items = NULL;
 		//
 		[self.scrollView removeFromSuperview];
@@ -112,7 +107,7 @@ if (items != inItems)
 
 	if (inItems != NULL)
 		{
-		items = [inItems retain];
+		items = inItems;
 		for (CBookmarkBarItem *theItem in items)
 			{
 			theItem.bookmarkBar = self;
@@ -207,7 +202,7 @@ if (self.scrollView == NULL)
 //	theScrollViewFrame.origin.y += self.bottomBorderHeight;
 //	theScrollViewFrame.size.height -= self.bottomBorderHeight;
 
-	self.scrollView = [[[UIScrollView alloc] initWithFrame:theScrollViewFrame] autorelease];
+	self.scrollView = [[UIScrollView alloc] initWithFrame:theScrollViewFrame];
 
 	self.scrollView.directionalLockEnabled = YES;
 	self.scrollView.bounces = YES;

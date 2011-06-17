@@ -46,13 +46,6 @@ if ((self = [super init]) != NULL)
 return(self);
 }
 
-- (void)dealloc
-{
-self.viewOne = NULL;
-self.viewTwo = NULL;
-//
-[super dealloc];
-}
 
 #pragma mark -
 

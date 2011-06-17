@@ -55,10 +55,7 @@ return(self);
 {
 outletTableView.delegate = NULL;
 outletTableView.dataSource = NULL;
-[outletTableView release];
-outletTableView = NULL;
 //
-[super dealloc];
 }
 
 #pragma mark -
@@ -67,7 +64,7 @@ outletTableView = NULL;
 {
 if (addButtonItem == NULL)
     {
-    addButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)] autorelease];
+    addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
     }
 return(addButtonItem);
 }
@@ -81,7 +78,7 @@ return(addButtonItem);
 if (self.view == NULL)
 	{
 	CGRect theViewFrame = [[UIScreen mainScreen] applicationFrame];
-	UIView *theView = [[[UITableView alloc] initWithFrame:theViewFrame] autorelease];
+	UIView *theView = [[UITableView alloc] initWithFrame:theViewFrame];
 	theView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	//
 	self.view = theView;
@@ -96,7 +93,7 @@ if (self.tableView == NULL)
 	else
 		{
 		CGRect theViewFrame = self.view.bounds;
-		UITableView *theTableView = [[[UITableView alloc] initWithFrame:theViewFrame style:self.initialStyle] autorelease];
+		UITableView *theTableView = [[UITableView alloc] initWithFrame:theViewFrame style:self.initialStyle];
 		theTableView.delegate = self;
 		theTableView.dataSource = self;
 		theTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -113,7 +110,6 @@ if (self.tableView == NULL)
 //
 outletTableView.delegate = NULL;
 outletTableView.dataSource = NULL;
-[outletTableView release];
 outletTableView = NULL;
 }
 

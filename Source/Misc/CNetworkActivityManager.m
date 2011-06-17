@@ -68,7 +68,6 @@ return(self);
 [delayTimer invalidate];
 delayTimer = NULL;
 //
-[super dealloc];
 }
 
 - (NSInteger)count

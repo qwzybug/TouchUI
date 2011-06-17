@@ -44,15 +44,9 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 
 - (void)dealloc
 	{
-	[fetchRequest release];
-	fetchRequest = NULL;
 	fetchedResultsController.delegate = NULL;
-	[fetchedResultsController release];
-	fetchedResultsController = NULL;
-	[placeholderView release];
 	placeholderView = NULL;
 	//
-	[super dealloc];
 	}
 
 #pragma mark -
@@ -63,7 +57,6 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		{
 		if (fetchRequest != NULL)
 			{
-			[fetchRequest release];
 			fetchRequest = NULL;
 			
 			self.fetchedResultsController = NULL;
@@ -71,7 +64,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		//
 		if (inFetchRequest != NULL)
 			{
-			fetchRequest = [inFetchRequest retain];
+			fetchRequest = inFetchRequest;
 			[self.fetchedResultsController performFetch:NULL];
 			}
 			
@@ -98,7 +91,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	{
 	if (placeholderView == NULL)
 		{
-		UILabel *theLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 44 * 3, self.view.bounds.size.width, 44)] autorelease];
+		UILabel *theLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 44 * 3, self.view.bounds.size.width, 44)];
 		theLabel.textAlignment = UITextAlignmentCenter;
 		theLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize] + 3];
 		theLabel.textColor = [UIColor grayColor];
@@ -114,8 +107,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	{
 	if (placeholderView != inPlaceholderView)
 		{
-		[placeholderView release];
-		placeholderView = [inPlaceholderView retain];
+		placeholderView = inPlaceholderView;
 		}
 	}
 
@@ -126,9 +118,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	[super viewDidUnload];
 	//
 	fetchedResultsController.delegate = NULL;
-	[fetchedResultsController release];
 	fetchedResultsController = NULL;
-	[placeholderView release];
 	placeholderView = NULL;
 	}
 
@@ -246,7 +236,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	if (theCell == NULL)
 		{
 		Class theClass = self.tableViewCellClass ?: [UITableViewCell class];
-		theCell = [[[theClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"] autorelease];
+		theCell = [[theClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"];
 		}
 	
 	NSManagedObject *theObject = [self.fetchedResultsController objectAtIndexPath:indexPath];

@@ -52,7 +52,7 @@ extern NSString *kBetterLocationManagerOldLocationKey /* = @"OldLocation" */;
 	CLLocationDistance stopUpdatingAccuracy;
 	NSTimeInterval staleLocationThreshold;
 	NSTimeInterval stopUpdatingAfterInterval;
-	NSTimer *timer;
+	NSTimer *__unsafe_unretained timer;
 }
 
 /// This is the CoreLocation location manager object. Generally you should not interact with this directly but go through CBetterLocationManager properties and methods instead.

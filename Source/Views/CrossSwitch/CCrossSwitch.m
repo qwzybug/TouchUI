@@ -49,7 +49,7 @@ if ((self = [super initWithCoder:inCoder]) != nil)
 	self.opaque = NO;
 	self.backgroundColor = [UIColor clearColor];
 
-	self.imageLayer = [[[CALayer alloc] init] autorelease];
+	self.imageLayer = [[CALayer alloc] init];
 	self.imageLayer.frame = self.bounds;
 //    #warning TODO
 //	self.imageLayer.contents = (id)[UIImage imageNamed:@"CrossSwitchButton.png"].CGImage;
@@ -69,12 +69,6 @@ if ((self = [super initWithCoder:inCoder]) != nil)
 return(self);
 }
 
-- (void)dealloc
-{
-self.imageLayer = NULL;
-//
-[super dealloc];
-}
 
 - (BOOL)isOn
 {

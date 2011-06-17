@@ -50,17 +50,11 @@ if ((self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reu
 	[self layoutSubviews];
 	
 	self.selectionStyle = UITableViewCellSelectionStyleNone;
-	self.backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 	}
 return(self);
 }
 
-- (void)dealloc
-{
-self.button = NULL;
-//
-[super dealloc];
-}
 
 #pragma mark -
 

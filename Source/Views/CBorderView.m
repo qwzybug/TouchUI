@@ -55,13 +55,6 @@ if ((self = [super initWithCoder:inCoder]) != NULL)
 return self;
 }
 
-- (void)dealloc
-{
-self.frameColor = NULL;
-self.fillColor = NULL;
-//
-[super dealloc];
-}
 
 - (void)drawRect:(CGRect)rect
 {

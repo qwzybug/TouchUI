@@ -33,7 +33,7 @@
 	NSURL *homeURL;
 	BOOL dontChangeTitle;
 	
-	NSURL *requestedURL;
+	NSURL *__unsafe_unretained requestedURL;
 	NSURL *currentURL;
 
 	IBOutlet UIWebView *webView;

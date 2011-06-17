@@ -32,7 +32,7 @@
 @interface CNetworkActivityManager : NSObject {
 	NSInteger count;
 	NSTimeInterval delay;
-	NSTimer *delayTimer;
+	NSTimer *__unsafe_unretained delayTimer;
 }
 
 @property (readonly, assign) NSInteger count;

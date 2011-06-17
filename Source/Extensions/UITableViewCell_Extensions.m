@@ -33,7 +33,7 @@
 
 + (UITableViewCell *)cellWithPlaceholderText:(NSString *)inPlaceholderText reuseIdentifier:(NSString *)inReuseIdentifier
 {
-UITableViewCell *theCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:inReuseIdentifier] autorelease];
+UITableViewCell *theCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:inReuseIdentifier];
 theCell.accessoryType = UITableViewCellAccessoryNone;
 theCell.selectionStyle = UITableViewCellSelectionStyleNone;
 theCell.textLabel.frame = CGRectMake(0, 0, 320, 44);
@@ -53,7 +53,7 @@ return(self);
 
 - (void)setAccessoryImage:(UIImage *)inImage
 {
-UIImageView *theImageView = [[[UIImageView alloc] initWithImage:inImage] autorelease];
+UIImageView *theImageView = [[UIImageView alloc] initWithImage:inImage];
 self.accessoryView = theImageView;
 }
 
