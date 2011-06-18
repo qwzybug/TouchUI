@@ -126,8 +126,6 @@ if (theTarget && theAction && [theTarget respondsToSelector:theAction])
 
 - (void)update
 {
-NSLog(@"UPDATE: %@", self.item.image);
-
 [self setBackgroundImage:self.item.image forState:UIControlStateNormal];
 
 [self layoutSubviews];
