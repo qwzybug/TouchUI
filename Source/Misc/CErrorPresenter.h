@@ -34,10 +34,9 @@ extern NSString *ErrorPresenter_ErrorTitleKey /* = @"error_title" */;
 @protocol CErrorPresenterDelegate;
 
 @interface CErrorPresenter : NSObject {
-	id <CErrorPresenterDelegate> __unsafe_unretained delegate;
 }
 
-@property (readwrite, nonatomic, assign) id <CErrorPresenterDelegate> delegate;
+@property (readwrite, nonatomic, weak) id <CErrorPresenterDelegate> delegate;
 
 + (id)instance;
 - (void)presentError:(NSError *)inError;

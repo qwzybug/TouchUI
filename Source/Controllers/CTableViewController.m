@@ -55,7 +55,6 @@ return(self);
 {
 outletTableView.delegate = NULL;
 outletTableView.dataSource = NULL;
-//
 }
 
 #pragma mark -

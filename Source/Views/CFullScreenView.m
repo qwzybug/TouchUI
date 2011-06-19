@@ -57,10 +57,7 @@ return(self);
 
 - (void)dealloc
 {
-//
-[self.autoHideTimer invalidate];
-self.autoHideTimer = NULL;
-//
+[autoHideTimer invalidate];
 }
 
 #pragma mark -

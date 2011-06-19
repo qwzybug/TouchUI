@@ -67,15 +67,6 @@ if ((self = [super initWithTitle:NULL delegate:self cancelButtonTitle:NULL destr
 return(self);
 }
 
-- (void)dealloc
-{
-parentViewController = NULL;
-
-
-//
-}
-
-
 - (void)addButtonsForURL:(NSURL *)inURL
 {
 NSMutableArray *theSelectors = [NSMutableArray array];

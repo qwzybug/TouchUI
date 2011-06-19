@@ -45,8 +45,6 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 - (void)dealloc
 	{
 	fetchedResultsController.delegate = NULL;
-	placeholderView = NULL;
-	//
 	}
 
 #pragma mark -

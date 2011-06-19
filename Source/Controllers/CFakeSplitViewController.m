@@ -36,13 +36,6 @@
 @synthesize masterViewController;
 @synthesize detailViewController;
 
-- (void)dealloc
-{
-masterViewController = NULL;
-detailViewController = NULL;
-//
-}
-
 - (void)loadView
 {
 UIView *theDrawingView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];

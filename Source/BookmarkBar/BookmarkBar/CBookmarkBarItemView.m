@@ -51,12 +51,6 @@ theItem.showsTouchWhenHighlighted = YES;
 return(theItem);
 }
 
-- (void)dealloc
-{
-self.item = NULL;
-//
-}
-
 #pragma mark -
 
 - (CBookmarkBarItem *)item

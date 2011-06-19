@@ -76,13 +76,6 @@ if ((self = [super initWithCoder:inCoder]) != NULL)
 return(self);
 }
 
-- (void)dealloc
-{
-self.items = NULL;
-self.selectedItem = NULL;
-//
-}
-
 #pragma mark -
 
 - (NSArray *)items

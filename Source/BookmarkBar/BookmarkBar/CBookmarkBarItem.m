@@ -53,14 +53,4 @@ if ((self = [super init]) != NULL)
 return(self);
 }
 
-- (void)dealloc
-{
-self.bookmarkBar = NULL;
-self.action = NULL;
-self.target = NULL;
-self.tag = 0;
-self.view = NULL;
-//
-}
-
 @end
