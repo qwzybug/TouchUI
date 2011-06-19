@@ -42,17 +42,6 @@ extern NSString *kBetterLocationManagerNewLocationKey /* = @"NewLocation" */;
 extern NSString *kBetterLocationManagerOldLocationKey /* = @"OldLocation" */;
 
 @interface CBetterLocationManager : NSObject <CLLocationManagerDelegate> {
-	CLLocationManager *locationManager;
-	BOOL storeLastLocation;
-	CLLocation *previousLocation;
-	CLLocation *location;
-	BOOL updating;
-	BOOL userDenied;
-	NSDate *startedUpdatingAtTime;
-	CLLocationDistance stopUpdatingAccuracy;
-	NSTimeInterval staleLocationThreshold;
-	NSTimeInterval stopUpdatingAfterInterval;
-	NSTimer *__unsafe_unretained timer;
 }
 
 /// This is the CoreLocation location manager object. Generally you should not interact with this directly but go through CBetterLocationManager properties and methods instead.
@@ -65,20 +54,15 @@ extern NSString *kBetterLocationManagerOldLocationKey /* = @"OldLocation" */;
 @property (readwrite, nonatomic, assign) CLLocationAccuracy desiredAccuracy;
 
 /// If YES, then the last location is stored in NSUserDefaults.
-@property (readonly, nonatomic, assign) BOOL storeLastLocation;
+@property (readwrite, nonatomic, assign) BOOL storeLastLocation;
 
 @property (readonly, nonatomic, retain) CLLocation *previousLocation;
 
 /// This is the location manager's location. It is a little bit more reliable than CLLocationManager.location.
 @property (readonly, nonatomic, retain) CLLocation *location;
 
-
-
 /// YES if CoreLocation is currenly updating location (i.e. trying to get a fix)
 @property (readonly, nonatomic, assign) BOOL updating;
-
-/// YES if CoreLocation has reported the kCLErrorDenied error. This means the user has hit the "No" button in the "This app wants to locate you" dialog box. Once this flag is set the startUpdatingLocation method will always fail with a kCLErrorDenied error.
-@property (readonly, nonatomic, assign) BOOL userDenied;
 
 /// This is the date that the last startUpdatingLocation: message was received (i.e. how long has it been since we started updating the location). This is useful to help us decide when to time out update requests.
 @property (readonly, nonatomic, retain) NSDate *startedUpdatingAtTime;
@@ -92,7 +76,7 @@ extern NSString *kBetterLocationManagerOldLocationKey /* = @"OldLocation" */;
 /// This property specifies how long to wait while updating location before giving up.
 @property (readwrite, nonatomic, assign) NSTimeInterval stopUpdatingAfterInterval;
 
-+ (CBetterLocationManager *)instance;
++ (CBetterLocationManager *)sharedInstance;
 
 - (BOOL)startUpdatingLocation:(NSError **)outError;
 - (BOOL)stopUpdatingLocation:(NSError **)outError;
