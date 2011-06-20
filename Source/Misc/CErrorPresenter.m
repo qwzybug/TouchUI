@@ -33,66 +33,63 @@ NSString *ErrorPresenter_ErrorTitleKey = @"error_title";
 
 #pragma mark -
 
-
 @implementation CErrorPresenter
-
-static CErrorPresenter *gInstance = NULL;
 
 @synthesize delegate;
 
-+ (id)instance
-{
-if (gInstance == NULL)
-	{
-	gInstance = [[self alloc] init];
-	}
-return(gInstance);
-}
+static CErrorPresenter *gSharedInstance = NULL;
 
-
++ (CErrorPresenter *)sharedInstance
+    {
+    static dispatch_once_t sOnceToken = 0;
+    dispatch_once(&sOnceToken, ^{
+        gSharedInstance = [[CErrorPresenter alloc] init];
+        });
+    return(gSharedInstance);
+    }
 
 - (void)presentError:(NSError *)inError
-{
-if ([NSThread isMainThread] == NO)
-	{
-	[self performSelectorOnMainThread:@selector(presentError:) withObject:inError waitUntilDone:YES];
-	return;
-	}
+    {
+    if ([NSThread isMainThread] == NO)
+        {
+        [self performSelectorOnMainThread:@selector(presentError:) withObject:inError waitUntilDone:YES];
+        return;
+        }
 
-if (self.delegate && [self.delegate respondsToSelector:@selector(errorPresenter:shouldPresentError:)] && [self.delegate errorPresenter:self shouldPresentError:inError] == NO)
-	return;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(errorPresenter:shouldPresentError:)] && [self.delegate errorPresenter:self shouldPresentError:inError] == NO)
+        return;
 
-NSString *theTitle = NULL;
-theTitle = [inError.userInfo objectForKey:ErrorPresenter_ErrorTitleKey];
+    NSString *theTitle = NULL;
+    theTitle = [inError.userInfo objectForKey:ErrorPresenter_ErrorTitleKey];
 
-if (theTitle == NULL)
-	theTitle = @"Error";
+    if (theTitle == NULL)
+        theTitle = @"Error";
 
-NSString *theMessage = NULL;
-NSString *theLocalizedDescription = [inError.userInfo objectForKey:NSLocalizedDescriptionKey];
-if (theLocalizedDescription)
-	{
-	NSMutableString *theMutableMessage = [theLocalizedDescription mutableCopy];
-	
-	NSString *theRecoverySuggestion = [inError.userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
-	if (theRecoverySuggestion != NULL)
-		{
-		[theMutableMessage appendFormat:@"\n%@", theRecoverySuggestion];
-		}
-		
-	theMessage = theMutableMessage;
-	}
+    NSString *theMessage = NULL;
+    NSString *theLocalizedDescription = [inError.userInfo objectForKey:NSLocalizedDescriptionKey];
+    if (theLocalizedDescription)
+        {
+        NSMutableString *theMutableMessage = [theLocalizedDescription mutableCopy];
+        
+        NSString *theRecoverySuggestion = [inError.userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
+        if (theRecoverySuggestion != NULL)
+            {
+            [theMutableMessage appendFormat:@"\n%@", theRecoverySuggestion];
+            }
+            
+        theMessage = theMutableMessage;
+        }
 
-if (theMessage == NULL)
-	{
-	theMessage = inError.localizedDescription;
-	}
+    if (theMessage == NULL)
+        {
+        theMessage = inError.localizedDescription;
+        }
 
-NSString *theCancelButtonTitle = @"OK";
+    NSString *theCancelButtonTitle = @"OK";
 
-UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:theTitle message:theMessage delegate:NULL cancelButtonTitle:theCancelButtonTitle otherButtonTitles:NULL, NULL];
-[theAlert show];
-}
+    UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:theTitle message:theMessage delegate:NULL cancelButtonTitle:theCancelButtonTitle otherButtonTitles:NULL, NULL];
+    [theAlert show];
+    }
 
 @end
 
@@ -101,8 +98,8 @@ UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:theTitle message:theM
 @implementation UIViewController (UIViewController_ErrorExtensions)
 
 - (void)presentError:(NSError *)inError
-{
-[[CErrorPresenter instance] presentError:inError];
-}
+    {
+    [[CErrorPresenter sharedInstance] presentError:inError];
+    }
 
 @end

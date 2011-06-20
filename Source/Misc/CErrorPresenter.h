@@ -38,7 +38,7 @@ extern NSString *ErrorPresenter_ErrorTitleKey /* = @"error_title" */;
 
 @property (readwrite, nonatomic, weak) id <CErrorPresenterDelegate> delegate;
 
-+ (id)instance;
++ (CErrorPresenter *)sharedInstance;
 - (void)presentError:(NSError *)inError;
 
 @end
