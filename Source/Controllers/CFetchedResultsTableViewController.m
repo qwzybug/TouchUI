@@ -29,8 +29,9 @@
 
 #import "CFetchedResultsTableViewController.h"
 
-const double kPlaceholderHideShowAnimationDuration = 0.4;
+#import "NSManagedObjectContext_Extensions.h"
 
+const double kPlaceholderHideShowAnimationDuration = 0.4;
 
 #pragma mark -
 
@@ -257,20 +258,14 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 		{
 		NSManagedObject *theObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-		[self.managedObjectContext deleteObject:theObject];
-	//	[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.managedObjectContext performTransaction:^(void) {
+            [self.managedObjectContext deleteObject:theObject];
+            } error:NULL];
 		}   
 	else if (editingStyle == UITableViewCellEditingStyleInsert)
 		{
 		}
 		
-	NSError *theError = NULL;
-	if ([self.managedObjectContext save:&theError] == NO)
-		{
-		NSLog(@"Error: %@", theError);
-		}
-
-
 	if ([self.fetchedResultsController.fetchedObjects count] == 0)
 		{
 		[self setEditing:NO animated:YES];
