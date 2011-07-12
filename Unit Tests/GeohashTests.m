@@ -1,6 +1,6 @@
 //
 //  Tests.m
-//  geohash
+//  TouchCode
 //
 //  Created by Jonathan Wight on 10/29/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.

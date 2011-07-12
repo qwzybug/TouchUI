@@ -3,7 +3,7 @@
 //  TouchCode
 //
 //  Created by Jonathan Wight on 6/10/09.
-//  Copyright 2009 toxicsoftware.com, Inc. All rights reserved.
+//  Copyright 2009 toxicsoftware.com. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person
 //  obtaining a copy of this software and associated documentation
