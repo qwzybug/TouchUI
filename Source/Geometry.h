@@ -220,6 +220,8 @@ else
 	}
 }
 
+#pragma mark -
+
 static inline CGPoint CGPointClampToRect(CGPoint p, CGRect r)
 {
 // TODO replace with MIN and MAX
@@ -253,11 +255,38 @@ static inline CGRect CGRectUnionOfRectsInArray(NSArray *inArray)
 CGRect theUnionRect = CGRectZero;
 for (NSValue *theValue in inArray)
 	{
+    #if TARGET_OS_IPHONE
 	CGRect theRect = [theValue CGRectValue];
+    #else
+	CGRect theRect = [theValue rectValue];
+    #endif
 	theUnionRect = CGRectUnion(theRect, theUnionRect);
 	}
 return(theUnionRect);
 }
+
+static inline CGRect CGScaleRect(CGRect inRect, CGFloat inXScale, CGFloat inYScale)
+    {
+    CGRect theScaledRect = {
+        .origin = { inRect.origin.x * inXScale, inRect.origin.y * inYScale},
+        .size = { inRect.size.width * inXScale, inRect.size.height * inYScale }
+        };
+    return(theScaledRect);
+    }
+
+static inline CGPoint CGScalePoint(CGPoint inPoint, CGFloat inXScale, CGFloat inYScale)
+    {
+    CGPoint thePoint = { .x = inPoint.x * inXScale, .y = inPoint.y * inYScale };
+    return(thePoint);
+    }
+
+static inline CGPoint CGCenterRect(CGRect inRect)
+    {
+    CGPoint thePoint = { .x = CGRectGetMidX(inRect), .y = CGRectGetMidY(inRect) };
+    return(thePoint);
+    }
+
+#pragma mark -
 
 static inline CGFloat distance(CGPoint start, CGPoint finish)
 {
