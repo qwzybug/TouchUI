@@ -11,6 +11,8 @@
 /// Hashes latitude & longitude according to algorithm described at http://en.wikipedia.org/wiki/Geohash (code loosely based on Python implementation at http://www.refactor.fi/software/gis/geohash/ )
 @interface CLLocation (CLLocation_GeohashExtensions)
 
+- (id)initWithGeohash:(NSString *)inGeohash;
+
 - (NSString *)geohash;
 - (NSString *)geohashWithPrecision:(NSUInteger)inPrecision;
 
