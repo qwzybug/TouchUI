@@ -39,16 +39,10 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 
 @synthesize managedObjectContext;
 @synthesize fetchRequest;
+@synthesize sectionNameKeypath;
 @synthesize fetchedResultsController;
 @synthesize placeholderView;
 @synthesize tableViewCellClass;
-
-- (void)dealloc
-	{
-	fetchedResultsController.delegate = NULL;
-	}
-
-#pragma mark -
 
 - (void)setFetchRequest:(NSFetchRequest *)inFetchRequest
 	{
@@ -64,12 +58,12 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		if (inFetchRequest != NULL)
 			{
 			fetchRequest = inFetchRequest;
-			[self.fetchedResultsController performFetch:NULL];
+//			[self.fetchedResultsController performFetch:NULL];
 			}
-			
-		[self updatePlaceholder:YES];
-
-		[self.tableView reloadData];
+//			
+//		[self updatePlaceholder:YES];
+//
+//		[self.tableView reloadData];
 		}
 	}
 
@@ -79,7 +73,10 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		{
 		if (self.fetchRequest)
 			{
-			fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:NULL cacheName:NULL];
+            NSParameterAssert(self.fetchRequest != NULL);
+            NSParameterAssert(self.managedObjectContext != NULL);
+            
+			fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:self.sectionNameKeypath cacheName:NULL];
 			fetchedResultsController.delegate = self;
 			}
 		}
@@ -229,6 +226,12 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	return(theNumberOfRows);
 	}
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+    {
+    id <NSFetchedResultsSectionInfo> theSection = [self.fetchedResultsController.sections objectAtIndex:section];
+    return(theSection.name);
+    }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 	{
 	UITableViewCell *theCell = [self.tableView dequeueReusableCellWithIdentifier:@"CELL"];
@@ -240,8 +243,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	
 	NSManagedObject *theObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	if ([theCell conformsToProtocol:@protocol(CManagedObjectTableViewCellProtocol)]
-		|| [theCell respondsToSelector:@selector(setManagedObject:)])
+	if ([theCell conformsToProtocol:@protocol(CManagedObjectTableViewCellProtocol)])
 		{
 		[(id <CManagedObjectTableViewCellProtocol>)theCell setManagedObject:theObject];
 		}
