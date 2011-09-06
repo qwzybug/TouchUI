@@ -48,22 +48,8 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	{
 	if (fetchRequest != inFetchRequest)
 		{
-		if (fetchRequest != NULL)
-			{
-			fetchRequest = NULL;
-			
-			self.fetchedResultsController = NULL;
-			}
-		//
-		if (inFetchRequest != NULL)
-			{
-			fetchRequest = inFetchRequest;
-//			[self.fetchedResultsController performFetch:NULL];
-			}
-//			
-//		[self updatePlaceholder:YES];
-//
-//		[self.tableView reloadData];
+        self.fetchedResultsController = NULL;
+        fetchRequest = inFetchRequest;
 		}
 	}
 
