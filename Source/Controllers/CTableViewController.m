@@ -41,6 +41,7 @@
 @synthesize initialStyle;
 @synthesize clearsSelectionOnViewWillAppear;
 @synthesize addButtonItem;
+@synthesize tableHeaderView;
 
 - (id)init
     {
@@ -95,6 +96,11 @@
             [self.view addSubview:theTableView];
             self.tableView = theTableView;
             }
+        }
+        
+    if (self.tableHeaderView)
+        {
+        self.tableView.tableHeaderView = self.tableHeaderView;
         }
     }
 

@@ -32,10 +32,12 @@
 @interface CTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
 }
 
-@property (readwrite, nonatomic, strong) UITableView *tableView;
+@property (readwrite, nonatomic, strong) IBOutlet UITableView *tableView;
 @property (readwrite, nonatomic, assign) UITableViewStyle initialStyle;
 @property (readwrite, nonatomic, assign) BOOL clearsSelectionOnViewWillAppear;
 @property (readonly, nonatomic, strong) UIBarButtonItem *addButtonItem;
+
+@property (readwrite, nonatomic, strong) IBOutlet UIView *tableHeaderView;
 
 - (IBAction)add:(id)inSender;
 
