@@ -37,122 +37,108 @@
 
 @implementation CTableViewController
 
-@synthesize tableView = outletTableView;
+@synthesize tableView;
 @synthesize initialStyle;
 @synthesize clearsSelectionOnViewWillAppear;
+@synthesize addButtonItem;
 
 - (id)init
-{
-if ((self = [super initWithNibName:NULL bundle:NULL]) != NULL)
-	{
-	initialStyle = UITableViewStylePlain;
-	clearsSelectionOnViewWillAppear = YES;
-	}
-return(self);
-}
-
-- (void)dealloc
-{
-outletTableView.delegate = NULL;
-outletTableView.dataSource = NULL;
-}
+    {
+    if ((self = [super initWithNibName:NULL bundle:NULL]) != NULL)
+        {
+        initialStyle = UITableViewStylePlain;
+        clearsSelectionOnViewWillAppear = YES;
+        }
+    return(self);
+    }
 
 #pragma mark -
 
 - (UIBarButtonItem *)addButtonItem
-{
-if (addButtonItem == NULL)
     {
-    addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
+    if (addButtonItem == NULL)
+        {
+        addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
+        }
+    return(addButtonItem);
     }
-return(addButtonItem);
-}
 
 #pragma mark -
 
 - (void)loadView
-{
-[super loadView];
-//
-if (self.view == NULL)
-	{
-	CGRect theViewFrame = [[UIScreen mainScreen] applicationFrame];
-	UIView *theView = [[UITableView alloc] initWithFrame:theViewFrame];
-	theView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-	//
-	self.view = theView;
-	}
+    {
+    [super loadView];
+    //
+    if (self.view == NULL)
+        {
+        CGRect theViewFrame = [[UIScreen mainScreen] applicationFrame];
+        UIView *theView = [[UITableView alloc] initWithFrame:theViewFrame];
+        theView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        //
+        self.view = theView;
+        }
 
-if (self.tableView == NULL)
-	{
-	if ([self.view isKindOfClass:[UITableView class]])
-		{
-		self.tableView = (UITableView *)self.view;
-		}
-	else
-		{
-		CGRect theViewFrame = self.view.bounds;
-		UITableView *theTableView = [[UITableView alloc] initWithFrame:theViewFrame style:self.initialStyle];
-		theTableView.delegate = self;
-		theTableView.dataSource = self;
-		theTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-		//
-		[self.view addSubview:theTableView];
-		self.tableView = theTableView;
-		}
-	}
-}
-
-- (void)viewDidUnload
-{
-[super viewDidUnload];
-//
-outletTableView.delegate = NULL;
-outletTableView.dataSource = NULL;
-outletTableView = NULL;
-}
+    if (self.tableView == NULL)
+        {
+        if ([self.view isKindOfClass:[UITableView class]])
+            {
+            self.tableView = (UITableView *)self.view;
+            }
+        else
+            {
+            CGRect theViewFrame = self.view.bounds;
+            UITableView *theTableView = [[UITableView alloc] initWithFrame:theViewFrame style:self.initialStyle];
+            theTableView.delegate = self;
+            theTableView.dataSource = self;
+            theTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+            //
+            [self.view addSubview:theTableView];
+            self.tableView = theTableView;
+            }
+        }
+    }
 
 - (void)viewWillAppear:(BOOL)inAnimated
-{
-[super viewWillAppear:inAnimated];
-//
-[self.tableView reloadData];
-//
-if (self.clearsSelectionOnViewWillAppear == YES)
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
-}
+    {
+    [super viewWillAppear:inAnimated];
+    //
+    [self.tableView reloadData];
+    //
+    if (self.clearsSelectionOnViewWillAppear == YES)
+        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
+    }
 
 - (void)viewDidAppear:(BOOL)inAnimated
-{
-[super viewDidAppear:inAnimated];
-//
-[self.tableView flashScrollIndicators];
-}
+    {
+    [super viewDidAppear:inAnimated];
+    //
+    [self.tableView flashScrollIndicators];
+    }
 
 - (void)setEditing:(BOOL)inEditing animated:(BOOL)inAnimated
-{
-[super setEditing:inEditing animated:inAnimated];
-//
-[self.tableView setEditing:inEditing animated:inAnimated];
+    {
+    [super setEditing:inEditing animated:inAnimated];
+    //
+    [self.tableView setEditing:inEditing animated:inAnimated];
 
-self.addButtonItem.enabled = !inEditing;
-}
+    self.addButtonItem.enabled = !inEditing;
+    }
 
 - (IBAction)add:(id)inSender
-{
-}
+    {
+    }
 
 #pragma mark -
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
-{
-return(0);
-}
+    {
+    return(0);
+    }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-return(NULL);
-}
+    {
+    return(NULL);
+    }
 
 @end
 

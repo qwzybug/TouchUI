@@ -30,16 +30,12 @@
 #import <UIKit/UIKit.h>
 
 @interface CTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
-	IBOutlet UITableView *outletTableView;
-	UITableViewStyle initialStyle;
-	BOOL clearsSelectionOnViewWillAppear;
-    UIBarButtonItem *addButtonItem;
 }
 
-@property (readwrite, nonatomic, retain) UITableView *tableView;
+@property (readwrite, nonatomic, strong) UITableView *tableView;
 @property (readwrite, nonatomic, assign) UITableViewStyle initialStyle;
 @property (readwrite, nonatomic, assign) BOOL clearsSelectionOnViewWillAppear;
-@property (readonly, nonatomic, retain) UIBarButtonItem *addButtonItem;
+@property (readonly, nonatomic, strong) UIBarButtonItem *addButtonItem;
 
 - (IBAction)add:(id)inSender;
 
