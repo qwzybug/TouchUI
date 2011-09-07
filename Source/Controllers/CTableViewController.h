@@ -37,6 +37,7 @@
 @property (readwrite, nonatomic, assign) BOOL clearsSelectionOnViewWillAppear;
 @property (readonly, nonatomic, strong) UIBarButtonItem *addButtonItem;
 
+@property (readwrite, nonatomic, strong) IBOutlet UIView *tableBackgroundView;
 @property (readwrite, nonatomic, strong) IBOutlet UIView *tableHeaderView;
 
 - (IBAction)add:(id)inSender;
