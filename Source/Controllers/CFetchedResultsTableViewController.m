@@ -73,7 +73,11 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	{
 	if (placeholderView == NULL)
 		{
-		UILabel *theLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 44 * 3, self.view.bounds.size.width, 44)];
+        CGRect theRect = (CGRect){ .size = { .width = self.tableView.bounds.size.width, .height = 44 } };
+        theRect.origin.y = 44 * 1 + CGRectGetMaxY(self.tableView.tableHeaderView.frame);
+        
+        
+		UILabel *theLabel = [[UILabel alloc] initWithFrame:theRect];
 		theLabel.textAlignment = UITextAlignmentCenter;
 		theLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize] + 3];
 		theLabel.textColor = [UIColor grayColor];
