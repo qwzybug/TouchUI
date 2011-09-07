@@ -214,7 +214,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
     {
-    if (section < [self.fetchedResultsController.sections count])
+    if (section < (NSInteger)[self.fetchedResultsController.sections count])
         {
         id <NSFetchedResultsSectionInfo> theSection = [self.fetchedResultsController.sections objectAtIndex:section];
         return(theSection.name);
