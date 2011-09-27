@@ -43,6 +43,16 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 @synthesize fetchedResultsController;
 @synthesize placeholderView;
 @synthesize tableViewCellClass;
+@synthesize usePlaceholder;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+    {
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
+        {
+        usePlaceholder = NO;
+        }
+    return(self);
+    }
 
 - (void)setFetchRequest:(NSFetchRequest *)inFetchRequest
 	{
@@ -89,14 +99,6 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	return(placeholderView);
 	}
 
-- (void)setPlaceholderView:(UIView *)inPlaceholderView
-	{
-	if (placeholderView != inPlaceholderView)
-		{
-		placeholderView = inPlaceholderView;
-		}
-	}
-
 #pragma mark -
 
 - (void)viewDidUnload
@@ -122,7 +124,10 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		
 	[self.tableView reloadData];
 
-	[self updatePlaceholder:NO];
+    if (self.usePlaceholder == YES)
+        {
+        [self updatePlaceholder:NO];
+        }
 
 	if ([self.fetchedResultsController.fetchedObjects count] == 0)
 		{
@@ -270,7 +275,10 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		[self setEditing:NO animated:YES];
 		}
 		
-	[self updatePlaceholder:YES];
+    if (self.usePlaceholder == YES)
+        {
+        [self updatePlaceholder:YES];
+        }
 	}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -327,7 +335,10 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		[self editButtonItem].enabled = YES;
 		}
 
-	[self updatePlaceholder:YES];
+    if (self.usePlaceholder == YES)
+        {
+        [self updatePlaceholder:YES];
+        }
 	}
  
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller

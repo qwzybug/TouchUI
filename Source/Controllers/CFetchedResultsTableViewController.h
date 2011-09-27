@@ -40,6 +40,7 @@
 @property (readwrite, nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (readwrite, nonatomic, strong) UIView *placeholderView;
 @property (readwrite, nonatomic, assign) Class tableViewCellClass;
+@property (readwrite, nonatomic, assign) BOOL usePlaceholder;
 
 - (IBAction)add:(id)inSender;
 
