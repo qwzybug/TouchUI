@@ -115,15 +115,14 @@ static void *kTableHeaderViewFrameKey;
         {
         self.tableView.tableHeaderView = self.tableHeaderView;
         
-        [self addObserver:self forKeyPath:@"tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
         }
     }
 
-- (void)viewDidUnload
+- (void)viewWillUnload
     {
-    [super viewDidUnload];
+    [super viewWillUnload];
+
     
-    [self removeObserver:self forKeyPath:@"tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
     }
 
 - (void)viewWillAppear:(BOOL)inAnimated
@@ -136,6 +135,8 @@ static void *kTableHeaderViewFrameKey;
         {
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
         }
+
+    [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
     }
 
 - (void)viewDidAppear:(BOOL)inAnimated
@@ -143,6 +144,13 @@ static void *kTableHeaderViewFrameKey;
     [super viewDidAppear:inAnimated];
     //
     [self.tableView flashScrollIndicators];
+    }
+
+- (void)viewWillDisappear:(BOOL)animated
+    {
+    [super viewDidDisappear:animated];
+    //
+    [self removeObserver:self forKeyPath:@"tableView.tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
     }
 
 - (void)setEditing:(BOOL)inEditing animated:(BOOL)inAnimated
@@ -174,12 +182,12 @@ static void *kTableHeaderViewFrameKey;
     {
     if (context == &kTableHeaderViewFrameKey)
         {
-        [self removeObserver:self forKeyPath:@"tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
+        [self removeObserver:self forKeyPath:@"tableView.tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
 
         self.tableView.tableHeaderView = NULL;
         self.tableView.tableHeaderView = self.tableHeaderView;
 
-        [self addObserver:self forKeyPath:@"tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
+        [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
         }
     }
 
