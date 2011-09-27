@@ -35,6 +35,8 @@
 // In -viewDidAppear:, it flashes the table's scroll indicators.
 // Implements -setEditing:animated: to toggle the editing state of the table.
 
+static void *kTableHeaderViewFrameKey;
+
 @implementation CTableViewController
 
 @synthesize tableView;
@@ -44,9 +46,9 @@
 @synthesize tableBackgroundView;
 @synthesize tableHeaderView;
 
-- (id)init
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
     {
-    if ((self = [super initWithNibName:NULL bundle:NULL]) != NULL)
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
         {
         initialStyle = UITableViewStylePlain;
         clearsSelectionOnViewWillAppear = YES;
@@ -98,15 +100,30 @@
             self.tableView = theTableView;
             }
         }
-        
+    }
+
+- (void)viewDidLoad
+    {
+    [super viewDidLoad];
+
     if (self.tableBackgroundView)
         {
         self.tableView.backgroundView = self.tableBackgroundView;
         }
+
     if (self.tableHeaderView)
         {
         self.tableView.tableHeaderView = self.tableHeaderView;
+        
+        [self addObserver:self forKeyPath:@"tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
         }
+    }
+
+- (void)viewDidUnload
+    {
+    [super viewDidUnload];
+    
+    [self removeObserver:self forKeyPath:@"tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
     }
 
 - (void)viewWillAppear:(BOOL)inAnimated
@@ -116,7 +133,9 @@
     [self.tableView reloadData];
     //
     if (self.clearsSelectionOnViewWillAppear == YES)
+        {
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
+        }
     }
 
 - (void)viewDidAppear:(BOOL)inAnimated
@@ -149,6 +168,19 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
     {
     return(NULL);
+    }
+    
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+    {
+    if (context == &kTableHeaderViewFrameKey)
+        {
+        [self removeObserver:self forKeyPath:@"tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
+
+        self.tableView.tableHeaderView = NULL;
+        self.tableView.tableHeaderView = self.tableHeaderView;
+
+        [self addObserver:self forKeyPath:@"tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
+        }
     }
 
 @end
