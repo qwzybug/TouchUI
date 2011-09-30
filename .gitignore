@@ -1,0 +1,15 @@
+#### Mac OS X Finder droppings
+.DS_Store
+
+#### Python
+*.egg-info
+*.pyc
+*.pyo
+
+# Xcode Per User Files
+
+*.pbxuser
+*.perspectivev3
+xcuserdata/
+
+*.orig
