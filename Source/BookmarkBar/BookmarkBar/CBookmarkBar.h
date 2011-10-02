@@ -45,8 +45,8 @@
 	CGFloat gap2;
 	CGFloat gap3;
 	CGFloat bottomBorderHeight;
-	
-	
+
+
 	UIScrollView *scrollView;
 }
 

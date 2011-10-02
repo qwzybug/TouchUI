@@ -1,6 +1,6 @@
 //
 //  CImageLoader.h
-//  toxicsoftware.com
+//  TouchCode
 //
 //  Created by Jonathan Wight on 9/23/11.
 //  Copyright 2011 toxicsoftware.com. All rights reserved.

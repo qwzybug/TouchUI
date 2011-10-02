@@ -1,6 +1,6 @@
 //
 //  UIActionSheet_BlocksExtensions.m
-//  AnythingDB
+//  TouchCode
 //
 //  Created by Jonathan Wight on 10/18/10.
 //  Copyright 2011 toxicsoftware.com. All rights reserved.
@@ -104,8 +104,8 @@ return(self);
         {
         theBlock();
         }
-    
-    actionSheet.delegate = NULL;    
+
+    actionSheet.delegate = NULL;
     actionSheet.standIn = NULL;
     }
 

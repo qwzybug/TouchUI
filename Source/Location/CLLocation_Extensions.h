@@ -1,6 +1,6 @@
 //
 //  CLLocation_Extensions.h
-//  AnythingDB
+//  TouchCode
 //
 //  Created by Jonathan Wight on 10/16/10.
 //  Copyright 2011 toxicsoftware.com. All rights reserved.
