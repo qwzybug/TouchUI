@@ -31,6 +31,7 @@
 
 #import "UIImage_Extensions.h"
 
+#import <ImageIO/ImageIO.h>
 
 @implementation UIImage (UIImage_Extensions)
 
@@ -64,5 +65,363 @@ UIImage *theTintedImage = UIGraphicsGetImageFromCurrentImageContext();
 UIGraphicsEndImageContext();
 return(theTintedImage);
 }
+
+// #############################################################################
+
+- (UIImage *)resizedImageToFit:(CGSize)inSize;
+{
+	if (self.size.width < inSize.width && self.size.height < inSize.height)
+		return self;
+
+		CGRect destRect = CGRectMake(0.0f, 0.0f, inSize.width, inSize.height);
+	
+	if (self.size.width > self.size.height)
+	{
+		// Scale height down
+		destRect.size.height = ceilf(self.size.height * (inSize.width / self.size.width));
+	}
+	else if (self.size.width < self.size.height)
+	{
+		// Scale width down
+		destRect.size.width = ceilf(self.size.width * (inSize.height / self.size.height));
+	}
+	
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef ctx = CGBitmapContextCreate(NULL, destRect.size.width, destRect.size.height, 8, (4 * destRect.size.width), colorSpace, kCGImageAlphaPremultipliedFirst);
+    CGColorSpaceRelease(colorSpace);
+	
+    CGContextSetInterpolationQuality(ctx, kCGInterpolationHigh);
+    CGContextDrawImage(ctx, destRect, self.CGImage);
+	
+    CGImageRef resizedImage = CGBitmapContextCreateImage(ctx);
+    CGContextRelease(ctx);
+    
+    UIImage *result = [UIImage imageWithCGImage:resizedImage];
+    CGImageRelease(resizedImage);
+    
+    return result;
+}
+
+// #############################################################################
+
+- (UIImage *)sizedImage:(CGSize)inSize
+{
+CGImageRef theImage = NULL;
+//theImage = self.CGImage;
+CGColorSpaceRef theColorSpace = CGColorSpaceCreateDeviceGray();
+size_t theComponentCount = CGColorSpaceGetNumberOfComponents(theColorSpace);
+size_t theBitsPerComponent = 8; // CGImageGetBitsPerComponent(theImage);
+size_t theWidth = (size_t)ceil(inSize.width);
+size_t theHeight = (size_t)ceil(inSize.height);
+size_t theBytesPerRow = theWidth * (theBitsPerComponent * theComponentCount) / 8;
+size_t theLength = theHeight * theBytesPerRow;
+NSMutableData *theData = [NSMutableData dataWithLength:theLength];
+CGContextRef theBitmapContext = CGBitmapContextCreate(theData.mutableBytes, theWidth, theHeight, theBitsPerComponent, theBytesPerRow, theColorSpace, kCGImageAlphaNone);
+
+CGRect theBounds = { .origin = CGPointZero, .size = inSize };
+
+UIGraphicsPushContext(theBitmapContext);
+[self drawInRect:theBounds];
+UIGraphicsPopContext();
+
+theImage = CGBitmapContextCreateImage(theBitmapContext);
+CGContextRelease(theBitmapContext);
+if (theColorSpace)
+CFRelease(theColorSpace);
+
+UIImage *theNewImage = [UIImage imageWithCGImage:theImage];
+
+CFRelease(theImage);
+
+return(theNewImage);
+}
+
+- (CGImageRef)mask
+{
+CGImageRef theImage = self.CGImage;
+CGImageRef theMask = CGImageMaskCreate(CGImageGetWidth(theImage), CGImageGetHeight(theImage), CGImageGetBitsPerComponent(theImage), CGImageGetBitsPerPixel(theImage), CGImageGetBytesPerRow(theImage), CGImageGetDataProvider(theImage), NULL, YES);
+
+return(theMask);
+}
+
+// #############################################################################
+
+
+- (UIImage *)thumbnail:(CGSize)thumbSize cropped:(BOOL)cropped
+{
+    CGRect destRect = CGRectMake(0.0f, 0.0f, thumbSize.width, thumbSize.height);
+
+	CGImageRef srcImage;
+
+	if (!cropped) {
+		if (self.size.width > self.size.height)
+		{
+			// Scale height down
+			destRect.size.height = ceilf(self.size.height * (thumbSize.width / self.size.width));
+
+			// Recenter
+			destRect.origin.y = (thumbSize.height - destRect.size.height) / 2.0f;
+		}
+		else if (self.size.width < self.size.height)
+		{
+			// Scale width down
+			destRect.size.width = ceilf(self.size.width * (thumbSize.height / self.size.height));
+
+			// Recenter
+			destRect.origin.x = (thumbSize.width - destRect.size.width) / 2.0f;
+		}
+
+		srcImage = self.CGImage;
+	} else {
+		// crop source image to a square
+		float croppedSize = MIN(self.size.width, self.size.height);
+
+		CGRect srcRect = CGRectMake((self.size.width - croppedSize) / 2,
+									(self.size.height - croppedSize) / 2,
+									croppedSize, croppedSize);
+
+		srcImage = CGImageCreateWithImageInRect(self.CGImage, srcRect);
+	}
+
+    CGColorSpaceRef genericColorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef thumbBitmapCtxt = CGBitmapContextCreate(NULL, thumbSize.width, thumbSize.height, 8, (4 * thumbSize.width), genericColorSpace, kCGImageAlphaPremultipliedFirst);
+    CGColorSpaceRelease(genericColorSpace);
+    CGContextSetInterpolationQuality(thumbBitmapCtxt, kCGInterpolationHigh);
+    CGContextDrawImage(thumbBitmapCtxt, destRect, srcImage);
+    CGImageRef tmpThumbImage = CGBitmapContextCreateImage(thumbBitmapCtxt);
+    CGContextRelease(thumbBitmapCtxt);
+
+    UIImage *result = [UIImage imageWithCGImage:tmpThumbImage];
+
+    CGImageRelease(tmpThumbImage);
+
+	if (cropped)
+		CGImageRelease(srcImage);
+
+    return result;
+}
+
+- (UIImage *)thumbnail:(CGSize)thumbSize
+{
+	return [self thumbnail:thumbSize cropped:NO];
+}
+
+// #############################################################################
+
++ (UIImage *)imageWithData:(NSData *)inData scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
+    {
+    UIImage *theImage = NULL;
+    CGImageSourceRef theImageSource = CGImageSourceCreateWithData((__bridge CFDataRef)inData, NULL);
+    if (theImageSource != NULL)
+        {
+        CGImageRef theCGImage = CGImageSourceCreateImageAtIndex(theImageSource, 0, NULL);
+        if (theCGImage != NULL)
+            {
+            theImage = [UIImage imageWithCGImage:theCGImage scale:scale orientation:orientation];
+            CFRelease(theCGImage);
+            }
+        CFRelease(theImageSource);
+        }
+    return(theImage);
+    }
+
++ (UIImage *)imageWithData:(NSData *)inData scale:(CGFloat)scale
+    {
+    return([self imageWithData:inData scale:scale orientation:UIImageOrientationUp]);
+    }
+
++ (UIImage *)imageWithColor:(UIColor *)inColor
+    {
+    CGFloat theAlpha;
+    BOOL theFlag = [inColor getRed:NULL green:NULL blue:NULL alpha:&theAlpha];
+    if (theFlag == NO)
+        {
+        theFlag = [inColor getWhite:NULL alpha:&theAlpha];
+        if (theFlag == NO)
+            {
+            return(NULL);
+            }
+        }
+
+    UIGraphicsBeginImageContextWithOptions((CGSize){ 1, 1 }, theAlpha != 1.0, 1.0);
+
+    [inColor set];
+
+    CGContextRef theContext = UIGraphicsGetCurrentContext();
+    CGContextFillRect(theContext, (CGRect){ .size = { 1, 1 } });
+
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    theImage = [theImage resizableImageWithCapInsets:(UIEdgeInsets){ }];
+
+    UIGraphicsEndImageContext();
+    return(theImage);
+    }
+
++ (UIImage *)imageWithRoundRectByRoundingCorners:(UIRectCorner)inCorners cornerRadii:(CGSize)inCornerRadii fill:(UIColor *)inFill stroke:(UIColor *)inStroke;
+    {
+    CGFloat kLineWidth = 1.0;
+
+    if (inStroke == NULL)
+        {
+        inStroke = inFill;
+        }
+
+    CGRect theRect = { .size = { .width = inCornerRadii.width * 2 + 1 + kLineWidth * 2, .height = inCornerRadii.height * 2 + 1 + kLineWidth * 2 } };
+
+    UIGraphicsBeginImageContextWithOptions(theRect.size, NO, 0.0);
+
+    theRect = CGRectInset(theRect, 1, 1);
+
+    [inFill setFill];
+    [inStroke setStroke];
+
+    UIBezierPath *thePath = [UIBezierPath bezierPathWithRoundedRect:theRect byRoundingCorners:inCorners cornerRadii:inCornerRadii];
+    thePath.lineWidth = kLineWidth;
+    if (inFill)
+        {
+        [thePath fill];
+        }
+
+    if (inStroke)
+        {
+        [thePath stroke];
+        }
+
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    theImage = [theImage resizableImageWithCapInsets:(UIEdgeInsets){ .top = inCornerRadii.height + 1, .left = inCornerRadii.width + 1, .bottom = inCornerRadii.height + 1, .right = inCornerRadii.width + 1 }];
+
+    UIGraphicsEndImageContext();
+
+//    [UIImagePNGRepresentation(theImage) writeToFile:@"/Users/schwa/Desktop/foo.png" atomically:NO];
+
+    return(theImage);
+    }
+
++ (UIImage *)imageWithVerticalLinearGradient:(CGFloat)inHeight color0:(UIColor *)inColor0 color1:(UIColor *)inColor1;
+    {
+    CGRect theRect = { .size = { .width = 1.0, .height = inHeight } };
+
+    // TODO:set opaque flag properly
+    UIGraphicsBeginImageContextWithOptions(theRect.size, NO, 0.0);
+
+    NSArray *theColors = [NSArray arrayWithObjects:
+        (__bridge id)inColor0.CGColor,
+        (__bridge id)inColor1.CGColor,
+        NULL];
+
+    CGFloat theLocations[] = { 0.0, 1.0 };
+
+    CGColorSpaceRef theColorSpace = CGColorSpaceCreateDeviceRGB();
+
+    CGGradientRef theGradient = CGGradientCreateWithColors(theColorSpace, (__bridge CFArrayRef)theColors, theLocations);
+
+    CGContextRef theContext = UIGraphicsGetCurrentContext();
+
+    CGContextDrawLinearGradient(theContext, theGradient, (CGPoint){ .x = 0.0, .y = 0.0 }, (CGPoint){ .x = 0.0, .y = inHeight }, 0);
+
+    CFRelease(theGradient);
+    CFRelease(theColorSpace);
+
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    theImage = [theImage resizableImageWithCapInsets:(UIEdgeInsets){ }];
+
+    UIGraphicsEndImageContext();
+
+//    [UIImagePNGRepresentation(theImage) writeToFile:@"/Users/schwa/Desktop/foo.png" atomically:NO];
+
+    return(theImage);
+    }
+
++ (UIImage *)imageWithVerticalLinearGradient:(CGFloat)inHeight
+    {
+    return([self imageWithVerticalLinearGradient:inHeight color0:[UIColor blackColor] color1:[UIColor whiteColor]]);
+    }
+
++ (UIImage *)imageWithSize:(CGSize)inSize opaque:(BOOL)inOpaque scale:(CGFloat)inScale block:(void (^)(CGContextRef))inBlock;
+    {
+    UIGraphicsBeginImageContextWithOptions(inSize, inOpaque, inScale);
+
+    CGContextRef theContext = UIGraphicsGetCurrentContext();
+
+    inBlock(theContext);
+
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    UIGraphicsEndImageContext();
+
+    return(theImage);
+    }
+
++ (UIImage *)imageWithText:(NSString *)inText withFont:(UIFont *)inFont
+    {
+    CGSize theSize = [inText sizeWithFont:inFont];
+
+    return([self imageWithSize:theSize opaque:NO scale:0.0 block:^(CGContextRef inContext) {
+        [inText drawAtPoint:CGPointZero withFont:inFont];
+        }]);
+    }
+
+
++ (UIImage *)imageWithText:(NSString *)inText;
+    {
+    UIFont *theFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+    return([self imageWithText:inText withFont:theFont]);
+    }
+
++ (UIImage *)imageWithPlaceholder
+    {
+    return([UIImage imageWithText:@"💩"]);
+    }
+
+#pragma mark -
+
+#if DEBUG == 1
+
+- (NSString *)debugDescription
+    {
+    return([NSString stringWithFormat:@"%@ (%@)", [self description], NSStringFromCGSize(self.size)]);
+    }
+
+#endif /* DEBUG == 1 */
+
+- (UIImage *)imageScaledToSize:(CGSize)inSize opaque:(BOOL)inOpaque scale:(CGFloat)inScale
+    {
+    // TODO: what about UIImage.scale? (i.e. retina display)
+
+    UIGraphicsBeginImageContextWithOptions(inSize, inOpaque, inScale);
+    [self drawInRect:(CGRect){ .size = inSize }];
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return(theImage);
+    }
+
+- (UIImage *)imageScaledToSize:(CGSize)inSize opaque:(BOOL)inOpaque
+    {
+    return([self imageScaledToSize:inSize opaque:inOpaque scale:self.scale]);
+    }
+
+- (UIImage *)imageScaledToSize:(CGSize)inSize
+    {
+    return([self imageScaledToSize:inSize opaque:NO scale:self.scale]);
+    }
+
+- (UIImage *)imageWithSubimage:(CGRect)inRect
+    {
+    UIGraphicsBeginImageContextWithOptions(inRect.size, NO, self.scale);
+
+    [self drawAtPoint:(CGPoint){ .x = -inRect.origin.x, .y = -inRect.origin.y }];
+
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    UIGraphicsEndImageContext();
+
+//    [UIImagePNGRepresentation(theImage) writeToFile:@"/Users/schwa/Desktop/foo.png" atomically:NO];
+
+    return(theImage);
+    }
+
 
 @end

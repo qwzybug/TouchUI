@@ -1,9 +1,9 @@
 //
-//  CLLocation_Extensions.m
+//  CImageTransformer.h
 //  TouchCode
 //
-//  Created by Jonathan Wight on 10/16/10.
-//  Copyright 2011 toxicsoftware.com. All rights reserved.
+//  Created by Jonathan Wight on 8/10/11.
+//  Copyright 2011 Jonathan Wight. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
 //  permitted provided that the following conditions are met:
@@ -27,22 +27,44 @@
 //
 //  The views and conclusions contained in the software and documentation are those of the
 //  authors and should not be interpreted as representing official policies, either expressed
-//  or implied, of toxicsoftware.com.
+//  or implied, of 2011 Jonathan Wight.
 
-#import "CLLocation_Extensions.h"
+#import <Foundation/Foundation.h>
 
+@interface CImageTransformer : NSValueTransformer <NSCoding>
+@property (readwrite, nonatomic, copy) NSString *identifier;
+@end
 
-@implementation CLLocation (CLLocation_Extensions)
+#pragma mark -
 
-- (NSTimeInterval)age
-    {
-    return([[NSDate date] timeIntervalSinceDate:self.timestamp]);
-    }
+@interface CBlockBasedImageTransformer : CImageTransformer
+@property (readonly, nonatomic, copy) UIImage * (^block)(UIImage *);
 
-- (CLLocation *)locationWithReferenceTimestamp
-    {
-    CLLocation *theLocation = [[CLLocation alloc] initWithCoordinate:self.coordinate altitude:self.altitude horizontalAccuracy:self.horizontalAccuracy verticalAccuracy:self.verticalAccuracy timestamp:[NSDate dateWithTimeIntervalSinceReferenceDate:0.0]];
-    return(theLocation);
-    }
+- (id)initWithBlock:(UIImage * (^)(UIImage *))inBlock;
+@end
+
+#pragma mark -
+
+@interface CMultiImageTransformer : CImageTransformer
+
+@property (readwrite, nonatomic, retain) NSArray *transformers;
 
 @end
+
+#pragma mark -
+
+@interface CResizeImageTransformer : CImageTransformer
+
+@property (readwrite, nonatomic, assign) CGSize size;
+
+@end
+
+#pragma mark -
+
+@interface CBorderedImageTransformer : CImageTransformer
+
+@property (readwrite, nonatomic, retain) UIColor *strokeColor;
+@property (readwrite, nonatomic, retain) UIColor *fillColor;
+
+@end
+

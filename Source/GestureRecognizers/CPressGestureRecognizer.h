@@ -1,9 +1,9 @@
 //
-//  UIImage_Resizing.m
+//  CPressGestureRecognizer.h
 //  TouchCode
 //
-//  Created by Devin Chalmers on 8/10/09.
-//  Copyright 2011 Devin Chalmers. All rights reserved.
+//  Created by Jonathan Wight on 8/22/11.
+//  Copyright 2011 Jonathan Wight. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
 //  permitted provided that the following conditions are met:
@@ -27,44 +27,16 @@
 //
 //  The views and conclusions contained in the software and documentation are those of the
 //  authors and should not be interpreted as representing official policies, either expressed
-//  or implied, of Devin Chalmers.
+//  or implied, of 2011 Jonathan Wight.
 
-#import "UIImage_Resizing.h"
+#import <UIKit/UIKit.h>
 
-@implementation UIImage (UIImage_Resizing)
+@interface CPressGestureRecognizer : UIGestureRecognizer
 
-- (UIImage *)resizedImageToFit:(CGSize)inSize;
-{
-	if (self.size.width < inSize.width && self.size.height < inSize.height)
-		return self;
+// Default is 1. Number of fingers that must be held down for the gesture to be recognized
+@property (readwrite, nonatomic, assign) NSUInteger numberOfTouchesRequired;
 
-		CGRect destRect = CGRectMake(0.0f, 0.0f, inSize.width, inSize.height);
-	
-	if (self.size.width > self.size.height)
-	{
-		// Scale height down
-		destRect.size.height = ceilf(self.size.height * (inSize.width / self.size.width));
-	}
-	else if (self.size.width < self.size.height)
-	{
-		// Scale width down
-		destRect.size.width = ceilf(self.size.width * (inSize.height / self.size.height));
-	}
-	
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef ctx = CGBitmapContextCreate(NULL, destRect.size.width, destRect.size.height, 8, (4 * destRect.size.width), colorSpace, kCGImageAlphaPremultipliedFirst);
-    CGColorSpaceRelease(colorSpace);
-	
-    CGContextSetInterpolationQuality(ctx, kCGInterpolationHigh);
-    CGContextDrawImage(ctx, destRect, self.CGImage);
-	
-    CGImageRef resizedImage = CGBitmapContextCreateImage(ctx);
-    CGContextRelease(ctx);
-    
-    UIImage *result = [UIImage imageWithCGImage:resizedImage];
-    CGImageRelease(resizedImage);
-    
-    return result;
-}
+// Default is 10. Maximum movement in pixels allowed before the gesture fails. Once recognized (after minimumPressDuration) there is no limit on finger
+@property (readwrite, nonatomic, assign) CGFloat allowableMovement;
 
 @end

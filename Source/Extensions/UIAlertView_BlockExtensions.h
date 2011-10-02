@@ -1,9 +1,9 @@
 //
-//  UIImage_ThumbnailExtensions.h
+//  UIAlertView+BlockExtensions.h
 //  TouchCode
 //
-//  Created by Ian Baird on 3/28/08.
-//  Copyright 2011 Skorpiostech, Inc. All rights reserved.
+//  Created by Jonathan Wight on 9/1/11.
+//  Copyright 2011 Jonathan Wight. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
 //  permitted provided that the following conditions are met:
@@ -27,14 +27,15 @@
 //
 //  The views and conclusions contained in the software and documentation are those of the
 //  authors and should not be interpreted as representing official policies, either expressed
-//  or implied, of Skorpiostech, Inc..
+//  or implied, of 2011 Jonathan Wight.
 
 #import <UIKit/UIKit.h>
 
+@interface UIAlertView (BlockExtensions)
 
-@interface UIImage (UIImage_ThumbnailExtensions)
+@property (readwrite, nonatomic, copy) void (^buttonHandler)(NSInteger buttonIndex);
+@property (readwrite, nonatomic, copy) void (^cancelHandler)(void);
 
-- (UIImage *)thumbnail:(CGSize)thumbSize cropped:(BOOL)cropped;
-- (UIImage *)thumbnail:(CGSize)thumbSize;
+- (id)initWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end

@@ -39,4 +39,50 @@
 
 - (UIImage *)imageTintedWithColor:(UIColor *)inColor;
 
+// #############################################################################
+
+- (UIImage *)resizedImageToFit:(CGSize)inSize;
+
+// #############################################################################
+
+- (UIImage *)sizedImage:(CGSize)inSize;
+- (CGImageRef)mask;
+
+// #############################################################################
+
+- (UIImage *)thumbnail:(CGSize)thumbSize cropped:(BOOL)cropped;
+- (UIImage *)thumbnail:(CGSize)thumbSize;
+
+// #############################################################################
+
+#if DEBUG == 1
+- (NSString *)debugDescription;
+#endif /* DEBUG == 1 */
+
++ (UIImage *)imageWithData:(NSData *)inData scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
++ (UIImage *)imageWithData:(NSData *)inData scale:(CGFloat)scale;
+
++ (UIImage *)imageWithColor:(UIColor *)inColor;
+
++ (UIImage *)imageWithRoundRectByRoundingCorners:(UIRectCorner)inCorners cornerRadii:(CGSize)inCornerRadii fill:(UIColor *)inFill stroke:(UIColor *)inStroke;
+
++ (UIImage *)imageWithVerticalLinearGradient:(CGFloat)inHeight color0:(UIColor *)inColor0 color1:(UIColor *)inColor1;
++ (UIImage *)imageWithVerticalLinearGradient:(CGFloat)inHeight;
+
++ (UIImage *)imageWithSize:(CGSize)inSize opaque:(BOOL)inOpaque scale:(CGFloat)inScale block:(void (^)(CGContextRef))inBlock;
+
++ (UIImage *)imageWithText:(NSString *)inText withFont:(UIFont *)inFont;
++ (UIImage *)imageWithText:(NSString *)inText;
+
++ (UIImage *)imageWithPlaceholder;
+
+
+- (UIImage *)imageScaledToSize:(CGSize)inSize opaque:(BOOL)inOpaque scale:(CGFloat)inScale;
+- (UIImage *)imageScaledToSize:(CGSize)inSize opaque:(BOOL)inOpaque;
+- (UIImage *)imageScaledToSize:(CGSize)inSize;
+
+- (UIImage *)imageWithSubimage:(CGRect)inRect;
+
+
+
 @end

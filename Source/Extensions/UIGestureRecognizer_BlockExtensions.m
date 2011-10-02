@@ -1,9 +1,9 @@
 //
-//  UIImage_MaskExtensions.h
+//  UIGestureRecognizer+BlockExtensions.m
 //  TouchCode
 //
-//  Created by Jonathan Wight on 1/16/09.
-//  Copyright 2011 toxicsoftware.com. All rights reserved.
+//  Created by Jonathan Wight on 9/1/11.
+//  Copyright 2011 Jonathan Wight. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
 //  permitted provided that the following conditions are met:
@@ -27,13 +27,57 @@
 //
 //  The views and conclusions contained in the software and documentation are those of the
 //  authors and should not be interpreted as representing official policies, either expressed
-//  or implied, of toxicsoftware.com.
+//  or implied, of 2011 Jonathan Wight.
 
-#import <UIKit/UIKit.h>
+#import "UIGestureRecognizer_BlockExtensions.h"
 
-@interface UIImage (UIImage_MaskExtensions)
+#import <objc/runtime.h>
 
-- (UIImage *)sizedImage:(CGSize)inSize;
-- (CGImageRef)mask;
+@interface CGestureRecognizerBlockHelper : NSObject
+@property (readwrite, nonatomic, copy) void (^handler)(void);
+-(void)handleGesture:(UIGestureRecognizer*)gestureRecognizer;
+@end
+
+#pragma mark -
+
+static void *kCGestureRecognizerBlockHelperKey;
+
+@implementation UIGestureRecognizer (BlockExtensions)
+
+- (id)initWithHandler
+    {
+    CGestureRecognizerBlockHelper *theHelper = [[CGestureRecognizerBlockHelper alloc] init];
+    if ((self = [self initWithTarget:theHelper action:@selector(handleGesture:)]) != NULL)
+        {
+        objc_setAssociatedObject(self, &kCGestureRecognizerBlockHelperKey, theHelper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        }
+    return self;
+    }
+
+- (void (^)(void))handler
+    {
+    CGestureRecognizerBlockHelper *theHelper = objc_getAssociatedObject(self, &kCGestureRecognizerBlockHelperKey);
+    return(theHelper.handler);
+    }
+
+- (void)setHandler:(void (^)(void))handler
+    {
+    CGestureRecognizerBlockHelper *theHelper = objc_getAssociatedObject(self, &kCGestureRecognizerBlockHelperKey);
+    theHelper.handler = handler;
+    }
+
+@end
+
+#pragma mark -
+
+@implementation CGestureRecognizerBlockHelper
+
+@synthesize handler;
+
+-(void)handleGesture:(UIGestureRecognizer*)gestureRecognizer
+    {
+    self.handler();
+    }
+
 
 @end

@@ -38,7 +38,5 @@
  */
 @interface UIColor (UIColor_MoreExtensions)
 
-+ (id)colorWithSVGString:(NSString *)inString;
-+ (id)colorWithHTMLString:(NSString *)inHTMLString;
 
 @end

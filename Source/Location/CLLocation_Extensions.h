@@ -34,6 +34,7 @@
 @interface CLLocation (CLLocation_Extensions)
 
 @property (readonly, nonatomic, assign) NSTimeInterval age;
-@property (readonly, nonatomic, assign) BOOL stale;
+
+- (CLLocation *)locationWithReferenceTimestamp;
 
 @end

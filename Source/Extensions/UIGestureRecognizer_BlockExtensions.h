@@ -1,9 +1,9 @@
 //
-//  UIImage_Resizing.h
+//  UIGestureRecognizer+BlockExtensions.h
 //  TouchCode
 //
-//  Created by Devin Chalmers on 8/10/09.
-//  Copyright 2011 Devin Chalmers. All rights reserved.
+//  Created by Jonathan Wight on 9/1/11.
+//  Copyright 2011 Jonathan Wight. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
 //  permitted provided that the following conditions are met:
@@ -27,12 +27,14 @@
 //
 //  The views and conclusions contained in the software and documentation are those of the
 //  authors and should not be interpreted as representing official policies, either expressed
-//  or implied, of Devin Chalmers.
+//  or implied, of 2011 Jonathan Wight.
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface UIImage (Resizing)
+@interface UIGestureRecognizer (BlockExtensions)
 
-- (UIImage *)resizedImageToFit:(CGSize)inSize;
+@property (readwrite, nonatomic, copy) void (^handler)(void);
+
+- (id)initWithHandler;
 
 @end
