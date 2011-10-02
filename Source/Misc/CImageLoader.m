@@ -3,8 +3,31 @@
 //  toxicsoftware.com
 //
 //  Created by Jonathan Wight on 9/23/11.
-//  Copyright (c) 2011 toxicsoftware.com. All rights reserved.
+//  Copyright 2011 toxicsoftware.com. All rights reserved.
 //
+//  Redistribution and use in source and binary forms, with or without modification, are
+//  permitted provided that the following conditions are met:
+//
+//     1. Redistributions of source code must retain the above copyright notice, this list of
+//        conditions and the following disclaimer.
+//
+//     2. Redistributions in binary form must reproduce the above copyright notice, this list
+//        of conditions and the following disclaimer in the documentation and/or other materials
+//        provided with the distribution.
+//
+//  THIS SOFTWARE IS PROVIDED BY JONATHAN WIGHT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+//  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JONATHAN WIGHT OR
+//  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+//  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+//  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//  The views and conclusions contained in the software and documentation are those of the
+//  authors and should not be interpreted as representing official policies, either expressed
+//  or implied, of 2011 toxicsoftware.com.
 
 #import "CImageLoader.h"
 
@@ -34,7 +57,7 @@ static CImageLoader *gSharedInstance = NULL;
     if (index == NULL)
         {
         NSMutableDictionary *theIndex = [NSMutableDictionary dictionary];
-        
+
         NSString *thePattern = [NSString stringWithFormat:@"^(.+?)(?:_(Normal|Selected|Highlighted|Disabled)|(?:_(\\d+(?:,\\d+)*)))*(?:@2x)?$"];
         NSError *theError = NULL;
         NSRegularExpression *theRegex = [[NSRegularExpression alloc] initWithPattern:thePattern options:0 error:&theError];
@@ -47,7 +70,7 @@ static CImageLoader *gSharedInstance = NULL;
                 {
                 NSString *theString = [theURL.lastPathComponent stringByDeletingPathExtension];
                 NSTextCheckingResult *theMatch = [theRegex firstMatchInString:theString options:0 range:(NSRange){ .length = theString.length }];
-                
+
                 NSString *theImageName = [theMatch rangeAtIndex:1].location != NSNotFound ? [theString substringWithRange:[theMatch rangeAtIndex:1]] : NULL;
                 NSString *theFlags0 = [theMatch rangeAtIndex:2].location != NSNotFound ? [theString substringWithRange:[theMatch rangeAtIndex:2]] : NULL;
                 NSString *theFlags1 = [theMatch rangeAtIndex:3].location != NSNotFound ? [theString substringWithRange:[theMatch rangeAtIndex:3]] : NULL;
@@ -93,11 +116,11 @@ static CImageLoader *gSharedInstance = NULL;
                     }
 
                 NSMutableDictionary *theStatesDictionary = [theImageDictionary objectForKey:@"states"];
-                
+
                 NSMutableDictionary *theInstanceDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                     [theURL lastPathComponent], @"filename",
                     NULL];
-                            
+
                 if (theInsets)
                     {
                     UIEdgeInsets theInsetsStruct = {};
@@ -158,7 +181,7 @@ static CImageLoader *gSharedInstance = NULL;
     NSMutableDictionary *theImages = [NSMutableDictionary dictionary];
 
     NSString *theImageName = [inName stringByDeletingPathExtension];
-    
+
     NSDictionary *theImageDictionary = [self.index objectForKey:theImageName];
     NSDictionary *theStatesDictionary = [theImageDictionary objectForKey:@"states"];
     for (NSDictionary *theStateDictionary in [theStatesDictionary allValues])
@@ -172,10 +195,10 @@ static CImageLoader *gSharedInstance = NULL;
             UIEdgeInsets theInsets = [theInsetsValue UIEdgeInsetsValue];
             theImage = [theImage resizableImageWithCapInsets:theInsets];
             }
-        
+
         [theImages setObject:theImage forKey:theState];
         }
-    
+
     return(theImages);
     }
 
