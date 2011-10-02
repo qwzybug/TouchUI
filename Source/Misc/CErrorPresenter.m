@@ -105,3 +105,14 @@ static CErrorPresenter *gSharedInstance = NULL;
     }
 
 @end
+
+#pragma mark -
+
+@implementation NSError (UIError_ErrorPresenterExtensions)
+- (void)present
+    {
+    [[CErrorPresenter sharedInstance] presentError:self];
+    }
+@end
+
+

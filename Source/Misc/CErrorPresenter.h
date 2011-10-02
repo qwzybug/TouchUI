@@ -57,3 +57,11 @@ extern NSString *ErrorPresenter_ErrorTitleKey /* = @"error_title" */;
 @interface UIViewController (UIViewController_ErrorExtensions)
 - (void)presentError:(NSError *)inError;
 @end
+
+#pragma mark -
+
+@interface NSError (UIError_ErrorPresenterExtensions)
+- (void)present;
+@end
+
+
