@@ -46,7 +46,7 @@
 // #############################################################################
 
 - (UIImage *)sizedImage:(CGSize)inSize;
-- (CGImageRef)mask;
+- (UIImage *)mask;
 
 // #############################################################################
 
@@ -82,7 +82,5 @@
 - (UIImage *)imageScaledToSize:(CGSize)inSize;
 
 - (UIImage *)imageWithSubimage:(CGRect)inRect;
-
-
 
 @end

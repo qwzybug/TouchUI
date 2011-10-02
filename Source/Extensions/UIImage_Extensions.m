@@ -36,35 +36,35 @@
 @implementation UIImage (UIImage_Extensions)
 
 + (UIImage *)imageWithContentsOfURL:(NSURL *)inURL
-{
-NSData *theData = [NSData dataWithContentsOfURL:inURL options:0 error:NULL];
-return([self imageWithData:theData]);
-}
+    {
+    NSData *theData = [NSData dataWithContentsOfURL:inURL options:0 error:NULL];
+    return([self imageWithData:theData]);
+    }
 
 + (UIImage *)imageWithBackgroundImage:(UIImage *)inBackgroundImage foregroundImage:(UIImage *)inForegroundImage;
-{
-CGRect theFrame = CGRectMake(0, 0, inBackgroundImage.size.width, inBackgroundImage.size.height);
-UIGraphicsBeginImageContext(theFrame.size);
-[inBackgroundImage drawInRect:theFrame blendMode:kCGBlendModeNormal alpha:1.0];
-[inForegroundImage drawInRect:theFrame blendMode:kCGBlendModeNormal alpha:1.0];
-UIImage *theNewImage = UIGraphicsGetImageFromCurrentImageContext();
-UIGraphicsEndImageContext();
-return(theNewImage);
-}
+    {
+    CGRect theFrame = CGRectMake(0, 0, inBackgroundImage.size.width, inBackgroundImage.size.height);
+    UIGraphicsBeginImageContextWithOptions(theFrame.size, NO, 0.0);
+    [inBackgroundImage drawInRect:theFrame blendMode:kCGBlendModeNormal alpha:1.0];
+    [inForegroundImage drawInRect:theFrame blendMode:kCGBlendModeNormal alpha:1.0];
+    UIImage *theNewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return(theNewImage);
+    }
 
 - (UIImage *)imageTintedWithColor:(UIColor *)inColor
-{
-CGRect theFrame = CGRectMake(0, 0, self.size.width, self.size.height);
-UIGraphicsBeginImageContext(theFrame.size);
-CGContextRef theContext = UIGraphicsGetCurrentContext();
-CGContextSetFillColorWithColor(theContext, [inColor CGColor]);
-CGContextFillRect(theContext, theFrame);
-[self drawInRect:theFrame blendMode:kCGBlendModeDestinationIn alpha:1.0];
-[self drawInRect:theFrame blendMode:kCGBlendModeMultiply alpha:1.0];
-UIImage *theTintedImage = UIGraphicsGetImageFromCurrentImageContext();
-UIGraphicsEndImageContext();
-return(theTintedImage);
-}
+    {
+    CGRect theFrame = CGRectMake(0, 0, self.size.width, self.size.height);
+    UIGraphicsBeginImageContextWithOptions(theFrame.size, NO, 0.0);
+    CGContextRef theContext = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(theContext, [inColor CGColor]);
+    CGContextFillRect(theContext, theFrame);
+    [self drawInRect:theFrame blendMode:kCGBlendModeDestinationIn alpha:1.0];
+    [self drawInRect:theFrame blendMode:kCGBlendModeMultiply alpha:1.0];
+    UIImage *theTintedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return(theTintedImage);
+    }
 
 // #############################################################################
 
@@ -105,47 +105,50 @@ return(theTintedImage);
 // #############################################################################
 
 - (UIImage *)sizedImage:(CGSize)inSize
-{
-CGImageRef theImage = NULL;
-//theImage = self.CGImage;
-CGColorSpaceRef theColorSpace = CGColorSpaceCreateDeviceGray();
-size_t theComponentCount = CGColorSpaceGetNumberOfComponents(theColorSpace);
-size_t theBitsPerComponent = 8; // CGImageGetBitsPerComponent(theImage);
-size_t theWidth = (size_t)ceil(inSize.width);
-size_t theHeight = (size_t)ceil(inSize.height);
-size_t theBytesPerRow = theWidth * (theBitsPerComponent * theComponentCount) / 8;
-size_t theLength = theHeight * theBytesPerRow;
-NSMutableData *theData = [NSMutableData dataWithLength:theLength];
-CGContextRef theBitmapContext = CGBitmapContextCreate(theData.mutableBytes, theWidth, theHeight, theBitsPerComponent, theBytesPerRow, theColorSpace, kCGImageAlphaNone);
+    {
+    CGImageRef theImage = NULL;
+    //theImage = self.CGImage;
+    CGColorSpaceRef theColorSpace = CGColorSpaceCreateDeviceGray();
+    size_t theComponentCount = CGColorSpaceGetNumberOfComponents(theColorSpace);
+    size_t theBitsPerComponent = 8; // CGImageGetBitsPerComponent(theImage);
+    size_t theWidth = (size_t)ceil(inSize.width);
+    size_t theHeight = (size_t)ceil(inSize.height);
+    size_t theBytesPerRow = theWidth * (theBitsPerComponent * theComponentCount) / 8;
+    size_t theLength = theHeight * theBytesPerRow;
+    NSMutableData *theData = [NSMutableData dataWithLength:theLength];
+    CGContextRef theBitmapContext = CGBitmapContextCreate(theData.mutableBytes, theWidth, theHeight, theBitsPerComponent, theBytesPerRow, theColorSpace, kCGImageAlphaNone);
 
-CGRect theBounds = { .origin = CGPointZero, .size = inSize };
+    CGRect theBounds = { .origin = CGPointZero, .size = inSize };
 
-UIGraphicsPushContext(theBitmapContext);
-[self drawInRect:theBounds];
-UIGraphicsPopContext();
+    UIGraphicsPushContext(theBitmapContext);
+    [self drawInRect:theBounds];
+    UIGraphicsPopContext();
 
-theImage = CGBitmapContextCreateImage(theBitmapContext);
-CGContextRelease(theBitmapContext);
-if (theColorSpace)
-CFRelease(theColorSpace);
+    theImage = CGBitmapContextCreateImage(theBitmapContext);
+    CGContextRelease(theBitmapContext);
+    if (theColorSpace)
+    CFRelease(theColorSpace);
 
-UIImage *theNewImage = [UIImage imageWithCGImage:theImage];
+    UIImage *theNewImage = [UIImage imageWithCGImage:theImage];
 
-CFRelease(theImage);
+    CFRelease(theImage);
 
-return(theNewImage);
-}
+    return(theNewImage);
+    }
 
-- (CGImageRef)mask
-{
-CGImageRef theImage = self.CGImage;
-CGImageRef theMask = CGImageMaskCreate(CGImageGetWidth(theImage), CGImageGetHeight(theImage), CGImageGetBitsPerComponent(theImage), CGImageGetBitsPerPixel(theImage), CGImageGetBytesPerRow(theImage), CGImageGetDataProvider(theImage), NULL, YES);
+- (UIImage *)mask
+    {
+    CGImageRef theImage = self.CGImage;
+    CGImageRef theMask = CGImageMaskCreate(CGImageGetWidth(theImage), CGImageGetHeight(theImage), CGImageGetBitsPerComponent(theImage), CGImageGetBitsPerPixel(theImage), CGImageGetBytesPerRow(theImage), CGImageGetDataProvider(theImage), NULL, YES);
 
-return(theMask);
-}
+    UIImage *theMaskImage = [UIImage imageWithCGImage:theMask];
+    
+    CFRelease(theMask);
+
+    return(theMaskImage);
+    }
 
 // #############################################################################
-
 
 - (UIImage *)thumbnail:(CGSize)thumbSize cropped:(BOOL)cropped
 {
@@ -184,7 +187,7 @@ return(theMask);
 	}
 
     CGColorSpaceRef genericColorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef thumbBitmapCtxt = CGBitmapContextCreate(NULL, thumbSize.width, thumbSize.height, 8, (4 * thumbSize.width), genericColorSpace, kCGImageAlphaPremultipliedFirst);
+    CGContextRef thumbBitmapCtxt = CGBitmapContextCreate(NULL, (size_t)thumbSize.width, (size_t)thumbSize.height, 8, (size_t)(4 * thumbSize.width), genericColorSpace, kCGImageAlphaPremultipliedFirst);
     CGColorSpaceRelease(genericColorSpace);
     CGContextSetInterpolationQuality(thumbBitmapCtxt, kCGInterpolationHigh);
     CGContextDrawImage(thumbBitmapCtxt, destRect, srcImage);
