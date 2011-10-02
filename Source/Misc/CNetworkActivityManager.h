@@ -32,15 +32,12 @@
 #import <Foundation/Foundation.h>
 
 @interface CNetworkActivityManager : NSObject {
-	NSInteger count;
-	NSTimeInterval delay;
-	NSTimer *__unsafe_unretained delayTimer;
 }
 
-@property (readonly, assign) NSInteger count;
-@property (readwrite, assign) NSTimeInterval delay;
+@property (readonly, nonatomic, assign) NSInteger count;
+@property (readwrite, nonatomic, assign) NSTimeInterval delay;
 
-+ (CNetworkActivityManager *)instance;
++ (CNetworkActivityManager *)sharedInstance;
 
 - (void)addNetworkActivity;
 - (void)removeNetworkActivity;

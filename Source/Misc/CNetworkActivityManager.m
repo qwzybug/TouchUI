@@ -31,11 +31,9 @@
 
 #import "CNetworkActivityManager.h"
 
-static CNetworkActivityManager *gInstance = NULL;
-
 @interface CNetworkActivityManager ()
-@property (readwrite, assign) NSInteger count;
-@property (readwrite, assign) NSTimer *delayTimer;
+@property (readwrite, nonatomic, assign) NSInteger count;
+@property (readwrite, nonatomic, assign) NSTimer *delayTimer;
 
 - (void)delayTimer:(NSTimer *)inTimer;
 @end
@@ -45,78 +43,77 @@ static CNetworkActivityManager *gInstance = NULL;
 @implementation CNetworkActivityManager
 
 @synthesize delay;
+
+@synthesize count;
 @synthesize delayTimer;
 
-+ (id)instance
-{
-if (gInstance == NULL)
-	{
-	gInstance = [[self alloc] init];
-	}
-return(gInstance);
-}
+static CNetworkActivityManager *gSharedInstance = NULL;
+
++ (CNetworkActivityManager *)sharedInstance
+    {
+    static dispatch_once_t sOnceToken = 0;
+    dispatch_once(&sOnceToken, ^{
+        gSharedInstance = [[CNetworkActivityManager alloc] init];
+        });
+    return(gSharedInstance);
+    }
 
 - (id)init
-{
-if ((self = [super init]) != NULL)
-	{
-	delay = 0.2;
-	}
-return(self);
-}
+    {
+    if ((self = [super init]) != NULL)
+        {
+        delay = 0.2;
+        }
+    return(self);
+    }
 
 - (void)dealloc
-{
-[delayTimer invalidate];
-}
-
-- (NSInteger)count
-{
-return(count);
-}
+    {
+    [delayTimer invalidate];
+    }
 
 - (void)setCount:(NSInteger)inCount
-{
-if (count != inCount)
-	{
-	if (count <= 0 && inCount > 0)
-		{
-		if (self.delayTimer != NULL)
-			{
-			[self.delayTimer invalidate];
-			self.delayTimer = NULL;
-			}
-		self.delayTimer = [NSTimer scheduledTimerWithTimeInterval:self.delay target:self selector:@selector(delayTimer:) userInfo:[NSNumber numberWithBool:YES] repeats:NO];
-		}
-	else if (count > 0 && inCount <= 0)
-		{
-		if (self.delayTimer != NULL)
-			{
-			[self.delayTimer invalidate];
-			self.delayTimer = NULL;
-			}
-		self.delayTimer = [NSTimer scheduledTimerWithTimeInterval:self.delay target:self selector:@selector(delayTimer:) userInfo:[NSNumber numberWithBool:NO] repeats:NO];
-		}
+    {
+    if (count != inCount)
+        {
+        if (count <= 0 && inCount > 0)
+            {
+            if (self.delayTimer != NULL)
+                {
+                [self.delayTimer invalidate];
+                self.delayTimer = NULL;
+                }
+            self.delayTimer = [NSTimer scheduledTimerWithTimeInterval:self.delay target:self selector:@selector(delayTimer:) userInfo:[NSNumber numberWithBool:YES] repeats:NO];
+            }
+        else if (count > 0 && inCount <= 0)
+            {
+            if (self.delayTimer != NULL)
+                {
+                [self.delayTimer invalidate];
+                self.delayTimer = NULL;
+                }
+            self.delayTimer = [NSTimer scheduledTimerWithTimeInterval:self.delay target:self selector:@selector(delayTimer:) userInfo:[NSNumber numberWithBool:NO] repeats:NO];
+            }
 
-	count = inCount;
-	}
-}
+        count = inCount;
+        }
+    }
 
 - (void)addNetworkActivity
-{
-self.count++;
-}
+    {
+    self.count++;
+    }
 
 - (void)removeNetworkActivity
-{
-self.count--;
-}
+    {
+    self.count--;
+    }
 
 - (void)delayTimer:(NSTimer *)inTimer
-{
-self.delayTimer = NULL;
+    {
+    self.delayTimer = NULL;
 
-[UIApplication sharedApplication].networkActivityIndicatorVisible = [inTimer.userInfo boolValue];
-}
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = [inTimer.userInfo boolValue];
+    }
 
 @end
