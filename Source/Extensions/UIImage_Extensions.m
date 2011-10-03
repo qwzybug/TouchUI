@@ -87,7 +87,7 @@
 	}
 	
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef ctx = CGBitmapContextCreate(NULL, destRect.size.width, destRect.size.height, 8, (4 * destRect.size.width), colorSpace, kCGImageAlphaPremultipliedFirst);
+    CGContextRef ctx = CGBitmapContextCreate(NULL, (size_t)destRect.size.width, (size_t)destRect.size.height, 8, (size_t)(4 * destRect.size.width), colorSpace, kCGImageAlphaPremultipliedFirst);
     CGColorSpaceRelease(colorSpace);
 	
     CGContextSetInterpolationQuality(ctx, kCGInterpolationHigh);
