@@ -33,7 +33,7 @@
 
 @interface CNetworkActivityManager ()
 @property (readwrite, nonatomic, assign) NSInteger count;
-@property (readwrite, nonatomic, assign) NSTimer *delayTimer;
+@property (readwrite, nonatomic, weak) NSTimer *delayTimer;
 
 - (void)delayTimer:(NSTimer *)inTimer;
 @end
