@@ -37,7 +37,7 @@
     NSMutableDictionary *handlersByIndex;
 }
 
-@property (readwrite, nonatomic, retain) NSMutableDictionary *handlersByIndex;
+@property (readwrite, nonatomic, strong) NSMutableDictionary *handlersByIndex;
 
 @end
 
@@ -45,7 +45,7 @@
 
 @interface UIActionSheet ()
 
-@property (readwrite, nonatomic, retain) CActionSheetDelegateStandIn *standIn;
+@property (readwrite, nonatomic, strong) CActionSheetDelegateStandIn *standIn;
 
 @end
 

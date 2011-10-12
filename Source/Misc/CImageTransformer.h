@@ -47,7 +47,7 @@
 
 @interface CMultiImageTransformer : CImageTransformer
 
-@property (readwrite, nonatomic, retain) NSArray *transformers;
+@property (readwrite, nonatomic, strong) NSArray *transformers;
 
 @end
 
@@ -63,8 +63,8 @@
 
 @interface CBorderedImageTransformer : CImageTransformer
 
-@property (readwrite, nonatomic, retain) UIColor *strokeColor;
-@property (readwrite, nonatomic, retain) UIColor *fillColor;
+@property (readwrite, nonatomic, strong) UIColor *strokeColor;
+@property (readwrite, nonatomic, strong) UIColor *fillColor;
 
 @end
 

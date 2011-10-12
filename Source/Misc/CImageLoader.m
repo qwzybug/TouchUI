@@ -34,7 +34,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 @interface CImageLoader ()
-@property (readonly, nonatomic, retain) NSDictionary *index;
+@property (readonly, nonatomic, strong) NSDictionary *index;
 @end
 
 @implementation CImageLoader

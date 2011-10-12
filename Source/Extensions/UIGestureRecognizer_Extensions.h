@@ -33,6 +33,6 @@
 
 @interface UIGestureRecognizer (Extension)
 
-@property (readwrite, nonatomic, retain) id userInfo;
+@property (readwrite, nonatomic, strong) id userInfo;
 
 @end
