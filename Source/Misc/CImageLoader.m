@@ -60,7 +60,7 @@ static CImageLoader *gSharedInstance = NULL;
 
         NSString *thePattern = [NSString stringWithFormat:@"^(.+?)(?:_(Normal|Selected|Highlighted|Disabled)|(?:_(\\d+(?:,\\d+)*)))*(?:@2x)?$"];
         NSError *theError = NULL;
-        NSRegularExpression *theRegex = [[NSRegularExpression alloc] initWithPattern:thePattern options:0 error:&theError];
+        NSRegularExpression *theRegex = [[NSRegularExpression alloc] initWithPattern:thePattern options:NSRegularExpressionCaseInsensitive error:&theError];
 
         NSDirectoryEnumerator *theEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:[NSBundle mainBundle].resourceURL includingPropertiesForKeys:NULL options:0 errorHandler:NULL];
         for (NSURL *theURL in theEnumerator)
@@ -117,8 +117,14 @@ static CImageLoader *gSharedInstance = NULL;
 
                 NSMutableDictionary *theStatesDictionary = [theImageDictionary objectForKey:@"states"];
 
+                NSString *theFilename = [[theURL lastPathComponent] stringByDeletingPathExtension];
+                if ([theFilename rangeOfString:@"@2x"].location == theFilename.length - 3)
+                    {
+                    theFilename = [theFilename substringToIndex:theFilename.length - 3];
+                    }
+
                 NSMutableDictionary *theInstanceDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                    [theURL lastPathComponent], @"filename",
+                    theFilename, @"filename",
                     NULL];
 
                 if (theInsets)
@@ -221,7 +227,6 @@ static CImageLoader *gSharedInstance = NULL;
     {
     return([self imageNamed:inName state:UIControlStateNormal]);
     }
-
 
 @end
 
