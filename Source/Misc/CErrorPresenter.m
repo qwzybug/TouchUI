@@ -37,8 +37,6 @@ NSString *ErrorPresenter_ErrorTitleKey = @"error_title";
 
 @implementation CErrorPresenter
 
-@synthesize delegate;
-
 static CErrorPresenter *gSharedInstance = NULL;
 
 + (CErrorPresenter *)sharedInstance
@@ -57,51 +55,71 @@ static CErrorPresenter *gSharedInstance = NULL;
         [self performSelectorOnMainThread:@selector(presentError:) withObject:inError waitUntilDone:YES];
         return;
         }
-
-    if (self.delegate && [self.delegate respondsToSelector:@selector(errorPresenter:shouldPresentError:)] && [self.delegate errorPresenter:self shouldPresentError:inError] == NO)
-        return;
-
-    NSString *theTitle = NULL;
-    theTitle = [inError.userInfo objectForKey:ErrorPresenter_ErrorTitleKey];
-
-    if (theTitle == NULL)
-        theTitle = @"Error";
-
-    NSString *theMessage = NULL;
-    NSString *theLocalizedDescription = [inError.userInfo objectForKey:NSLocalizedDescriptionKey];
-    if (theLocalizedDescription)
+//    UIResponder *theResponder = AssertCast_(UIResponder, [UIApplication sharedApplication].keyWindow);
+    UIWindow *theWindow = [UIApplication sharedApplication].keyWindow;
+    UIViewController *theViewController = theWindow.rootViewController;
+    while (theViewController != NULL)
         {
-        NSMutableString *theMutableMessage = [theLocalizedDescription mutableCopy];
-        
-        NSString *theRecoverySuggestion = [inError.userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
-        if (theRecoverySuggestion != NULL)
+        if ([theViewController respondsToSelector:@selector(visibleViewController)])
             {
-            [theMutableMessage appendFormat:@"\n%@", theRecoverySuggestion];
+            theViewController = [(id)theViewController visibleViewController];
+            }
+        else if ([theViewController respondsToSelector:@selector(selectedViewController)])
+            {
+            theViewController = [(id)theViewController selectedViewController];
+            }
+        else
+            break;
+        }
+        
+    while (theViewController != NULL)
+        {
+        if ([theViewController conformsToProtocol:@protocol(CErrorPresenter)])
+            {
+            break;
             }
             
-        theMessage = theMutableMessage;
+        theViewController = theViewController.parentViewController;
         }
 
-    if (theMessage == NULL)
+    id <CErrorPresenter> thePresenter = (id <CErrorPresenter>)theViewController;
+    if (thePresenter)
         {
-        theMessage = inError.localizedDescription;
+        [thePresenter presentError:inError];
         }
+    else
+        {
+        NSString *theTitle = NULL;
+        theTitle = [inError.userInfo objectForKey:ErrorPresenter_ErrorTitleKey];
 
-    NSString *theCancelButtonTitle = @"OK";
+        if (theTitle == NULL)
+            theTitle = @"Error";
 
-    UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:theTitle message:theMessage delegate:NULL cancelButtonTitle:theCancelButtonTitle otherButtonTitles:NULL, NULL];
-    [theAlert show];
-    }
+        NSString *theMessage = NULL;
+        NSString *theLocalizedDescription = [inError.userInfo objectForKey:NSLocalizedDescriptionKey];
+        if (theLocalizedDescription)
+            {
+            NSMutableString *theMutableMessage = [theLocalizedDescription mutableCopy];
+            
+            NSString *theRecoverySuggestion = [inError.userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
+            if (theRecoverySuggestion != NULL)
+                {
+                [theMutableMessage appendFormat:@"\n%@", theRecoverySuggestion];
+                }
+                
+            theMessage = theMutableMessage;
+            }
 
-@end
+        if (theMessage == NULL)
+            {
+            theMessage = inError.localizedDescription;
+            }
 
-#pragma mark -
+        NSString *theCancelButtonTitle = @"OK";
 
-@implementation UIViewController (UIViewController_ErrorExtensions)
-
-- (void)presentError:(NSError *)inError
-    {
-    [[CErrorPresenter sharedInstance] presentError:inError];
+        UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:theTitle message:theMessage delegate:NULL cancelButtonTitle:theCancelButtonTitle otherButtonTitles:NULL, NULL];
+        [theAlert show];
+        }
     }
 
 @end

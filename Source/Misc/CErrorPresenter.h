@@ -33,29 +33,18 @@
 
 extern NSString *ErrorPresenter_ErrorTitleKey /* = @"error_title" */;
 
-@protocol CErrorPresenterDelegate;
+@protocol CErrorPresenter <NSObject>
+@required
+- (void)presentError:(NSError *)inError;
+@end
 
 @interface CErrorPresenter : NSObject {
 }
 
-@property (readwrite, nonatomic, weak) id <CErrorPresenterDelegate> delegate;
-
 + (CErrorPresenter *)sharedInstance;
+
 - (void)presentError:(NSError *)inError;
 
-@end
-
-#pragma mark -
-
-@protocol CErrorPresenterDelegate <NSObject>
-@optional
-- (BOOL)errorPresenter:(CErrorPresenter *)inErrorPresenter shouldPresentError:(NSError *)inError;
-@end
-
-#pragma mark -
-
-@interface UIViewController (UIViewController_ErrorExtensions)
-- (void)presentError:(NSError *)inError;
 @end
 
 #pragma mark -
