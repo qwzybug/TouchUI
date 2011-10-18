@@ -37,7 +37,7 @@
 
 - (id)initWithHandler
     {
-    CGenericBlockHelper *theHelper = [CGenericBlockHelper helperForHandler:self selector:@selector(action)];
+    CGenericBlockHelper *theHelper = [CGenericBlockHelper genericBlockHelperForObject:self selector:@selector(action)];
 
     if ((self = [self initWithTarget:theHelper action:@selector(action)]) != NULL)
         {
@@ -47,12 +47,12 @@
 
 - (void (^)(void))handler
     {
-    return([CGenericBlockHelper helperForHandler:self selector:@selector(action)].handler);
+    return([CGenericBlockHelper genericBlockHelperForObject:self selector:@selector(action)].handler);
     }
 
 - (void)setHandler:(void (^)(void))inHandler
     {
-    [CGenericBlockHelper helperForHandler:self selector:@selector(action)].handler = inHandler;
+    [CGenericBlockHelper genericBlockHelperForObject:self selector:@selector(action)].handler = inHandler;
     }
 
 @end

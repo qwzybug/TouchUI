@@ -37,7 +37,7 @@
 
 - (void)addHandler:(void (^)(void))inHandler forControlEvents:(UIControlEvents)controlEvents
     {
-    CGenericBlockHelper *theHelper = [CGenericBlockHelper helperForHandler:inHandler selector:@selector(action)];
+    CGenericBlockHelper *theHelper = [CGenericBlockHelper genericBlockHelperForObject:inHandler selector:@selector(action)];
     theHelper.handler = inHandler;
     [self addTarget:theHelper action:@selector(action) forControlEvents:controlEvents];;
     }

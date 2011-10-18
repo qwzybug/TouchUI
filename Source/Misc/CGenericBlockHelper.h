@@ -35,6 +35,10 @@
 
 @property (readwrite, nonatomic, copy) void (^handler)(void);
 
-+ (CGenericBlockHelper *)helperForHandler:(id)inObject selector:(SEL)inSelector;
++ (CGenericBlockHelper *)genericBlockHelperForObject:(id)inObject selector:(SEL)inSelector;
+
+
++ (CGenericBlockHelper *)genericBlockHelperForObject:(id)inObject ofClass:(Class)inClass;
+- (void)addHandler:(id)inHandler forSelector:(SEL)inSelector;
 
 @end
