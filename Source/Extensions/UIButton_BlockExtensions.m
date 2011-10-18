@@ -1,8 +1,8 @@
 //
-//  UIGestureRecognizer+BlockExtensions.m
+//  UIButton_BlockExtensions.m
 //  TouchCode
 //
-//  Created by Jonathan Wight on 9/1/11.
+//  Created by Jonathan Wight on 10/18/11.
 //  Copyright 2011 Jonathan Wight. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
@@ -15,9 +15,9 @@
 //        of conditions and the following disclaimer in the documentation and/or other materials
 //        provided with the distribution.
 //
-//  THIS SOFTWARE IS PROVIDED BY JONATHAN WIGHT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+//  THIS SOFTWARE IS PROVIDED BY 2011 JONATHAN WIGHT ``AS IS'' AND ANY EXPRESS OR IMPLIED
 //  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JONATHAN WIGHT OR
+//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL 2011 JONATHAN WIGHT OR
 //  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 //  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
 //  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
@@ -29,30 +29,19 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of 2011 Jonathan Wight.
 
-#import "UIGestureRecognizer_BlockExtensions.h"
+#import "UIButton_BlockExtensions.h"
 
-#import "CGenericBlockHelper.h"
+#import "UIControl_BlockExtensions.h"
 
-@implementation UIGestureRecognizer (BlockExtensions)
+@implementation UIButton (UIButton_BlockExtensions)
 
-- (id)initWithHandler
++ (id)buttonWithType:(UIButtonType)inButtonType title:(NSString *)inTitle handler:(void (^)(void))inHandler
     {
-    CGenericBlockHelper *theHelper = [CGenericBlockHelper helperForHandler:self selector:@selector(action)];
-
-    if ((self = [self initWithTarget:theHelper action:@selector(action)]) != NULL)
-        {
-        }
-    return self;
-    }
-
-- (void (^)(void))handler
-    {
-    return([CGenericBlockHelper helperForHandler:self selector:@selector(action)].handler);
-    }
-
-- (void)setHandler:(void (^)(void))inHandler
-    {
-    [CGenericBlockHelper helperForHandler:self selector:@selector(action)].handler = inHandler;
+    UIButton *theButton = [UIButton buttonWithType:inButtonType];
+    [theButton setTitle:inTitle forState:UIControlStateNormal];
+    [theButton sizeToFit];
+    [theButton addHandler:inHandler forControlEvents:UIControlEventTouchUpInside];
+    return(theButton);
     }
 
 @end

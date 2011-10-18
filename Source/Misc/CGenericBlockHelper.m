@@ -1,8 +1,8 @@
 //
-//  UIGestureRecognizer+BlockExtensions.m
+//  CGenericBlockHelper.m
 //  TouchCode
 //
-//  Created by Jonathan Wight on 9/1/11.
+//  Created by Jonathan Wight on 10/18/11.
 //  Copyright 2011 Jonathan Wight. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification, are
@@ -15,9 +15,9 @@
 //        of conditions and the following disclaimer in the documentation and/or other materials
 //        provided with the distribution.
 //
-//  THIS SOFTWARE IS PROVIDED BY JONATHAN WIGHT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+//  THIS SOFTWARE IS PROVIDED BY 2011 JONATHAN WIGHT ``AS IS'' AND ANY EXPRESS OR IMPLIED
 //  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JONATHAN WIGHT OR
+//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL 2011 JONATHAN WIGHT OR
 //  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 //  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
 //  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
@@ -29,30 +29,40 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of 2011 Jonathan Wight.
 
-#import "UIGestureRecognizer_BlockExtensions.h"
-
 #import "CGenericBlockHelper.h"
 
-@implementation UIGestureRecognizer (BlockExtensions)
+#import <objc/runtime.h>
 
-- (id)initWithHandler
+static void *kGenericBlockHelper;
+
+@implementation CGenericBlockHelper
+
+@synthesize handler;
+
++ (CGenericBlockHelper *)helperForHandler:(id)inObject selector:(SEL)inSelector
     {
-    CGenericBlockHelper *theHelper = [CGenericBlockHelper helperForHandler:self selector:@selector(action)];
-
-    if ((self = [self initWithTarget:theHelper action:@selector(action)]) != NULL)
+    CGenericBlockHelper *theHelper = objc_getAssociatedObject(inObject, &kGenericBlockHelper);
+    if (theHelper == NULL)
         {
+        theHelper = [[CGenericBlockHelper alloc] init];
+        objc_setAssociatedObject(inObject, &kGenericBlockHelper, theHelper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+        Class theClass = [self class];
+        if (class_respondsToSelector(theClass, inSelector) == NO)
+            {
+            void (^theIMPBlock)(CGenericBlockHelper * _self) = ^(CGenericBlockHelper * _self) {
+                if (_self.handler != NULL)
+                    {
+                    _self.handler();
+                    }
+                };
+            IMP theIMP = imp_implementationWithBlock((__bridge void *)theIMPBlock);
+            BOOL theResult = class_addMethod(theClass, inSelector, theIMP, "v:@");
+            NSAssert(theResult == YES, @"Could not add method");
+            }
         }
-    return self;
-    }
 
-- (void (^)(void))handler
-    {
-    return([CGenericBlockHelper helperForHandler:self selector:@selector(action)].handler);
-    }
-
-- (void)setHandler:(void (^)(void))inHandler
-    {
-    [CGenericBlockHelper helperForHandler:self selector:@selector(action)].handler = inHandler;
+    return(theHelper);
     }
 
 @end
