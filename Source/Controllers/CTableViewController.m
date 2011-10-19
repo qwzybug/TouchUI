@@ -39,6 +39,12 @@
 
 static void *kTableHeaderViewFrameKey;
 
+@interface CTableViewController ()
+@property (readwrite, nonatomic, assign) BOOL observing;
+@end
+
+#pragma mark -
+
 @implementation CTableViewController
 
 @synthesize tableView;
@@ -47,6 +53,8 @@ static void *kTableHeaderViewFrameKey;
 @synthesize addButtonItem;
 @synthesize tableBackgroundView;
 @synthesize tableHeaderView;
+
+@synthesize observing;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
     {
@@ -138,7 +146,11 @@ static void *kTableHeaderViewFrameKey;
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
         }
 
-    [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
+    if (self.observing == NO)
+        {
+        self.observing = YES;
+        [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
+        }
     }
 
 - (void)viewDidAppear:(BOOL)inAnimated
@@ -152,7 +164,11 @@ static void *kTableHeaderViewFrameKey;
     {
     [super viewDidDisappear:animated];
     //
-    [self removeObserver:self forKeyPath:@"tableView.tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
+    if (self.observing == YES)
+        {
+        self.observing = NO;
+        [self removeObserver:self forKeyPath:@"tableView.tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
+        }
     }
 
 - (void)setEditing:(BOOL)inEditing animated:(BOOL)inAnimated
@@ -182,14 +198,14 @@ static void *kTableHeaderViewFrameKey;
     
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
     {
-    if (context == &kTableHeaderViewFrameKey)
+    if (context == &kTableHeaderViewFrameKey && self.observing == YES)
         {
-        [self removeObserver:self forKeyPath:@"tableView.tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
+        self.observing = NO;
 
         self.tableView.tableHeaderView = NULL;
         self.tableView.tableHeaderView = self.tableHeaderView;
 
-        [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
+        self.observing = YES;
         }
     }
 
