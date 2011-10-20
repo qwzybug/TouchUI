@@ -103,8 +103,6 @@ static CImageLoader *gSharedInstance = NULL;
                     continue;
                     }
 
-    //            NSLog(@"%@ %@ %@", theImageName, theInsets, theStates);
-
                 NSMutableDictionary *theImageDictionary = [theIndex objectForKey:theImageName];
                 if (theImageDictionary == NULL)
                     {
