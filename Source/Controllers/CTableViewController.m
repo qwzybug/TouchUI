@@ -124,7 +124,6 @@ static void *kTableHeaderViewFrameKey;
     if (self.tableHeaderView)
         {
         self.tableView.tableHeaderView = self.tableHeaderView;
-        
         }
     }
 
@@ -178,6 +177,15 @@ static void *kTableHeaderViewFrameKey;
     [self.tableView setEditing:inEditing animated:inAnimated];
 
     self.addButtonItem.enabled = !inEditing;
+    }
+
+- (void)setTableHeaderView:(UIView *)inTableHeaderView
+    {
+    if (tableHeaderView != inTableHeaderView)
+        {
+        tableHeaderView = inTableHeaderView;
+        self.tableView.tableHeaderView = inTableHeaderView;
+        }
     }
 
 - (IBAction)add:(id)inSender
