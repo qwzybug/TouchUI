@@ -40,6 +40,7 @@
 
 @property (readwrite, nonatomic, strong) IBOutlet UIView *tableBackgroundView;
 @property (readwrite, nonatomic, strong) IBOutlet UIView *tableHeaderView;
+@property (readwrite, nonatomic, strong) IBOutlet UIView *tableFooterView;
 
 - (IBAction)add:(id)inSender;
 

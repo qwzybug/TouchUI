@@ -38,9 +38,11 @@
 // Implements -setEditing:animated: to toggle the editing state of the table.
 
 static void *kTableHeaderViewFrameKey;
+static void *kTableFooterViewFrameKey;
 
 @interface CTableViewController ()
-@property (readwrite, nonatomic, assign) BOOL observing;
+@property (readwrite, nonatomic, assign) BOOL observingTableHeaderFrame;
+@property (readwrite, nonatomic, assign) BOOL observingTableFooterFrame;
 @end
 
 #pragma mark -
@@ -53,8 +55,10 @@ static void *kTableHeaderViewFrameKey;
 @synthesize addButtonItem;
 @synthesize tableBackgroundView;
 @synthesize tableHeaderView;
+@synthesize tableFooterView;
 
-@synthesize observing;
+@synthesize observingTableHeaderFrame;
+@synthesize observingTableFooterFrame;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
     {
@@ -116,22 +120,25 @@ static void *kTableHeaderViewFrameKey;
     {
     [super viewDidLoad];
 
-    if (self.tableBackgroundView)
+    if (self.tableBackgroundView != NULL)
         {
         self.tableView.backgroundView = self.tableBackgroundView;
         }
 
-    if (self.tableHeaderView)
+    if (self.tableHeaderView != NULL)
         {
         self.tableView.tableHeaderView = self.tableHeaderView;
+        }
+
+    if (self.tableFooterView != NULL)
+        {
+        self.tableView.tableFooterView = self.tableFooterView;
         }
     }
 
 - (void)viewWillUnload
     {
     [super viewWillUnload];
-
-    
     }
 
 - (void)viewWillAppear:(BOOL)inAnimated
@@ -145,10 +152,16 @@ static void *kTableHeaderViewFrameKey;
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
         }
 
-    if (self.observing == NO)
+    if (self.observingTableHeaderFrame == NO)
         {
-        self.observing = YES;
+        self.observingTableHeaderFrame = YES;
         [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
+        }
+
+    if (self.observingTableFooterFrame == NO)
+        {
+        self.observingTableFooterFrame = YES;
+        [self addObserver:self forKeyPath:@"tableView.tableFooterView.frame" options:0 context:&kTableFooterViewFrameKey];
         }
     }
 
@@ -163,10 +176,16 @@ static void *kTableHeaderViewFrameKey;
     {
     [super viewDidDisappear:animated];
     //
-    if (self.observing == YES)
+    if (self.observingTableHeaderFrame == YES)
         {
-        self.observing = NO;
+        self.observingTableHeaderFrame = NO;
         [self removeObserver:self forKeyPath:@"tableView.tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
+        }
+
+    if (self.observingTableFooterFrame == YES)
+        {
+        self.observingTableFooterFrame = NO;
+        [self removeObserver:self forKeyPath:@"tableView.tableFooterView.frame" context:&kTableFooterViewFrameKey];
         }
     }
 
@@ -188,6 +207,15 @@ static void *kTableHeaderViewFrameKey;
         }
     }
 
+- (void)setTableFooterView:(UIView *)inTableFooterView
+    {
+    if (tableFooterView != inTableFooterView)
+        {
+        tableFooterView = inTableFooterView;
+        self.tableView.tableFooterView = inTableFooterView;
+        }
+    }
+
 - (IBAction)add:(id)inSender
     {
     }
@@ -206,14 +234,23 @@ static void *kTableHeaderViewFrameKey;
     
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
     {
-    if (context == &kTableHeaderViewFrameKey && self.observing == YES)
+    if (context == &kTableHeaderViewFrameKey && self.observingTableHeaderFrame == YES)
         {
-        self.observing = NO;
+        self.observingTableHeaderFrame = NO;
 
         self.tableView.tableHeaderView = NULL;
         self.tableView.tableHeaderView = self.tableHeaderView;
 
-        self.observing = YES;
+        self.observingTableHeaderFrame = YES;
+        }
+    else if (context == &kTableFooterViewFrameKey && self.observingTableFooterFrame == YES)
+        {
+        self.observingTableFooterFrame = NO;
+
+        self.tableView.tableFooterView = NULL;
+        self.tableView.tableFooterView = self.tableFooterView;
+
+        self.observingTableFooterFrame = YES;
         }
     }
 
