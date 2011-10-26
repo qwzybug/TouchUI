@@ -37,7 +37,6 @@ static void *kGenericBlockHelper;
 
 @interface CGenericBlockHelper ()
 + (CGenericBlockHelper *)genericBlockHelperForObject:(id)inObject ofClass:(Class)inClass;
-@property (readwrite, nonatomic, retain) NSMutableDictionary *handlersForSelectors;
 
 @end
 
