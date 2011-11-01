@@ -47,7 +47,7 @@
 - (double)zoomLevel
     {
     // TODO:define new type. TODO:should zoomLevel be a CLLocationAccuracy or CLLocationDistance perhaps instead of a double?
-    double theZoomLevel = log2(self.visibleMapRect.size.width / self.bounds.size.width);
+    double theZoomLevel = 20 - log2(self.visibleMapRect.size.width / self.bounds.size.width);
     return(theZoomLevel);
     }
 
@@ -59,7 +59,7 @@
 - (void)setCenterCoordinate:(CLLocationCoordinate2D)inCoordinate zoomLevel:(double)inZoomLevel animated:(BOOL)inAnimated
     {
     const MKMapPoint theCurrentCenter = MKMapPointForCoordinate(inCoordinate);
-    const double theFector = exp2(inZoomLevel);
+    const double theFector = exp2(20 - inZoomLevel);
     const MKMapSize theSize = {
         .width = self.bounds.size.width * theFector,
         .height = self.bounds.size.height * theFector,
