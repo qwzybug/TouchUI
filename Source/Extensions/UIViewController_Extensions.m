@@ -10,13 +10,13 @@
 
 #import <objc/runtime.h>
 
-static void *kDissmissHandlerKey;
+static void *kHandlerKey;
 
 @implementation UIViewController (UIViewController_Extensions)
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion dismissHandler:(void (^)(void))inHandler
     {
-    objc_setAssociatedObject(viewControllerToPresent, &kDissmissHandlerKey, inHandler, OBJC_ASSOCIATION_COPY);
+    objc_setAssociatedObject(viewControllerToPresent, &kHandlerKey, inHandler, OBJC_ASSOCIATION_COPY);
 
     [self presentViewController:viewControllerToPresent animated:flag completion:completion];    
     }
@@ -29,7 +29,7 @@ static void *kDissmissHandlerKey;
         thePresentedViewController = self;
         }
     
-    void (^theDismissHandler)(void) = objc_getAssociatedObject(thePresentedViewController, &kDissmissHandlerKey);
+    void (^theDismissHandler)(void) = objc_getAssociatedObject(thePresentedViewController, &kHandlerKey);
     
     [self dismissViewControllerAnimated:flag completion:^{
         if (completion)
@@ -39,7 +39,7 @@ static void *kDissmissHandlerKey;
         if (theDismissHandler)
             {
             theDismissHandler();
-            objc_setAssociatedObject(thePresentedViewController, &kDissmissHandlerKey, NULL, OBJC_ASSOCIATION_COPY);
+            objc_setAssociatedObject(thePresentedViewController, &kHandlerKey, NULL, OBJC_ASSOCIATION_COPY);
             }
         }];
     }
