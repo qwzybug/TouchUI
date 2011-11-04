@@ -31,6 +31,8 @@
 
 #import "CErrorPresenter.h"
 
+#import "UIViewController_Extensions.h"
+
 NSString *ErrorPresenter_ErrorTitleKey = @"error_title";
 
 #pragma mark -
@@ -58,30 +60,7 @@ static CErrorPresenter *gSharedInstance = NULL;
 //    UIResponder *theResponder = AssertCast_(UIResponder, [UIApplication sharedApplication].keyWindow);
     UIWindow *theWindow = [UIApplication sharedApplication].keyWindow;
     UIViewController *theViewController = theWindow.rootViewController;
-    while (theViewController != NULL)
-        {
-        if ([theViewController respondsToSelector:@selector(visibleViewController)])
-            {
-            theViewController = [(id)theViewController visibleViewController];
-            }
-        else if ([theViewController respondsToSelector:@selector(selectedViewController)])
-            {
-            theViewController = [(id)theViewController selectedViewController];
-            }
-        else
-            break;
-        }
-        
-    while (theViewController != NULL)
-        {
-        if ([theViewController conformsToProtocol:@protocol(CErrorPresenter)])
-            {
-            break;
-            }
-            
-        theViewController = theViewController.parentViewController;
-        }
-
+    theViewController = [theViewController findChildViewControllerThatConformsToProtocol:@protocol(CErrorPresenter)];
     id <CErrorPresenter> thePresenter = (id <CErrorPresenter>)theViewController;
     if (thePresenter)
         {
