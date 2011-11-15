@@ -32,6 +32,7 @@
 #import "UIImage_Extensions.h"
 
 #import <ImageIO/ImageIO.h>
+#import <objc/runtime.h>
 
 @implementation UIImage (UIImage_Extensions)
 
@@ -67,6 +68,21 @@
     }
 
 // #############################################################################
+
+#if DEBUG == 1
+static void *kDebugNameKey = NULL;
+
+- (NSString *)debugName 
+    {
+    return(objc_getAssociatedObject(self, &kDebugNameKey));
+    }
+    
+- (void)setDebugName:(NSString *)inDebugName
+    {
+    objc_setAssociatedObject(self, &kDebugNameKey, inDebugName, OBJC_ASSOCIATION_RETAIN);
+    }
+#endif /* DEBUG == 1 */
+
 
 - (UIImage *)resizedImageToFit:(CGSize)inSize;
 {

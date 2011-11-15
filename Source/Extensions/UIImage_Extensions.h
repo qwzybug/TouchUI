@@ -33,6 +33,10 @@
 
 @interface UIImage (UIImage_Extensions)
 
+#if DEBUG == 1
+@property (readwrite, nonatomic, retain) NSString *debugName;
+#endif /* DEBUG == 1 */
+
 + (UIImage *)imageWithContentsOfURL:(NSURL *)inURL;
 
 + (UIImage *)imageWithBackgroundImage:(UIImage *)inBackgroundImage foregroundImage:(UIImage *)inForegroundImage;
@@ -75,7 +79,6 @@
 + (UIImage *)imageWithText:(NSString *)inText;
 
 + (UIImage *)imageWithPlaceholder;
-
 
 - (UIImage *)imageScaledToSize:(CGSize)inSize opaque:(BOOL)inOpaque scale:(CGFloat)inScale;
 - (UIImage *)imageScaledToSize:(CGSize)inSize opaque:(BOOL)inOpaque;

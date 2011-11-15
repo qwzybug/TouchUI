@@ -33,6 +33,8 @@
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import "UIImage_Extensions.h"
+
 @interface CImageLoader ()
 @property (readonly, nonatomic, strong) NSDictionary *index;
 @end
@@ -72,6 +74,7 @@ static CImageLoader *gSharedInstance = NULL;
                 NSTextCheckingResult *theMatch = [theRegex firstMatchInString:theString options:0 range:(NSRange){ .length = theString.length }];
 
                 NSString *theImageName = [theMatch rangeAtIndex:1].location != NSNotFound ? [theString substringWithRange:[theMatch rangeAtIndex:1]] : NULL;
+
                 NSString *theFlags0 = [theMatch rangeAtIndex:2].location != NSNotFound ? [theString substringWithRange:[theMatch rangeAtIndex:2]] : NULL;
                 NSString *theFlags1 = [theMatch rangeAtIndex:3].location != NSNotFound ? [theString substringWithRange:[theMatch rangeAtIndex:3]] : NULL;
 
@@ -193,11 +196,17 @@ static CImageLoader *gSharedInstance = NULL;
         NSNumber *theState = [theStateDictionary objectForKey:@"state"];
         NSString *theFilename = [theStateDictionary objectForKey:@"filename"];
         UIImage *theImage = [UIImage imageNamed:theFilename];
+#if DEBUG == 1
+        theImage.debugName = theFilename;
+#endif /* DEBUG == 1 */
         NSValue *theInsetsValue = [theStateDictionary objectForKey:@"insets"];
         if (theInsetsValue)
             {
             UIEdgeInsets theInsets = [theInsetsValue UIEdgeInsetsValue];
             theImage = [theImage resizableImageWithCapInsets:theInsets];
+#if DEBUG == 1
+            theImage.debugName = theFilename;
+#endif /* DEBUG == 1 */
             }
 
         [theImages setObject:theImage forKey:theState];
@@ -217,6 +226,9 @@ static CImageLoader *gSharedInstance = NULL;
     if (theImages.count == 0)
         {
         theImage = [UIImage imageNamed:inName];
+#if DEBUG == 1
+        theImage.debugName = inName;
+#endif /* DEBUG == 1 */
         }
     return(theImage);
     }

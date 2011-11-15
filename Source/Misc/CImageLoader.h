@@ -41,6 +41,8 @@
 
 @end
 
+#pragma mark -
+
 @interface CImageLoader (CImageLoader_ControlExtensions)
 
 - (void)setButtonImages:(UIButton *)inControl withImageNamed:(NSString *)inName;
