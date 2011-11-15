@@ -98,10 +98,10 @@ static CImageLoader *gSharedInstance = NULL;
                     theInsets = theFlagComponents1;
                     }
 
-                if (theInsets == NULL && theStates == NULL)
-                    {
-                    continue;
-                    }
+//                if (theInsets == NULL && theStates == NULL)
+//                    {
+//                    continue;
+//                    }
 
                 NSMutableDictionary *theImageDictionary = [theIndex objectForKey:theImageName];
                 if (theImageDictionary == NULL)
