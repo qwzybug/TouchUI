@@ -264,7 +264,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 		{
 		NSManagedObject *theObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [self.managedObjectContext performTransaction:^(void) {
+        [self.managedObjectContext performBlockAndSave:^(void) {
             [self.managedObjectContext deleteObject:theObject];
             } error:NULL];
 		}   
