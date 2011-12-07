@@ -34,6 +34,8 @@
 #import <ImageIO/ImageIO.h>
 #import <objc/runtime.h>
 
+#include <tgmath.h>
+
 @implementation UIImage (UIImage_Extensions)
 
 + (UIImage *)imageWithContentsOfURL:(NSURL *)inURL
@@ -94,12 +96,12 @@ static void *kDebugNameKey = NULL;
 	if (self.size.width > self.size.height)
 	{
 		// Scale height down
-		destRect.size.height = ceilf(self.size.height * (inSize.width / self.size.width));
+		destRect.size.height = ceil(self.size.height * (inSize.width / self.size.width));
 	}
 	else if (self.size.width < self.size.height)
 	{
 		// Scale width down
-		destRect.size.width = ceilf(self.size.width * (inSize.height / self.size.height));
+		destRect.size.width = ceil(self.size.width * (inSize.height / self.size.height));
 	}
 	
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -176,7 +178,7 @@ static void *kDebugNameKey = NULL;
 		if (self.size.width > self.size.height)
 		{
 			// Scale height down
-			destRect.size.height = ceilf(self.size.height * (thumbSize.width / self.size.width));
+			destRect.size.height = ceil(self.size.height * (thumbSize.width / self.size.width));
 
 			// Recenter
 			destRect.origin.y = (thumbSize.height - destRect.size.height) / 2.0f;
@@ -184,7 +186,7 @@ static void *kDebugNameKey = NULL;
 		else if (self.size.width < self.size.height)
 		{
 			// Scale width down
-			destRect.size.width = ceilf(self.size.width * (thumbSize.height / self.size.height));
+			destRect.size.width = ceil(self.size.width * (thumbSize.height / self.size.height));
 
 			// Recenter
 			destRect.origin.x = (thumbSize.width - destRect.size.width) / 2.0f;
