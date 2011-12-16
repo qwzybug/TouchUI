@@ -3,29 +3,31 @@
 //  TouchCode
 //
 //  Created by Jonathan Wight on 2/25/09.
-//  Copyright 2009 toxicsoftware.com. All rights reserved.
+//  Copyright 2011 toxicsoftware.com. All rights reserved.
 //
-//  Permission is hereby granted, free of charge, to any person
-//  obtaining a copy of this software and associated documentation
-//  files (the "Software"), to deal in the Software without
-//  restriction, including without limitation the rights to use,
-//  copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the
-//  Software is furnished to do so, subject to the following
-//  conditions:
+//  Redistribution and use in source and binary forms, with or without modification, are
+//  permitted provided that the following conditions are met:
 //
-//  The above copyright notice and this permission notice shall be
-//  included in all copies or substantial portions of the Software.
+//     1. Redistributions of source code must retain the above copyright notice, this list of
+//        conditions and the following disclaimer.
 //
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-//  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-//  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-//  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-//  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-//  OTHER DEALINGS IN THE SOFTWARE.
+//     2. Redistributions in binary form must reproduce the above copyright notice, this list
+//        of conditions and the following disclaimer in the documentation and/or other materials
+//        provided with the distribution.
 //
+//  THIS SOFTWARE IS PROVIDED BY JONATHAN WIGHT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+//  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JONATHAN WIGHT OR
+//  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+//  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+//  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//  The views and conclusions contained in the software and documentation are those of the
+//  authors and should not be interpreted as representing official policies, either expressed
+//  or implied, of toxicsoftware.com.
 
 #import "CTableViewController.h"
 
@@ -35,129 +37,222 @@
 // In -viewDidAppear:, it flashes the table's scroll indicators.
 // Implements -setEditing:animated: to toggle the editing state of the table.
 
+static void *kTableHeaderViewFrameKey;
+static void *kTableFooterViewFrameKey;
+
+@interface CTableViewController ()
+@property (readwrite, nonatomic, assign) BOOL observingTableHeaderFrame;
+@property (readwrite, nonatomic, assign) BOOL observingTableFooterFrame;
+@end
+
+#pragma mark -
+
 @implementation CTableViewController
 
-@synthesize tableView = outletTableView;
+@synthesize tableView;
 @synthesize initialStyle;
 @synthesize clearsSelectionOnViewWillAppear;
+@synthesize addButtonItem;
+@synthesize tableBackgroundView;
+@synthesize tableHeaderView;
+@synthesize tableFooterView;
 
-- (id)init
-{
-if ((self = [super initWithNibName:NULL bundle:NULL]) != NULL)
-	{
-	initialStyle = UITableViewStylePlain;
-	clearsSelectionOnViewWillAppear = YES;
-	}
-return(self);
-}
+@synthesize observingTableHeaderFrame;
+@synthesize observingTableFooterFrame;
 
-- (void)dealloc
-{
-outletTableView.delegate = NULL;
-outletTableView.dataSource = NULL;
-[outletTableView release];
-outletTableView = NULL;
-//
-[super dealloc];
-}
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+    {
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
+        {
+        initialStyle = UITableViewStylePlain;
+        clearsSelectionOnViewWillAppear = YES;
+        }
+    return(self);
+    }
 
 #pragma mark -
 
 - (UIBarButtonItem *)addButtonItem
-{
-if (addButtonItem == NULL)
     {
-    addButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)] autorelease];
+    if (addButtonItem == NULL)
+        {
+        addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
+        }
+    return(addButtonItem);
     }
-return(addButtonItem);
-}
 
 #pragma mark -
 
 - (void)loadView
-{
-[super loadView];
-//
-if (self.view == NULL)
-	{
-	CGRect theViewFrame = [[UIScreen mainScreen] applicationFrame];
-	UIView *theView = [[[UITableView alloc] initWithFrame:theViewFrame] autorelease];
-	theView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-	//
-	self.view = theView;
-	}
+    {
+    [super loadView];
+    //
+    if (self.view == NULL)
+        {
+        CGRect theViewFrame = [[UIScreen mainScreen] applicationFrame];
+        UIView *theView = [[UITableView alloc] initWithFrame:theViewFrame];
+        theView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        //
+        self.view = theView;
+        }
 
-if (self.tableView == NULL)
-	{
-	if ([self.view isKindOfClass:[UITableView class]])
-		{
-		self.tableView = (UITableView *)self.view;
-		}
-	else
-		{
-		CGRect theViewFrame = self.view.bounds;
-		UITableView *theTableView = [[[UITableView alloc] initWithFrame:theViewFrame style:self.initialStyle] autorelease];
-		theTableView.delegate = self;
-		theTableView.dataSource = self;
-		theTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-		//
-		[self.view addSubview:theTableView];
-		self.tableView = theTableView;
-		}
-	}
-}
+    if (self.tableView == NULL)
+        {
+        if ([self.view isKindOfClass:[UITableView class]])
+            {
+            self.tableView = (UITableView *)self.view;
+            }
+        else
+            {
+            CGRect theViewFrame = self.view.bounds;
+            UITableView *theTableView = [[UITableView alloc] initWithFrame:theViewFrame style:self.initialStyle];
+            theTableView.delegate = self;
+            theTableView.dataSource = self;
+            theTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+            //
+            [self.view addSubview:theTableView];
+            self.tableView = theTableView;
+            }
+        }
+    }
 
-- (void)viewDidUnload
-{
-[super viewDidUnload];
-//
-outletTableView.delegate = NULL;
-outletTableView.dataSource = NULL;
-[outletTableView release];
-outletTableView = NULL;
-}
+- (void)viewDidLoad
+    {
+    [super viewDidLoad];
+
+    if (self.tableBackgroundView != NULL)
+        {
+        self.tableView.backgroundView = self.tableBackgroundView;
+        }
+
+    if (self.tableHeaderView != NULL)
+        {
+        self.tableView.tableHeaderView = self.tableHeaderView;
+        }
+
+    if (self.tableFooterView != NULL)
+        {
+        self.tableView.tableFooterView = self.tableFooterView;
+        }
+    }
+
+- (void)viewWillUnload
+    {
+    [super viewWillUnload];
+    }
 
 - (void)viewWillAppear:(BOOL)inAnimated
-{
-[super viewWillAppear:inAnimated];
-//
-[self.tableView reloadData];
-//
-if (self.clearsSelectionOnViewWillAppear == YES)
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
-}
+    {
+    [super viewWillAppear:inAnimated];
+    //
+    [self.tableView reloadData];
+    //
+    if (self.clearsSelectionOnViewWillAppear == YES)
+        {
+        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
+        }
+
+    if (self.observingTableHeaderFrame == NO)
+        {
+        self.observingTableHeaderFrame = YES;
+        [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
+        }
+
+    if (self.observingTableFooterFrame == NO)
+        {
+        self.observingTableFooterFrame = YES;
+        [self addObserver:self forKeyPath:@"tableView.tableFooterView.frame" options:0 context:&kTableFooterViewFrameKey];
+        }
+    }
 
 - (void)viewDidAppear:(BOOL)inAnimated
-{
-[super viewDidAppear:inAnimated];
-//
-[self.tableView flashScrollIndicators];
-}
+    {
+    [super viewDidAppear:inAnimated];
+    //
+    [self.tableView flashScrollIndicators];
+    }
+
+- (void)viewWillDisappear:(BOOL)animated
+    {
+    [super viewDidDisappear:animated];
+    //
+    if (self.observingTableHeaderFrame == YES)
+        {
+        self.observingTableHeaderFrame = NO;
+        [self removeObserver:self forKeyPath:@"tableView.tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
+        }
+
+    if (self.observingTableFooterFrame == YES)
+        {
+        self.observingTableFooterFrame = NO;
+        [self removeObserver:self forKeyPath:@"tableView.tableFooterView.frame" context:&kTableFooterViewFrameKey];
+        }
+    }
 
 - (void)setEditing:(BOOL)inEditing animated:(BOOL)inAnimated
-{
-[super setEditing:inEditing animated:inAnimated];
-//
-[self.tableView setEditing:inEditing animated:inAnimated];
+    {
+    [super setEditing:inEditing animated:inAnimated];
+    //
+    [self.tableView setEditing:inEditing animated:inAnimated];
 
-self.addButtonItem.enabled = !inEditing;
-}
+    self.addButtonItem.enabled = !inEditing;
+    }
+
+- (void)setTableHeaderView:(UIView *)inTableHeaderView
+    {
+    if (tableHeaderView != inTableHeaderView)
+        {
+        tableHeaderView = inTableHeaderView;
+        self.tableView.tableHeaderView = inTableHeaderView;
+        }
+    }
+
+- (void)setTableFooterView:(UIView *)inTableFooterView
+    {
+    if (tableFooterView != inTableFooterView)
+        {
+        tableFooterView = inTableFooterView;
+        self.tableView.tableFooterView = inTableFooterView;
+        }
+    }
 
 - (IBAction)add:(id)inSender
-{
-}
+    {
+    }
 
 #pragma mark -
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
-{
-return(0);
-}
+    {
+    return(0);
+    }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-return(NULL);
-}
+    {
+    return(NULL);
+    }
+    
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+    {
+    if (context == &kTableHeaderViewFrameKey && self.observingTableHeaderFrame == YES)
+        {
+        self.observingTableHeaderFrame = NO;
+
+        self.tableView.tableHeaderView = NULL;
+        self.tableView.tableHeaderView = self.tableHeaderView;
+
+        self.observingTableHeaderFrame = YES;
+        }
+    else if (context == &kTableFooterViewFrameKey && self.observingTableFooterFrame == YES)
+        {
+        self.observingTableFooterFrame = NO;
+
+        self.tableView.tableFooterView = NULL;
+        self.tableView.tableFooterView = self.tableFooterView;
+
+        self.observingTableFooterFrame = YES;
+        }
+    }
 
 @end
 

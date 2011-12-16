@@ -3,29 +3,31 @@
 //  TouchCode
 //
 //  Created by Jonathan Wight on 05/27/08.
-//  Copyright 2008 toxicsoftware.com. All rights reserved.
+//  Copyright 2011 toxicsoftware.com. All rights reserved.
 //
-//  Permission is hereby granted, free of charge, to any person
-//  obtaining a copy of this software and associated documentation
-//  files (the "Software"), to deal in the Software without
-//  restriction, including without limitation the rights to use,
-//  copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the
-//  Software is furnished to do so, subject to the following
-//  conditions:
+//  Redistribution and use in source and binary forms, with or without modification, are
+//  permitted provided that the following conditions are met:
 //
-//  The above copyright notice and this permission notice shall be
-//  included in all copies or substantial portions of the Software.
+//     1. Redistributions of source code must retain the above copyright notice, this list of
+//        conditions and the following disclaimer.
 //
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-//  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-//  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-//  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-//  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-//  OTHER DEALINGS IN THE SOFTWARE.
+//     2. Redistributions in binary form must reproduce the above copyright notice, this list
+//        of conditions and the following disclaimer in the documentation and/or other materials
+//        provided with the distribution.
 //
+//  THIS SOFTWARE IS PROVIDED BY JONATHAN WIGHT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+//  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JONATHAN WIGHT OR
+//  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+//  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+//  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//  The views and conclusions contained in the software and documentation are those of the
+//  authors and should not be interpreted as representing official policies, either expressed
+//  or implied, of toxicsoftware.com.
 
 #import "CWebViewController.h"
 
@@ -72,19 +74,6 @@ return(self);
 {
 if (webView.delegate == self)
 	webView.delegate = nil;
-
-[homeURL release], homeURL = nil;
-[currentURL release], currentURL = nil;
-
-[webView release], webView = nil;
-[toolbar release], toolbar = nil;
-[homeButton release], homeButton = nil;
-[forwardsButton release], forwardsButton = nil;
-[reloadButton release], reloadButton = nil;
-[activitySpinnerButton release], activitySpinnerButton = nil;
-[actionButton release], actionButton = nil;
-//
-[super dealloc];
 }
 
 #pragma mark UIViewController
@@ -112,13 +101,12 @@ if (requestedURL != inURL)
 	{
 	if (requestedURL != NULL)
 		{
-		[requestedURL release];
 		requestedURL = NULL;
 		}
 	
 	if (inURL != NULL)
 		{
-		requestedURL = [inURL retain];
+		requestedURL = inURL;
 
 		NSURLRequest *theRequest = [NSURLRequest requestWithURL:inURL];
 		[self.webView loadRequest:theRequest];
@@ -137,10 +125,9 @@ return([self.currentURL isEqual:self.homeURL]);
 {
 if (requestedURL != NULL)
 	{
-	[requestedURL release];
 	requestedURL = NULL;
 	}
-requestedURL = [inURL retain];
+requestedURL = inURL;
 
 NSURLRequest *theRequest = [NSURLRequest requestWithURL:self.requestedURL];
 [self.webView loadRequest:theRequest];
@@ -158,7 +145,7 @@ self.actionButton.enabled = !self.webView.loading;
 if (self.webView.loading == YES)
 	{
 	UIBarButtonItem *theBarButtonItem = self.activitySpinnerButton;
-	NSMutableArray *theItems = [[self.toolbar.items mutableCopy] autorelease];
+	NSMutableArray *theItems = [self.toolbar.items mutableCopy];
 	NSInteger theIndex = [theItems indexOfObject:self.reloadButton];
 	if (theIndex != NSNotFound)
 		{
@@ -169,7 +156,7 @@ if (self.webView.loading == YES)
 else
 	{
 	UIBarButtonItem *theBarButtonItem = self.reloadButton;
-	NSMutableArray *theItems = [[self.toolbar.items mutableCopy] autorelease];
+	NSMutableArray *theItems = [self.toolbar.items mutableCopy];
 	NSInteger theIndex = [theItems indexOfObject:self.activitySpinnerButton];
 	if (theIndex != NSNotFound)
 		{
@@ -184,7 +171,6 @@ else
 CGRect theFrame = self.webView.frame;
 
 [webView removeFromSuperview];
-[webView release];
 webView = NULL;
 
 self.webView.frame = theFrame;
@@ -240,7 +226,7 @@ if (self.homeURL)
 
 - (IBAction)action:(id)inSender
 {
-CURLOpener *theActionSheet = [[[CURLOpener alloc] initWithParentViewController:self URL:self.currentURL] autorelease];
+CURLOpener *theActionSheet = [[CURLOpener alloc] initWithParentViewController:self URL:self.currentURL];
 
 if ([theActionSheet respondsToSelector:@selector(showFromBarButtonItem:animated:)])
 	[theActionSheet showFromBarButtonItem:inSender animated:YES];

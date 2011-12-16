@@ -3,29 +3,31 @@
 //  TouchCode
 //
 //  Created by Jonathan Wight on 5/4/09.
-//  Copyright 2009 Small Society. All rights reserved.
+//  Copyright 2011 toxicsoftware.com. All rights reserved.
 //
-//  Permission is hereby granted, free of charge, to any person
-//  obtaining a copy of this software and associated documentation
-//  files (the "Software"), to deal in the Software without
-//  restriction, including without limitation the rights to use,
-//  copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the
-//  Software is furnished to do so, subject to the following
-//  conditions:
+//  Redistribution and use in source and binary forms, with or without modification, are
+//  permitted provided that the following conditions are met:
 //
-//  The above copyright notice and this permission notice shall be
-//  included in all copies or substantial portions of the Software.
+//     1. Redistributions of source code must retain the above copyright notice, this list of
+//        conditions and the following disclaimer.
 //
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-//  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-//  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-//  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-//  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-//  OTHER DEALINGS IN THE SOFTWARE.
+//     2. Redistributions in binary form must reproduce the above copyright notice, this list
+//        of conditions and the following disclaimer in the documentation and/or other materials
+//        provided with the distribution.
 //
+//  THIS SOFTWARE IS PROVIDED BY JONATHAN WIGHT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+//  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JONATHAN WIGHT OR
+//  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+//  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+//  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//  The views and conclusions contained in the software and documentation are those of the
+//  authors and should not be interpreted as representing official policies, either expressed
+//  or implied, of toxicsoftware.com.
 
 #import "CTemplateTableViewController.h"
 
@@ -74,15 +76,6 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	return(self);
 	}
 
-- (void)dealloc
-	{
-	self.templateFilePath = NULL;
-	self.sections = NULL;
-	self.heightsForRows = NULL;
-	self.cellsByRow = NULL;
-	//
-	[super dealloc];
-	}
 
 - (void)awakeFromNib
 	{
@@ -98,7 +91,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 - (NSDictionary *)templateDictionary
 	{
 	NSAssert(self.templateFilePath.length > 0, @"No template path");
-	NSDictionary *theTemplateDictionary = [[[NSDictionary alloc] initWithContentsOfFile:self.templateFilePath] autorelease];
+	NSDictionary *theTemplateDictionary = [[NSDictionary alloc] initWithContentsOfFile:self.templateFilePath];
 	return(theTemplateDictionary);
 	}
 
@@ -106,7 +99,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	{
 	if (sections == NULL)
 		{
-		sections = [[self processTemplate] retain];
+		sections = [self processTemplate];
 		}
 	return(sections);
 	}
@@ -179,11 +172,11 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		if (theStyleName != NULL)
 			{
 			UITableViewCellStyle theTableViewCellStyle = UITableViewCellStyleForString(theStyleName);
-			theCell = [[[theClass alloc] initWithStyle:theTableViewCellStyle reuseIdentifier:theReuseIdentifier] autorelease];
+			theCell = [[theClass alloc] initWithStyle:theTableViewCellStyle reuseIdentifier:theReuseIdentifier];
 			}
 		else
 			{
-			theCell = [[[theClass alloc] initWithReuseIdentifier:theReuseIdentifier] autorelease];
+			theCell = [[theClass alloc] initWithReuseIdentifier:theReuseIdentifier];
 			}
 			
 		NSString *theOutletName = [theRow objectForKey:@"outlet"];
@@ -292,7 +285,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	Class thePushControllerClass = NSClassFromString(thePushControllerName);
 	if (thePushControllerClass)
 		{
-		UIViewController *theController = [[[thePushControllerClass alloc] init] autorelease];
+		UIViewController *theController = [[thePushControllerClass alloc] init];
 		[self.navigationController pushViewController:theController animated:YES];
 		}
 	}
@@ -378,7 +371,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 			NSString *theValueFormat = [theSetting objectForKey:theValueFormatKey];
 			if (theValueFormat)
 				{
-				CTrivialTemplate *theTemplate = [[[CTrivialTemplate alloc] initWithTemplate:theValueFormat] autorelease];
+				CTrivialTemplate *theTemplate = [[CTrivialTemplate alloc] initWithTemplate:theValueFormat];
 				NSError *theError = NULL;
 				theValue = [theTemplate transform:(NSDictionary *)self error:&theError];
 				}

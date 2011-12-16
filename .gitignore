@@ -1,0 +1,7 @@
+#### Mac OS X Finder droppings
+.DS_Store
+
+#### Xcode Per User Files
+*.pbxuser
+*.perspectivev3
+xcuserdata/

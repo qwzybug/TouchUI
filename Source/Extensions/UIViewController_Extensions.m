@@ -1,47 +1,77 @@
 //
-//  UIViewController_Extensions.m
-//  TouchCode
+//  UIViewController+Extensions.m
+//  knotes
 //
-//  Created by Jonathan Wight on 5/22/09.
-//  Copyright 2010 toxicsoftware.com. All rights reserved.
-//
-//  Permission is hereby granted, free of charge, to any person
-//  obtaining a copy of this software and associated documentation
-//  files (the "Software"), to deal in the Software without
-//  restriction, including without limitation the rights to use,
-//  copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the
-//  Software is furnished to do so, subject to the following
-//  conditions:
-//
-//  The above copyright notice and this permission notice shall be
-//  included in all copies or substantial portions of the Software.
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-//  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-//  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-//  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-//  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-//  OTHER DEALINGS IN THE SOFTWARE.
+//  Created by Jonathan Wight on 10/5/11.
+//  Copyright (c) 2011 knotes. All rights reserved.
 //
 
 #import "UIViewController_Extensions.h"
 
+#import <objc/runtime.h>
+
+static void *kHandlerKey;
+
 @implementation UIViewController (UIViewController_Extensions)
 
-- (BOOL)isModal
-{
-return(self.navigationController.parentViewController.modalViewController == self.navigationController);
-}
+- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion dismissHandler:(void (^)(void))inHandler
+    {
+    objc_setAssociatedObject(viewControllerToPresent, &kHandlerKey, inHandler, OBJC_ASSOCIATION_COPY);
 
-- (void)dismissAnimated:(BOOL)inAnimated;
-{
-if (self.isModal)
-	[self dismissModalViewControllerAnimated:YES];
-else
-	[self.navigationController popViewControllerAnimated:YES];
-}
+    [self presentViewController:viewControllerToPresent animated:flag completion:completion];    
+    }
+
+- (void)MY_dismissViewControllerAnimated:(BOOL)flag completion: (void (^)(void))completion
+    {
+    UIViewController *thePresentedViewController = self.presentedViewController;
+    if (thePresentedViewController == NULL)
+        {
+        thePresentedViewController = self;
+        }
+    
+    void (^theDismissHandler)(void) = objc_getAssociatedObject(thePresentedViewController, &kHandlerKey);
+    
+    [self dismissViewControllerAnimated:flag completion:^{
+        if (completion)
+            {
+            completion();
+            }
+        if (theDismissHandler)
+            {
+            theDismissHandler();
+            objc_setAssociatedObject(thePresentedViewController, &kHandlerKey, NULL, OBJC_ASSOCIATION_COPY);
+            }
+        }];
+    }
+    
+- (UIViewController *)findChildViewControllerThatConformsToProtocol:(Protocol *)inProtocol
+    {
+    UIViewController *theViewController = self;
+    while (theViewController != NULL)
+        {
+        if ([theViewController respondsToSelector:@selector(visibleViewController)])
+            {
+            theViewController = [(id)theViewController visibleViewController];
+            }
+        else if ([theViewController respondsToSelector:@selector(selectedViewController)])
+            {
+            theViewController = [(id)theViewController selectedViewController];
+            }
+        else
+            break;
+        }
+        
+    while (theViewController != NULL)
+        {
+        if ([theViewController conformsToProtocol:inProtocol])
+            {
+            break;
+            }
+            
+        theViewController = theViewController.parentViewController;
+        }
+        
+    return(theViewController);
+    }
 
 @end

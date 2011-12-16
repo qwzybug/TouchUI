@@ -3,34 +3,37 @@
 //  TouchCode
 //
 //  Created by Jonathan Wight on 6/10/09.
-//  Copyright 2009 toxicsoftware.com, Inc. All rights reserved.
+//  Copyright 2011 toxicsoftware.com. All rights reserved.
 //
-//  Permission is hereby granted, free of charge, to any person
-//  obtaining a copy of this software and associated documentation
-//  files (the "Software"), to deal in the Software without
-//  restriction, including without limitation the rights to use,
-//  copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the
-//  Software is furnished to do so, subject to the following
-//  conditions:
+//  Redistribution and use in source and binary forms, with or without modification, are
+//  permitted provided that the following conditions are met:
 //
-//  The above copyright notice and this permission notice shall be
-//  included in all copies or substantial portions of the Software.
+//     1. Redistributions of source code must retain the above copyright notice, this list of
+//        conditions and the following disclaimer.
 //
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-//  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-//  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-//  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-//  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-//  OTHER DEALINGS IN THE SOFTWARE.
+//     2. Redistributions in binary form must reproduce the above copyright notice, this list
+//        of conditions and the following disclaimer in the documentation and/or other materials
+//        provided with the distribution.
 //
+//  THIS SOFTWARE IS PROVIDED BY JONATHAN WIGHT ``AS IS'' AND ANY EXPRESS OR IMPLIED
+//  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+//  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JONATHAN WIGHT OR
+//  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+//  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+//  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//  The views and conclusions contained in the software and documentation are those of the
+//  authors and should not be interpreted as representing official policies, either expressed
+//  or implied, of toxicsoftware.com.
 
 #import "CFetchedResultsTableViewController.h"
 
-const double kPlaceholderHideShowAnimationDuration = 0.4;
+#import "NSManagedObjectContext_Extensions.h"
 
+const double kPlaceholderHideShowAnimationDuration = 0.4;
 
 #pragma mark -
 
@@ -38,49 +41,28 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 
 @synthesize managedObjectContext;
 @synthesize fetchRequest;
+@synthesize sectionNameKeypath;
 @synthesize fetchedResultsController;
 @synthesize sectionNameKeyPath;
 @synthesize placeholderView;
 @synthesize tableViewCellClass;
+@synthesize usePlaceholder;
 
-- (void)dealloc
-	{
-	[fetchRequest release];
-	fetchRequest = NULL;
-	fetchedResultsController.delegate = NULL;
-	[fetchedResultsController release];
-	fetchedResultsController = NULL;
-	[sectionNameKeyPath release];
-	sectionNameKeyPath = NULL;
-	[placeholderView release];
-	placeholderView = NULL;
-	//
-	[super dealloc];
-	}
-
-#pragma mark -
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+    {
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
+        {
+        usePlaceholder = NO;
+        }
+    return(self);
+    }
 
 - (void)setFetchRequest:(NSFetchRequest *)inFetchRequest
 	{
 	if (fetchRequest != inFetchRequest)
 		{
-		if (fetchRequest != NULL)
-			{
-			[fetchRequest release];
-			fetchRequest = NULL;
-			
-			self.fetchedResultsController = NULL;
-			}
-		//
-		if (inFetchRequest != NULL)
-			{
-			fetchRequest = [inFetchRequest retain];
-			[self.fetchedResultsController performFetch:NULL];
-			}
-			
-		[self updatePlaceholder:YES];
-
-		[self.tableView reloadData];
+        self.fetchedResultsController = NULL;
+        fetchRequest = inFetchRequest;
 		}
 	}
 
@@ -90,7 +72,10 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		{
 		if (self.fetchRequest)
 			{
-			fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:self.sectionNameKeyPath cacheName:NULL];
+            NSParameterAssert(self.fetchRequest != NULL);
+            NSParameterAssert(self.managedObjectContext != NULL);
+            
+			fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:self.sectionNameKeypath cacheName:NULL];
 			fetchedResultsController.delegate = self;
 			}
 		}
@@ -101,7 +86,11 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	{
 	if (placeholderView == NULL)
 		{
-		UILabel *theLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 44 * 3, self.view.bounds.size.width, 44)] autorelease];
+        CGRect theRect = (CGRect){ .size = { .width = self.tableView.bounds.size.width, .height = 44 } };
+        theRect.origin.y = 44 * 1 + CGRectGetMaxY(self.tableView.tableHeaderView.frame);
+        
+        
+		UILabel *theLabel = [[UILabel alloc] initWithFrame:theRect];
 		theLabel.textAlignment = UITextAlignmentCenter;
 		theLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize] + 3];
 		theLabel.textColor = [UIColor grayColor];
@@ -113,15 +102,6 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	return(placeholderView);
 	}
 
-- (void)setPlaceholderView:(UIView *)inPlaceholderView
-	{
-	if (placeholderView != inPlaceholderView)
-		{
-		[placeholderView release];
-		placeholderView = [inPlaceholderView retain];
-		}
-	}
-
 #pragma mark -
 
 - (void)viewDidUnload
@@ -129,9 +109,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	[super viewDidUnload];
 	//
 	fetchedResultsController.delegate = NULL;
-	[fetchedResultsController release];
 	fetchedResultsController = NULL;
-	[placeholderView release];
 	placeholderView = NULL;
 	}
 
@@ -149,7 +127,10 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		
 	[self.tableView reloadData];
 
-	[self updatePlaceholder:NO];
+    if (self.usePlaceholder == YES)
+        {
+        [self updatePlaceholder:NO];
+        }
 
 	if ([self.fetchedResultsController.fetchedObjects count] == 0)
 		{
@@ -244,19 +225,31 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	return(theNumberOfRows);
 	}
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+    {
+    if (section < (NSInteger)[self.fetchedResultsController.sections count])
+        {
+        id <NSFetchedResultsSectionInfo> theSection = [self.fetchedResultsController.sections objectAtIndex:section];
+        return(theSection.name);
+        }
+    else
+        {
+        return(NULL);
+        }
+    }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 	{
 	UITableViewCell *theCell = [self.tableView dequeueReusableCellWithIdentifier:@"CELL"];
 	if (theCell == NULL)
 		{
 		Class theClass = self.tableViewCellClass ?: [UITableViewCell class];
-		theCell = [[[theClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"] autorelease];
+		theCell = [[theClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"];
 		}
 	
 	NSManagedObject *theObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	if ([theCell conformsToProtocol:@protocol(CManagedObjectTableViewCellProtocol)]
-		|| [theCell respondsToSelector:@selector(setManagedObject:)])
+	if ([theCell conformsToProtocol:@protocol(CManagedObjectTableViewCellProtocol)])
 		{
 		[(id <CManagedObjectTableViewCellProtocol>)theCell setManagedObject:theObject];
 		}
@@ -273,26 +266,23 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 		{
 		NSManagedObject *theObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-		[self.managedObjectContext deleteObject:theObject];
-	//	[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.managedObjectContext performBlockAndSave:^(void) {
+            [self.managedObjectContext deleteObject:theObject];
+            } error:NULL];
 		}   
 	else if (editingStyle == UITableViewCellEditingStyleInsert)
 		{
 		}
 		
-	NSError *theError = NULL;
-	if ([self.managedObjectContext save:&theError] == NO)
-		{
-		NSLog(@"Error: %@", theError);
-		}
-
-
 	if ([self.fetchedResultsController.fetchedObjects count] == 0)
 		{
 		[self setEditing:NO animated:YES];
 		}
 		
-	[self updatePlaceholder:YES];
+    if (self.usePlaceholder == YES)
+        {
+        [self updatePlaceholder:YES];
+        }
 	}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -349,7 +339,10 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		[self editButtonItem].enabled = YES;
 		}
 
-	[self updatePlaceholder:YES];
+    if (self.usePlaceholder == YES)
+        {
+        [self updatePlaceholder:YES];
+        }
 	}
  
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
