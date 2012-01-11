@@ -152,13 +152,13 @@ static void *kTableFooterViewFrameKey;
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
         }
 
-    if (self.observingTableHeaderFrame == NO)
+    if (self.tableHeaderView != NULL && self.observingTableHeaderFrame == NO)
         {
         self.observingTableHeaderFrame = YES;
         [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
         }
 
-    if (self.observingTableFooterFrame == NO)
+    if (self.tableFooterView != NULL && self.observingTableFooterFrame == NO)
         {
         self.observingTableFooterFrame = YES;
         [self addObserver:self forKeyPath:@"tableView.tableFooterView.frame" options:0 context:&kTableFooterViewFrameKey];
