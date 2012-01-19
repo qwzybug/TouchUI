@@ -69,6 +69,14 @@ static void *kTableFooterViewFrameKey;
         }
     return(self);
     }
+    
+- (void)didReceiveMemoryWarning
+    {
+    [super didReceiveMemoryWarning];
+    //
+    #warning IMPLEMENT
+    }
+
 
 #pragma mark -
 

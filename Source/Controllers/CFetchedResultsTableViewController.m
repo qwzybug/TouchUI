@@ -56,6 +56,13 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
     return(self);
     }
 
+- (void)didReceiveMemoryWarning
+    {
+    [super didReceiveMemoryWarning];
+    //
+    #warning IMPLEMENT
+    }
+
 - (void)setFetchRequest:(NSFetchRequest *)inFetchRequest
 	{
 	if (fetchRequest != inFetchRequest)
