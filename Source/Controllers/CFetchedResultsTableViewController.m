@@ -61,8 +61,6 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 - (void)didReceiveMemoryWarning
     {
     [super didReceiveMemoryWarning];
-    //
-    #warning IMPLEMENT
     }
 
 - (void)viewDidUnload

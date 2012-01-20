@@ -75,8 +75,6 @@ static void *kTableFooterViewFrameKey;
 - (void)didReceiveMemoryWarning
     {
     [super didReceiveMemoryWarning];
-    //
-    #warning IMPLEMENT
     }
 
 - (void)loadView
