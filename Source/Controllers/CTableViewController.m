@@ -135,6 +135,11 @@ static void *kTableFooterViewFrameKey;
 - (void)viewWillUnload
     {
     [super viewWillUnload];
+    //
+    self.tableView = NULL;    
+    self.tableBackgroundView = NULL;
+    self.tableHeaderView = NULL;
+    self.tableFooterView = NULL;
     }
 
 - (void)viewWillAppear:(BOOL)inAnimated
