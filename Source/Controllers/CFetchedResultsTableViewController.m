@@ -56,12 +56,54 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
     return(self);
     }
 
+#pragma mark -
+
 - (void)didReceiveMemoryWarning
     {
     [super didReceiveMemoryWarning];
     //
     #warning IMPLEMENT
     }
+
+- (void)viewDidUnload
+	{
+	[super viewDidUnload];
+	//
+	fetchedResultsController.delegate = NULL;
+	fetchedResultsController = NULL;
+	placeholderView = NULL;
+	}
+
+- (void)viewWillAppear:(BOOL)animated
+	{
+	[super viewWillAppear:animated];
+
+	self.fetchedResultsController.delegate = self;
+
+	NSError *theError = NULL;
+	if (self.fetchedResultsController && [self.fetchedResultsController performFetch:&theError] == NO)
+		{
+		NSLog(@"Error: %@", theError);
+		}
+		
+	[self.tableView reloadData];
+
+    if (self.usePlaceholder == YES)
+        {
+        [self updatePlaceholder:NO];
+        }
+
+	if ([self.fetchedResultsController.fetchedObjects count] == 0)
+		{
+		[self editButtonItem].enabled = NO;
+		}
+	else
+		{
+		[self editButtonItem].enabled = YES;
+		}
+	}
+
+#pragma mark -
 
 - (void)setFetchRequest:(NSFetchRequest *)inFetchRequest
 	{
@@ -106,46 +148,6 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		self.placeholderView = theLabel;
 		}
 	return(placeholderView);
-	}
-
-#pragma mark -
-
-- (void)viewDidUnload
-	{
-	[super viewDidUnload];
-	//
-	fetchedResultsController.delegate = NULL;
-	fetchedResultsController = NULL;
-	placeholderView = NULL;
-	}
-
-- (void)viewWillAppear:(BOOL)animated
-	{
-	[super viewWillAppear:animated];
-
-	self.fetchedResultsController.delegate = self;
-
-	NSError *theError = NULL;
-	if (self.fetchedResultsController && [self.fetchedResultsController performFetch:&theError] == NO)
-		{
-		NSLog(@"Error: %@", theError);
-		}
-		
-	[self.tableView reloadData];
-
-    if (self.usePlaceholder == YES)
-        {
-        [self updatePlaceholder:NO];
-        }
-
-	if ([self.fetchedResultsController.fetchedObjects count] == 0)
-		{
-		[self editButtonItem].enabled = NO;
-		}
-	else
-		{
-		[self editButtonItem].enabled = YES;
-		}
 	}
 
 #pragma mark -

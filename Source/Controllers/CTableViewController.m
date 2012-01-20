@@ -69,27 +69,15 @@ static void *kTableFooterViewFrameKey;
         }
     return(self);
     }
-    
+  
+#pragma mark -    
+
 - (void)didReceiveMemoryWarning
     {
     [super didReceiveMemoryWarning];
     //
     #warning IMPLEMENT
     }
-
-
-#pragma mark -
-
-- (UIBarButtonItem *)addButtonItem
-    {
-    if (addButtonItem == NULL)
-        {
-        addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
-        }
-    return(addButtonItem);
-    }
-
-#pragma mark -
 
 - (void)loadView
     {
@@ -196,6 +184,19 @@ static void *kTableFooterViewFrameKey;
         [self removeObserver:self forKeyPath:@"tableView.tableFooterView.frame" context:&kTableFooterViewFrameKey];
         }
     }
+
+#pragma mark -
+
+- (UIBarButtonItem *)addButtonItem
+    {
+    if (addButtonItem == NULL)
+        {
+        addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
+        }
+    return(addButtonItem);
+    }
+
+#pragma mark -
 
 - (void)setEditing:(BOOL)inEditing animated:(BOOL)inAnimated
     {
