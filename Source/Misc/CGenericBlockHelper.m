@@ -58,7 +58,10 @@ static void *kGenericBlockHelper;
             };
         IMP theIMP = imp_implementationWithBlock((__bridge void *)theIMPBlock);
         BOOL theResult = class_addMethod(theClass, inSelector, theIMP, "v:@");
-        NSAssert(theResult == YES, @"Could not add method");
+        if (theResult == NO)
+            {
+            return(NULL);
+            }
         }
     return(theHelper);
     }
@@ -95,16 +98,16 @@ static void *kGenericBlockHelper;
     return self;
     }
 
-- (void)addHandler:(id)inHandler forSelector:(SEL)inSelector
+- (BOOL)addHandler:(id)inHandler forSelector:(SEL)inSelector
     {
     if (class_respondsToSelector([self class], inSelector) == YES)
         {
-        return;
+        return(NO);
         }
         
     IMP theIMP = imp_implementationWithBlock((__bridge void *)inHandler);
     BOOL theResult = class_addMethod([self class], inSelector, theIMP, "v:@");
-    NSAssert(theResult == YES, @"Could not add method");
+    return(theResult);
     }
 
 @end
