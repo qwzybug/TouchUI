@@ -234,9 +234,6 @@
         }];
 
 
-    [UIImagePNGRepresentation(theImage) writeToFile:@"/Users/schwa/Desktop/Test.png" atomically:NO];
-
-
     return(theImage);
     }
 

@@ -315,8 +315,6 @@ static void *kDebugNameKey = NULL;
 
     UIGraphicsEndImageContext();
 
-//    [UIImagePNGRepresentation(theImage) writeToFile:@"/Users/schwa/Desktop/foo.png" atomically:NO];
-
     return(theImage);
     }
 
@@ -350,8 +348,6 @@ static void *kDebugNameKey = NULL;
     theImage = [theImage resizableImageWithCapInsets:(UIEdgeInsets){ }];
 
     UIGraphicsEndImageContext();
-
-//    [UIImagePNGRepresentation(theImage) writeToFile:@"/Users/schwa/Desktop/foo.png" atomically:NO];
 
     return(theImage);
     }
@@ -438,8 +434,6 @@ static void *kDebugNameKey = NULL;
     UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
 
     UIGraphicsEndImageContext();
-
-//    [UIImagePNGRepresentation(theImage) writeToFile:@"/Users/schwa/Desktop/foo.png" atomically:NO];
 
     return(theImage);
     }

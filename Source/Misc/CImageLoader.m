@@ -101,11 +101,6 @@ static CImageLoader *gSharedInstance = NULL;
                     theInsets = theFlagComponents1;
                     }
 
-//                if (theInsets == NULL && theStates == NULL)
-//                    {
-//                    continue;
-//                    }
-
                 NSMutableDictionary *theImageDictionary = [theIndex objectForKey:theImageName];
                 if (theImageDictionary == NULL)
                     {
@@ -167,12 +162,6 @@ static CImageLoader *gSharedInstance = NULL;
                     }
 
                 [theInstanceDictionary setObject:[NSNumber numberWithInt:theControlState] forKey:@"state"];
-
-    //            if ([theInstancesArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"state == %@", [NSNumber numberWithInt:theControlState]]].count > 0)
-    //                {
-    //                NSLog(@"Already contains object with same state!!!");
-    //                break;
-    //                }
 
                 [theStatesDictionary setObject:theInstanceDictionary forKey:[NSNumber numberWithInt:theControlState]];
                 }
