@@ -231,6 +231,11 @@ static void *kDebugNameKey = NULL;
 
 + (UIImage *)imageWithData:(NSData *)inData scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
     {
+    if (scale == 0.0)
+        {
+        scale = [UIScreen mainScreen].scale;
+        }
+    
     UIImage *theImage = NULL;
     CGImageSourceRef theImageSource = CGImageSourceCreateWithData((__bridge CFDataRef)inData, NULL);
     if (theImageSource != NULL)
