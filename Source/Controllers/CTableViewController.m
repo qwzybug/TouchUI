@@ -154,13 +154,13 @@ static void *kTableFooterViewFrameKey;
     if (self.tableHeaderView != NULL && self.observingTableHeaderFrame == NO)
         {
         self.observingTableHeaderFrame = YES;
-        [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:0 context:&kTableHeaderViewFrameKey];
+        [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kTableHeaderViewFrameKey];
         }
 
     if (self.tableFooterView != NULL && self.observingTableFooterFrame == NO)
         {
         self.observingTableFooterFrame = YES;
-        [self addObserver:self forKeyPath:@"tableView.tableFooterView.frame" options:0 context:&kTableFooterViewFrameKey];
+        [self addObserver:self forKeyPath:@"tableView.tableFooterView.frame" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kTableFooterViewFrameKey];
         }
     }
 
@@ -248,21 +248,38 @@ static void *kTableFooterViewFrameKey;
     {
     if (context == &kTableHeaderViewFrameKey && self.observingTableHeaderFrame == YES)
         {
-        self.observingTableHeaderFrame = NO;
+        CGRect theNewRect = [[change valueForKey:@"new"] CGRectValue];
+        CGRect theOldRect = [[change valueForKey:@"old"] CGRectValue];
+        
+        if(CGRectEqualToRect(theNewRect, theOldRect))
+           {
+           // LOL it didn't actually change yo
+           }
+        else
+           { // abuse the table
+           self.observingTableHeaderFrame = NO;
+           self.tableView.tableHeaderView = NULL;
+           self.tableView.tableHeaderView = self.tableHeaderView;
+           self.observingTableHeaderFrame = YES;
+           }
 
-        self.tableView.tableHeaderView = NULL;
-        self.tableView.tableHeaderView = self.tableHeaderView;
-
-        self.observingTableHeaderFrame = YES;
         }
     else if (context == &kTableFooterViewFrameKey && self.observingTableFooterFrame == YES)
         {
-        self.observingTableFooterFrame = NO;
-
-        self.tableView.tableFooterView = NULL;
-        self.tableView.tableFooterView = self.tableFooterView;
-
-        self.observingTableFooterFrame = YES;
+        CGRect theNewRect = [[change valueForKey:@"new"] CGRectValue];
+        CGRect theOldRect = [[change valueForKey:@"old"] CGRectValue];
+        
+        if(CGRectEqualToRect(theNewRect, theOldRect))
+            {
+            // LOL it didn't actually change yo
+            }
+        else
+            { // abuse the table
+            self.observingTableFooterFrame = NO;
+            self.tableView.tableFooterView = NULL;
+            self.tableView.tableFooterView = self.tableFooterView;
+            self.observingTableFooterFrame = YES;
+            }
         }
     }
 
