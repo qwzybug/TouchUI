@@ -101,6 +101,11 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		}
 	}
 
+- (void)viewWillDisappear:(BOOL)animated
+    {
+	self.fetchedResultsController.delegate = NULL;
+    }
+
 #pragma mark -
 
 - (void)setFetchRequest:(NSFetchRequest *)inFetchRequest
