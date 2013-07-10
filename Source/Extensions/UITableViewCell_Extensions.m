@@ -39,7 +39,7 @@ UITableViewCell *theCell = [[UITableViewCell alloc] initWithStyle:UITableViewCel
 theCell.accessoryType = UITableViewCellAccessoryNone;
 theCell.selectionStyle = UITableViewCellSelectionStyleNone;
 theCell.textLabel.frame = CGRectMake(0, 0, 320, 44);
-theCell.textLabel.textAlignment = UITextAlignmentCenter;
+theCell.textLabel.textAlignment = NSTextAlignmentCenter;
 theCell.textLabel.textColor = [UIColor grayColor];
 theCell.textLabel.text = inPlaceholderText;
 return(theCell);

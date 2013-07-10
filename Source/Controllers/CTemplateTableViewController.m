@@ -190,8 +190,9 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	SEL theAction = NSSelectorFromString(theActionString);
 	if (theAction)
 		{
-		if ([theCell respondsToSelector:@selector(setAction:)])
-			[(id)theCell setAction:theAction];
+// TODO
+//		if ([theCell respondsToSelector:@selector(setAction:)])
+//			[(id)theCell setAction:theAction];
 		}
 
 

@@ -31,8 +31,6 @@
 
 #import "CWebViewController.h"
 
-#import "CURLOpener.h"
-
 @interface CWebViewController ()
 @property (readwrite, nonatomic, retain) IBOutlet UIWebView *webView;
 @property (readwrite, nonatomic, retain) IBOutlet UIToolbar *toolbar;
@@ -349,12 +347,12 @@ if (self.homeURL)
 
 - (IBAction)action:(id)inSender
 {
-CURLOpener *theActionSheet = [[CURLOpener alloc] initWithParentViewController:self URL:self.currentURL];
-
-if ([theActionSheet respondsToSelector:@selector(showFromBarButtonItem:animated:)])
-	[theActionSheet showFromBarButtonItem:inSender animated:YES];
-else
-	[theActionSheet showFromToolbar:self.toolbar];
+//CURLOpener *theActionSheet = [[CURLOpener alloc] initWithParentViewController:self URL:self.currentURL];
+//
+//if ([theActionSheet respondsToSelector:@selector(showFromBarButtonItem:animated:)])
+//	[theActionSheet showFromBarButtonItem:inSender animated:YES];
+//else
+//	[theActionSheet showFromToolbar:self.toolbar];
 }
 
 #pragma mark -

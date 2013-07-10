@@ -251,11 +251,6 @@ static void *kDebugNameKey = NULL;
     return(theImage);
     }
 
-+ (UIImage *)imageWithData:(NSData *)inData scale:(CGFloat)scale
-    {
-    return([self imageWithData:inData scale:scale orientation:UIImageOrientationUp]);
-    }
-
 + (UIImage *)imageWithColor:(UIColor *)inColor
     {
     CGFloat theAlpha;

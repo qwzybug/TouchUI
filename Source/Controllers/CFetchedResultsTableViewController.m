@@ -142,7 +142,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
         
         
 		UILabel *theLabel = [[UILabel alloc] initWithFrame:theRect];
-		theLabel.textAlignment = UITextAlignmentCenter;
+		theLabel.textAlignment = NSTextAlignmentCenter;
 		theLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize] + 3];
 		theLabel.textColor = [UIColor grayColor];
 		theLabel.opaque = NO;

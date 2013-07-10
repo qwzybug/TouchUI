@@ -56,7 +56,7 @@ static void *kGenericBlockHelper;
                 _self.handler();
                 }
             };
-        IMP theIMP = imp_implementationWithBlock((__bridge void *)theIMPBlock);
+        IMP theIMP = imp_implementationWithBlock(theIMPBlock);
         BOOL theResult = class_addMethod(theClass, inSelector, theIMP, "v:@");
         if (theResult == NO)
             {
@@ -105,7 +105,7 @@ static void *kGenericBlockHelper;
         return(NO);
         }
         
-    IMP theIMP = imp_implementationWithBlock((__bridge void *)inHandler);
+    IMP theIMP = imp_implementationWithBlock(inHandler);
     BOOL theResult = class_addMethod([self class], inSelector, theIMP, "v:@");
     return(theResult);
     }

@@ -64,7 +64,6 @@
 #endif /* DEBUG == 1 */
 
 + (UIImage *)imageWithData:(NSData *)inData scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
-+ (UIImage *)imageWithData:(NSData *)inData scale:(CGFloat)scale;
 
 + (UIImage *)imageWithColor:(UIColor *)inColor;
 

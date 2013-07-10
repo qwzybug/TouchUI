@@ -38,7 +38,6 @@ static unsigned int BLUE = 2;
 #define HSB_MIX 0
 
 @interface UIColor()
-- (CGFloat)componentWithIndex:(unsigned int)inIndex;
 @end
 
 @implementation UIColor (Blending)
@@ -112,13 +111,9 @@ static unsigned int BLUE = 2;
     CGFloat max = MAX( red, MAX( green, blue ) );
     CGFloat min = MIN( red, MIN( green, blue ) );
     
-    CGFloat hue;
+    CGFloat hue = 0.0f;
     
-    if ( max == min ) {
-        hue = 0.0f;
-    }
-    
-    else if ( max == red ) {
+    if ( max == red ) {
         hue = ( 60.0f * ( ( green - blue ) / ( max - min ) ) );
         hue = (CGFloat)fmod( hue, 360.0f);
     }
@@ -175,17 +170,17 @@ static unsigned int BLUE = 2;
 
 - (CGFloat)redComponent
 {
-    return [self componentWithIndex:RED];
+    return [self _componentWithIndex:RED];
 }
 
 - (CGFloat)greenComponent
 {
-    return [self componentWithIndex:GREEN];
+    return [self _componentWithIndex:GREEN];
 }
 
 - (CGFloat)blueComponent
 {
-    return [self componentWithIndex:BLUE];
+    return [self _componentWithIndex:BLUE];
 }
 
 - (CGFloat)alphaComponent
@@ -194,7 +189,7 @@ static unsigned int BLUE = 2;
     return CGColorGetAlpha( color );
 }
 
-- (CGFloat)componentWithIndex:(unsigned int)inIndex
+- (CGFloat)_componentWithIndex:(unsigned int)inIndex
 {
     CGColorRef color = [self CGColor];
     const CGFloat *components = CGColorGetComponents( color );
