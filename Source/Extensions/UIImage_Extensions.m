@@ -105,7 +105,7 @@ static void *kDebugNameKey = NULL;
 		}
 
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGContextRef ctx = CGBitmapContextCreate(NULL, (size_t)destRect.size.width, (size_t)destRect.size.height, 8, (size_t)(4 * destRect.size.width), colorSpace, kCGImageAlphaPremultipliedFirst);
+	CGContextRef ctx = CGBitmapContextCreate(NULL, (size_t)destRect.size.width, (size_t)destRect.size.height, 8, (size_t)(4 * destRect.size.width), colorSpace, kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedFirst);
 	CGColorSpaceRelease(colorSpace);
 
 	CGContextSetInterpolationQuality(ctx, kCGInterpolationHigh);
@@ -134,7 +134,7 @@ static void *kDebugNameKey = NULL;
 	size_t theBytesPerRow = theWidth * (theBitsPerComponent * theComponentCount) / 8;
 	size_t theLength = theHeight * theBytesPerRow;
 	NSMutableData *theData = [NSMutableData dataWithLength:theLength];
-	CGContextRef theBitmapContext = CGBitmapContextCreate(theData.mutableBytes, theWidth, theHeight, theBitsPerComponent, theBytesPerRow, theColorSpace, kCGImageAlphaNone);
+	CGContextRef theBitmapContext = CGBitmapContextCreate(theData.mutableBytes, theWidth, theHeight, theBitsPerComponent, theBytesPerRow, theColorSpace, kCGBitmapByteOrderDefault | kCGImageAlphaNone);
 
 	CGRect theBounds = { .origin = CGPointZero, .size = inSize };
 
