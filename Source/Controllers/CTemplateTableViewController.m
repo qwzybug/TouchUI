@@ -124,39 +124,39 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
 	{
-	NSDictionary *theSection = [self.sections objectAtIndex:section];
-	return ([[theSection objectForKey:@"rows"] count]);
+	NSDictionary *theSection = (self.sections)[section];
+	return ([theSection[@"rows"] count]);
 	}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 	{
-	NSDictionary *theSection = [self.sections objectAtIndex:section];
-	NSDictionary *theSectionTemplate = [theSection objectForKey:@"template"];
-	return ([theSectionTemplate objectForKey:@"title"]);
+	NSDictionary *theSection = (self.sections)[section];
+	NSDictionary *theSectionTemplate = theSection[@"template"];
+	return (theSectionTemplate[@"title"]);
 	}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 	{
 	UITableViewCell *theCell = NULL;
 
-	if (self.cellsByRow && [self.cellsByRow objectForKey:indexPath])
+	if (self.cellsByRow && (self.cellsByRow)[indexPath])
 		{
-		theCell = [self.cellsByRow objectForKey:indexPath];
+		theCell = (self.cellsByRow)[indexPath];
 		if (theCell)
 			return (theCell);
 		}
 
-	NSDictionary *theSection = [self.sections objectAtIndex:indexPath.section];
-	NSDictionary *theRow = [[theSection objectForKey:@"rows"] objectAtIndex:indexPath.row];
+	NSDictionary *theSection = (self.sections)[indexPath.section];
+	NSDictionary *theRow = theSection[@"rows"][indexPath.row];
 
-	NSString *theClassName = [theRow objectForKey:@"class"];
+	NSString *theClassName = theRow[@"class"];
 	Class theClass = [UITableViewCell class];
 	if (theClassName.length > 0)
 		{
 		theClass = NSClassFromString(theClassName);
 		}
 
-	NSString *theReuseIdentifier = [theRow objectForKey:@"reuseIdentifier"];
+	NSString *theReuseIdentifier = theRow[@"reuseIdentifier"];
 	if ([theReuseIdentifier length] == 0)
 		theReuseIdentifier = NULL;
 
@@ -168,7 +168,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	// ####
 	if (theCell == NULL)
 		{
-		NSString *theStyleName = [theRow objectForKey:@"style"];
+		NSString *theStyleName = theRow[@"style"];
 		if (theStyleName != NULL)
 			{
 			UITableViewCellStyle theTableViewCellStyle = UITableViewCellStyleForString(theStyleName);
@@ -179,14 +179,14 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 			theCell = [[theClass alloc] initWithReuseIdentifier:theReuseIdentifier];
 			}
 
-		NSString *theOutletName = [theRow objectForKey:@"outlet"];
+		NSString *theOutletName = theRow[@"outlet"];
 		if (theOutletName)
 			{
 			[self setValue:theCell forKey:theOutletName];
 			}
 		}
 
-	NSString *theActionString = [theRow objectForKey:@"action"];
+	NSString *theActionString = theRow[@"action"];
 	SEL theAction = NSSelectorFromString(theActionString);
 	if (theAction)
 		{
@@ -196,7 +196,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		}
 
 
-	NSString *theTargetPath = [theRow objectForKey:@"targetPath"];
+	NSString *theTargetPath = theRow[@"targetPath"];
 	if (theTargetPath)
 		{
 		id theTarget = [self valueForKeyPath:theTargetPath];
@@ -209,7 +209,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		{
 		@try
 			{
-			id theValue = [theSettingsDictionary objectForKey:theKey];
+			id theValue = theSettingsDictionary[theKey];
 			[theCell setValue:theValue forKeyPath:theKey];
 			}
 
@@ -231,7 +231,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	if (!self.cellsByRow)
 		self.cellsByRow = [NSMutableDictionary dictionary];
 
-	[self.cellsByRow setObject:theCell forKey:indexPath];
+	(self.cellsByRow)[indexPath] = theCell;
 
 	return (theCell);
 	}
@@ -239,7 +239,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 	{
 	CGFloat theHeight = 44;
-	NSNumber *theHeightValue = [self.heightsForRows objectForKey:indexPath];
+	NSNumber *theHeightValue = (self.heightsForRows)[indexPath];
 	if (theHeightValue == NULL)
 		{
 		UITableViewCell *theCell = [self tableView:self.tableView cellForRowAtIndexPath:indexPath];
@@ -251,7 +251,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 			theHeightValue = [NSNumber numberWithDouble:theHeight];
 			if (self.heightsForRows == NULL)
 				self.heightsForRows = [NSMutableDictionary dictionary];
-			[self.heightsForRows setObject:theHeightValue forKey:indexPath];
+			(self.heightsForRows)[indexPath] = theHeightValue;
 			}
 		}
 	else
@@ -264,14 +264,14 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 	{
-	NSDictionary *theSection = [self.sections objectAtIndex:indexPath.section];
-	NSDictionary *theRow = [[theSection objectForKey:@"rows"] objectAtIndex:indexPath.row];
+	NSDictionary *theSection = (self.sections)[indexPath.section];
+	NSDictionary *theRow = theSection[@"rows"][indexPath.row];
 
-	NSString *theActionString = [theRow objectForKey:@"action"];
+	NSString *theActionString = theRow[@"action"];
 	SEL theAction = NSSelectorFromString(theActionString);
 
 	id theTarget = NULL;
-	NSString *theTargetPath = [theRow objectForKey:@"targetPath"];
+	NSString *theTargetPath = theRow[@"targetPath"];
 	if (theTargetPath)
 		{
 		theTarget = [self valueForKeyPath:theTargetPath];
@@ -282,7 +282,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 			}
 		}
 
-	NSString *thePushControllerName = [theRow objectForKey:@"pushControllerName"];
+	NSString *thePushControllerName = theRow[@"pushControllerName"];
 	Class thePushControllerClass = NSClassFromString(thePushControllerName);
 	if (thePushControllerClass)
 		{
@@ -297,13 +297,13 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	{
 	NSMutableArray *theSections = [NSMutableArray array];
 	//
-	for (NSDictionary *theSectionDictionary in [self.templateDictionary objectForKey : @"sections"])
+	for (NSDictionary *theSectionDictionary in (self.templateDictionary)[@"sections"])
 		{
 		NSMutableArray *theRows = [NSMutableArray array];
 
-		for (NSDictionary *theRowDictionary in [theSectionDictionary objectForKey : @"rows"])
+		for (NSDictionary *theRowDictionary in theSectionDictionary[@"rows"])
 			{
-			NSString *theHiddenPredicateString = [theRowDictionary objectForKey:@"hiddenPredicate"];
+			NSString *theHiddenPredicateString = theRowDictionary[@"hiddenPredicate"];
 
 			if (theHiddenPredicateString)
 				{
@@ -317,10 +317,8 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 
 		if (theRows.count > 0)
 			{
-			NSDictionary *theSection = [NSDictionary dictionaryWithObjectsAndKeys:
-			                            theSectionDictionary, @"template",
-			                            theRows, @"rows",
-			                            NULL];
+			NSDictionary *theSection = @{@"template": theSectionDictionary,
+			                            @"rows": theRows};
 
 			[theSections addObject:theSection];
 			}
@@ -332,20 +330,20 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 
 - (NSDictionary *)settingsForRowAtIndexPath:(NSIndexPath *)inIndexPath
 	{
-	NSDictionary *theSection = [self.sections objectAtIndex:inIndexPath.section];
-	NSDictionary *theRow = [[theSection objectForKey:@"rows"] objectAtIndex:inIndexPath.row];
+	NSDictionary *theSection = (self.sections)[inIndexPath.section];
+	NSDictionary *theRow = theSection[@"rows"][inIndexPath.row];
 
-	NSArray *theSettings = [theRow objectForKey:@"settings"];
+	NSArray *theSettings = theRow[@"settings"];
 
 	NSMutableDictionary *theSettingsDictionary = [NSMutableDictionary dictionary];
 
 	for (NSDictionary *theSetting in theSettings)
 		{
-		NSString *theDestinationPath = [theSetting objectForKey:@"destinationPath"];
+		NSString *theDestinationPath = theSetting[@"destinationPath"];
 
 		BOOL theDontUseAltValuesFlag = YES;
 
-		NSString *thePredicateString = [theSetting objectForKey:@"predicate"];
+		NSString *thePredicateString = theSetting[@"predicate"];
 		if (thePredicateString)
 			{
 			NSPredicate *thePredicate = [NSPredicate predicateWithFormat:thePredicateString];
@@ -358,18 +356,18 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		NSString *theValuePredicateKey = theDontUseAltValuesFlag ? @"valuePredicate" : @"altValuePredicate";
 		NSString *theValueTransformerKey = @"valueTransformer";
 
-		id theValue = [theSetting objectForKey:theValueKey];
+		id theValue = theSetting[theValueKey];
 
 		if (theValue == NULL)
 			{
-			NSString *theValuePath = [theSetting objectForKey:theValuePathKey];
+			NSString *theValuePath = theSetting[theValuePathKey];
 			if (theValuePath)
 				theValue = [self valueForKeyPath:theValuePath];
 			}
 
 		if (theValue == NULL)
 			{
-			NSString *theValueFormat = [theSetting objectForKey:theValueFormatKey];
+			NSString *theValueFormat = theSetting[theValueFormatKey];
 			if (theValueFormat)
 				{
 				CTrivialTemplate *theTemplate = [[CTrivialTemplate alloc] initWithTemplate:theValueFormat];
@@ -380,15 +378,15 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 
 		if (theValue == NULL)
 			{
-			NSString *theValuePredicate = [theSetting objectForKey:theValuePredicateKey];
+			NSString *theValuePredicate = theSetting[theValuePredicateKey];
 			if (theValuePredicate)
 				{
 				NSPredicate *thePredicate = [NSPredicate predicateWithFormat:theValuePredicate];
-				theValue = [NSNumber numberWithBool:[thePredicate evaluateWithObject:self]];
+				theValue = @([thePredicate evaluateWithObject:self]);
 				}
 			}
 
-		NSString *theTransformerName = [theSetting objectForKey:theValueTransformerKey];
+		NSString *theTransformerName = theSetting[theValueTransformerKey];
 		NSValueTransformer *theValueTransformer = [NSValueTransformer valueTransformerForName:theTransformerName];
 		if (theValueTransformer)
 			{
@@ -396,7 +394,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 			}
 
 		if (theDestinationPath && theValue)
-			[theSettingsDictionary setObject:theValue forKey:theDestinationPath];
+			theSettingsDictionary[theDestinationPath] = theValue;
 		}
 
 	return (theSettingsDictionary);

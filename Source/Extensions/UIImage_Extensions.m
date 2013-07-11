@@ -325,10 +325,8 @@ static void *kDebugNameKey = NULL;
 	// TODO:set opaque flag properly
 	UIGraphicsBeginImageContextWithOptions(theRect.size, NO, 0.0);
 
-	NSArray *theColors = [NSArray arrayWithObjects:
-	                      (__bridge id)inColor0.CGColor,
-	                      (__bridge id)inColor1.CGColor,
-	                      NULL];
+	NSArray *theColors = @[(__bridge id)inColor0.CGColor,
+	                      (__bridge id)inColor1.CGColor];
 
 	CGFloat theLocations[] = { 0.0, 1.0 };
 

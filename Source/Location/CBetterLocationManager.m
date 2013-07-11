@@ -195,7 +195,7 @@ static CBetterLocationManager *gSharedInstance = NULL;
 		if (self.location != NULL)
 			{
 			NSMutableDictionary *theUserInfo = [NSMutableDictionary dictionary];
-			[theUserInfo setObject:self.location forKey:kBetterLocationManagerNewLocationKey];
+			theUserInfo[kBetterLocationManagerNewLocationKey] = self.location;
 			[[NSNotificationCenter defaultCenter] postNotificationName:kBetterLocationManagerDidStopUpdatingLocationNotification object:self userInfo:theUserInfo];
 			}
 		self.updating = NO;
@@ -243,10 +243,8 @@ static CBetterLocationManager *gSharedInstance = NULL;
 
 	self.previousLocation = inOldLocation;
 
-	NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-	                             inNewLocation, kBetterLocationManagerNewLocationKey,
-	                             inOldLocation, kBetterLocationManagerOldLocationKey,
-	                             NULL];
+	NSDictionary *theUserInfo = @{kBetterLocationManagerNewLocationKey: inNewLocation,
+	                             kBetterLocationManagerOldLocationKey: inOldLocation};
 
 	NSTimeInterval theAge = fabs([inNewLocation.timestamp timeIntervalSinceNow]);
 	if (self.staleLocationThreshold > 0.0 && theAge >= self.staleLocationThreshold)
@@ -315,11 +313,11 @@ static CBetterLocationManager *gSharedInstance = NULL;
 		//	[self stopUpdatingLocation:NULL];
 		//	self.locationManager = NULL;
 
-		NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys: inError, @"Error", NULL];
+		NSDictionary *theUserInfo = @{@"Error": inError};
 		[[NSNotificationCenter defaultCenter] postNotificationName:kBetterLocationManagerDidFailWithUserDeniedErrorNotification object:self userInfo:theUserInfo];
 		}
 
-	NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys: inError, @"Error", NULL];
+	NSDictionary *theUserInfo = @{@"Error": inError};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kBetterLocationManagerDidFailWithErrorNotification object:self userInfo:theUserInfo];
 	}
 

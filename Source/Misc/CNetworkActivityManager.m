@@ -83,7 +83,7 @@ static CNetworkActivityManager *gSharedInstance = NULL;
 				[self.delayTimer invalidate];
 				self.delayTimer = NULL;
 				}
-			self.delayTimer = [NSTimer scheduledTimerWithTimeInterval:self.delay target:self selector:@selector(delayTimer:) userInfo:[NSNumber numberWithBool:YES] repeats:NO];
+			self.delayTimer = [NSTimer scheduledTimerWithTimeInterval:self.delay target:self selector:@selector(delayTimer:) userInfo:@YES repeats:NO];
 			}
 		else if (count > 0 && inCount <= 0)
 			{
@@ -92,7 +92,7 @@ static CNetworkActivityManager *gSharedInstance = NULL;
 				[self.delayTimer invalidate];
 				self.delayTimer = NULL;
 				}
-			self.delayTimer = [NSTimer scheduledTimerWithTimeInterval:self.delay target:self selector:@selector(delayTimer:) userInfo:[NSNumber numberWithBool:NO] repeats:NO];
+			self.delayTimer = [NSTimer scheduledTimerWithTimeInterval:self.delay target:self selector:@selector(delayTimer:) userInfo:@NO repeats:NO];
 			}
 
 		count = inCount;

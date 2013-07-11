@@ -69,18 +69,18 @@ static CErrorPresenter *gSharedInstance = NULL;
 	else
 		{
 		NSString *theTitle = NULL;
-		theTitle = [inError.userInfo objectForKey:ErrorPresenter_ErrorTitleKey];
+		theTitle = (inError.userInfo)[ErrorPresenter_ErrorTitleKey];
 
 		if (theTitle == NULL)
 			theTitle = @"Error";
 
 		NSString *theMessage = NULL;
-		NSString *theLocalizedDescription = [inError.userInfo objectForKey:NSLocalizedDescriptionKey];
+		NSString *theLocalizedDescription = (inError.userInfo)[NSLocalizedDescriptionKey];
 		if (theLocalizedDescription)
 			{
 			NSMutableString *theMutableMessage = [theLocalizedDescription mutableCopy];
 
-			NSString *theRecoverySuggestion = [inError.userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
+			NSString *theRecoverySuggestion = (inError.userInfo)[NSLocalizedRecoverySuggestionErrorKey];
 			if (theRecoverySuggestion != NULL)
 				{
 				[theMutableMessage appendFormat:@"\n%@", theRecoverySuggestion];

@@ -80,8 +80,8 @@ static unsigned int BLUE = 2;
 	CGFloat finalWeight = 0.0f;
 
 	for (NSDictionary *d in inArray){
-		UIColor *c = [d objectForKey:@"color"];
-		NSNumber *weightNumber = [d objectForKey:@"weight"];
+		UIColor *c = d[@"color"];
+		NSNumber *weightNumber = d[@"weight"];
 		CGFloat weight = (CGFloat)[weightNumber doubleValue];
 
 		finalRed += [c redComponent] * weight;

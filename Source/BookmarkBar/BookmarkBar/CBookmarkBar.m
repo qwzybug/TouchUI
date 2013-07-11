@@ -108,7 +108,7 @@
 				theItem.bookmarkBar = self;
 				for (NSString *theKey in self.defaultItemAttributes)
 					{
-					[theItem setValue:[self.defaultItemAttributes objectForKey:theKey] forKey:theKey];
+					[theItem setValue:(self.defaultItemAttributes)[theKey] forKey:theKey];
 					}
 				}
 			//
@@ -138,7 +138,7 @@
 
 			for (NSString *theKey in self.defaultItemAttributes)
 				{
-				[self.selectedItem setValue:[self.defaultItemAttributes objectForKey:theKey] forKey:theKey];
+				[self.selectedItem setValue:(self.defaultItemAttributes)[theKey] forKey:theKey];
 				}
 
 			CBookmarkBarItemView *theView = [self viewForItem:self.selectedItem];
@@ -153,7 +153,7 @@
 
 			for (NSString *theKey in self.selectedItemAttributes)
 				{
-				[self.selectedItem setValue:[self.selectedItemAttributes objectForKey:theKey] forKey:theKey];
+				[self.selectedItem setValue:(self.selectedItemAttributes)[theKey] forKey:theKey];
 				}
 
 			CBookmarkBarItemView *theView = [self viewForItem:self.selectedItem];
@@ -255,7 +255,7 @@
 	{
 	CGRect theFrame = { .origin = CGPointZero, .size = self.scrollView.bounds.size };
 
-	UIImage *theImage = [self.defaultItemAttributes objectForKey:@"image"];
+	UIImage *theImage = (self.defaultItemAttributes)[@"image"];
 
 	CBookmarkBarItemView *theBookmarkItemView = [CBookmarkBarItemView bookmarkBarItemView];
 	[theBookmarkItemView setBackgroundImage:theImage forState:UIControlStateNormal];
@@ -276,7 +276,7 @@
 	NSInteger theIndex = [self.items indexOfObject:inItem];
 	if (theIndex != NSNotFound)
 		{
-		CBookmarkBarItemView *theItemView = [self.scrollView.subviews objectAtIndex:theIndex];
+		CBookmarkBarItemView *theItemView = (self.scrollView.subviews)[theIndex];
 		return (theItemView);
 		}
 	else
@@ -288,16 +288,12 @@
 	UIImage *theUnselectedImage = [[UIImage imageNamed:@"TabUnselected.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
 	UIImage *theSelectedImage = [[UIImage imageNamed:@"TabSelected.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
 
-	self.defaultItemAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-	                              [UIFont systemFontOfSize:[UIFont systemFontSize] + 3.0], @"font",
-	                              [UIColor blackColor], @"titleColor",
-	                              theUnselectedImage, @"image",
-	                              NULL];
-	self.selectedItemAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-	                               [UIFont systemFontOfSize:[UIFont systemFontSize] + 3.0], @"font",
-	                               [UIColor redColor], @"titleColor",
-	                               theSelectedImage, @"image",
-	                               NULL];
+	self.defaultItemAttributes = @{@"font": [UIFont systemFontOfSize:[UIFont systemFontSize] + 3.0],
+	                              @"titleColor": [UIColor blackColor],
+	                              @"image": theUnselectedImage};
+	self.selectedItemAttributes = @{@"font": [UIFont systemFontOfSize:[UIFont systemFontSize] + 3.0],
+	                               @"titleColor": [UIColor redColor],
+	                               @"image": theSelectedImage};
 
 	gap1 = 10;
 	gap2 = 10;

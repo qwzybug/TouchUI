@@ -145,14 +145,12 @@
 //	toolbar.barStyle = UIBarStyleBlack;
 		toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 
-		toolbar.items = [NSArray arrayWithObjects:
-		                 self.homeButton,
+		toolbar.items = @[self.homeButton,
 		                 self.backButton,
 		                 self.forwardsButton,
 		                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:NULL action:NULL],
 		                 self.reloadButton,
-		                 self.actionButton,
-		                 NULL];
+		                 self.actionButton];
 		}
 	return (toolbar);
 	}
@@ -270,7 +268,7 @@
 		NSInteger theIndex = [theItems indexOfObject:self.reloadButton];
 		if (theIndex != NSNotFound)
 			{
-			[theItems replaceObjectAtIndex:theIndex withObject:theBarButtonItem];
+			theItems[theIndex] = theBarButtonItem;
 			self.toolbar.items = theItems;
 			}
 		}
@@ -281,7 +279,7 @@
 		NSInteger theIndex = [theItems indexOfObject:self.activitySpinnerButton];
 		if (theIndex != NSNotFound)
 			{
-			[theItems replaceObjectAtIndex:theIndex withObject:theBarButtonItem];
+			theItems[theIndex] = theBarButtonItem;
 			self.toolbar.items = theItems;
 			}
 		}

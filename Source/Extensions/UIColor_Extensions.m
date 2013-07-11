@@ -40,10 +40,10 @@
 	if (theComponents.count != 4)
 		return (NULL);
 
-	CGFloat theRed = (CGFloat)[[theComponents objectAtIndex:0] doubleValue];
-	CGFloat theGreen = (CGFloat)[[theComponents objectAtIndex:1] doubleValue];
-	CGFloat theBlue = (CGFloat)[[theComponents objectAtIndex:2] doubleValue];
-	CGFloat theAlpha = (CGFloat)[[theComponents objectAtIndex:3] doubleValue];
+	CGFloat theRed = (CGFloat)[theComponents[0] doubleValue];
+	CGFloat theGreen = (CGFloat)[theComponents[1] doubleValue];
+	CGFloat theBlue = (CGFloat)[theComponents[2] doubleValue];
+	CGFloat theAlpha = (CGFloat)[theComponents[3] doubleValue];
 
 	UIColor *theColor = [self colorWithRed:theRed green:theGreen blue:theBlue alpha:theAlpha];
 	return (theColor);

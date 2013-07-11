@@ -101,17 +101,17 @@ static CImageLoader *gSharedInstance = NULL;
 					theInsets = theFlagComponents1;
 					}
 
-				NSMutableDictionary *theImageDictionary = [theIndex objectForKey:theImageName];
+				NSMutableDictionary *theImageDictionary = theIndex[theImageName];
 				if (theImageDictionary == NULL)
 					{
 					theImageDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 					                      theImageName, @"name",
 					                      [NSMutableDictionary dictionary], @"states",
 					                      NULL];
-					[theIndex setObject:theImageDictionary forKey:theImageName];
+					theIndex[theImageName] = theImageDictionary;
 					}
 
-				NSMutableDictionary *theStatesDictionary = [theImageDictionary objectForKey:@"states"];
+				NSMutableDictionary *theStatesDictionary = theImageDictionary[@"states"];
 
 				NSString *theFilename = [[theURL lastPathComponent] stringByDeletingPathExtension];
 				if ([theFilename rangeOfString:@"@2x"].location == theFilename.length - 3)
@@ -128,22 +128,22 @@ static CImageLoader *gSharedInstance = NULL;
 					UIEdgeInsets theInsetsStruct = {};
 					if (theInsets.count > 0)
 						{
-						theInsetsStruct.top = [[theInsets objectAtIndex:0] floatValue];
+						theInsetsStruct.top = [theInsets[0] floatValue];
 						}
 					if (theInsets.count > 1)
 						{
-						theInsetsStruct.left = [[theInsets objectAtIndex:1] floatValue];
+						theInsetsStruct.left = [theInsets[1] floatValue];
 						}
 					if (theInsets.count > 2)
 						{
-						theInsetsStruct.bottom = [[theInsets objectAtIndex:2] floatValue];
+						theInsetsStruct.bottom = [theInsets[2] floatValue];
 						}
 					if (theInsets.count > 3)
 						{
-						theInsetsStruct.right = [[theInsets objectAtIndex:3] floatValue];
+						theInsetsStruct.right = [theInsets[3] floatValue];
 						}
 
-					[theInstanceDictionary setObject:[NSValue valueWithUIEdgeInsets:theInsetsStruct] forKey:@"insets"];
+					theInstanceDictionary[@"insets"] = [NSValue valueWithUIEdgeInsets:theInsetsStruct];
 					}
 
 				UIControlState theControlState = UIControlStateNormal;
@@ -161,9 +161,9 @@ static CImageLoader *gSharedInstance = NULL;
 					theControlState |= UIControlStateSelected;
 					}
 
-				[theInstanceDictionary setObject:[NSNumber numberWithInt:theControlState] forKey:@"state"];
+				theInstanceDictionary[@"state"] = [NSNumber numberWithInt:theControlState];
 
-				[theStatesDictionary setObject:theInstanceDictionary forKey:[NSNumber numberWithInt:theControlState]];
+				theStatesDictionary[[NSNumber numberWithInt:theControlState]] = theInstanceDictionary;
 				}
 			}
 
@@ -178,17 +178,17 @@ static CImageLoader *gSharedInstance = NULL;
 
 	NSString *theImageName = [inName stringByDeletingPathExtension];
 
-	NSDictionary *theImageDictionary = [self.index objectForKey:theImageName];
-	NSDictionary *theStatesDictionary = [theImageDictionary objectForKey:@"states"];
+	NSDictionary *theImageDictionary = (self.index)[theImageName];
+	NSDictionary *theStatesDictionary = theImageDictionary[@"states"];
 	for (NSDictionary *theStateDictionary in [theStatesDictionary allValues])
 		{
-		NSNumber *theState = [theStateDictionary objectForKey:@"state"];
-		NSString *theFilename = [theStateDictionary objectForKey:@"filename"];
+		NSNumber *theState = theStateDictionary[@"state"];
+		NSString *theFilename = theStateDictionary[@"filename"];
 		UIImage *theImage = [UIImage imageNamed:theFilename];
 #if DEBUG == 1
 		theImage.debugName = theFilename;
 #endif /* DEBUG == 1 */
-		NSValue *theInsetsValue = [theStateDictionary objectForKey:@"insets"];
+		NSValue *theInsetsValue = theStateDictionary[@"insets"];
 		if (theInsetsValue)
 			{
 			UIEdgeInsets theInsets = [theInsetsValue UIEdgeInsetsValue];
@@ -198,7 +198,7 @@ static CImageLoader *gSharedInstance = NULL;
 #endif /* DEBUG == 1 */
 			}
 
-		[theImages setObject:theImage forKey:theState];
+		theImages[theState] = theImage;
 		}
 
 	return (theImages);
@@ -207,10 +207,10 @@ static CImageLoader *gSharedInstance = NULL;
 - (UIImage *)imageNamed:(NSString *)inName state:(UIControlState)inState
 	{
 	NSDictionary *theImages = [self imagesNamed:inName];
-	UIImage *theImage = [theImages objectForKey:[NSNumber numberWithUnsignedInteger:inState]];
+	UIImage *theImage = theImages[@(inState)];
 	if (theImage == NULL)
 		{
-		theImage = [theImages objectForKey:[NSNumber numberWithUnsignedInteger:UIControlStateNormal]];
+		theImage = theImages[@(UIControlStateNormal)];
 		}
 	if (theImages.count == 0)
 		{
@@ -239,7 +239,7 @@ static CImageLoader *gSharedInstance = NULL;
 	NSArray *theStates = [[theImages allKeys] sortedArrayUsingSelector:@selector(compare:)];
 	for (NSNumber *theState in theStates)
 		{
-		UIImage *theImage = [theImages objectForKey:theState];
+		UIImage *theImage = theImages[theState];
 
 		[inControl setImage:theImage forState:[theState unsignedIntegerValue]];
 		}
@@ -251,7 +251,7 @@ static CImageLoader *gSharedInstance = NULL;
 	NSArray *theStates = [[theImages allKeys] sortedArrayUsingSelector:@selector(compare:)];
 	for (NSNumber *theState in theStates)
 		{
-		UIImage *theImage = [theImages objectForKey:theState];
+		UIImage *theImage = theImages[theState];
 
 		[inControl setBackgroundImage:theImage forState:[theState unsignedIntegerValue]];
 		}

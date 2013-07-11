@@ -76,7 +76,7 @@ static void *kUIActionSheet_BlocksExtensions_Standin = "kUIActionSheet_BlocksExt
 - (NSUInteger)addButtonWithTitle:(NSString *)title handler:(void (^)(void))inHandler
 	{
 	NSUInteger theButtonIndex = [self addButtonWithTitle:title];
-	[self.standIn.handlersByIndex setObject:[inHandler copy] forKey:[NSNumber numberWithUnsignedInteger:theButtonIndex]];
+	(self.standIn.handlersByIndex)[@(theButtonIndex)] = [inHandler copy];
 	return (theButtonIndex);
 	}
 
@@ -99,7 +99,7 @@ static void *kUIActionSheet_BlocksExtensions_Standin = "kUIActionSheet_BlocksExt
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
 	{
-	void (^theBlock)(void) = [self.handlersByIndex objectForKey:[NSNumber numberWithUnsignedInteger:buttonIndex]];
+	void (^theBlock)(void) = (self.handlersByIndex)[[NSNumber numberWithUnsignedInteger:buttonIndex]];
 	if (theBlock)
 		{
 		theBlock();

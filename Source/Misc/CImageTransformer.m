@@ -177,7 +177,7 @@
 
 + (NSArray *)parameterNames
 	{
-	return ([NSArray arrayWithObjects:@"fillColor", NULL]);
+	return (@[@"fillColor"]);
 	}
 
 - (id)init
