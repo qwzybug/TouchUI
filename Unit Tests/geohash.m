@@ -33,15 +33,15 @@
 
 #import "CTest.h"
 
-int main (int argc, const char * argv[])
-{
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+int main (int argc, const char *argv[])
+	{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-    CTest *theTest = [[[CTest alloc] init] autorelease];
-    [theTest main];
+	CTest *theTest = [[[CTest alloc] init] autorelease];
+	[theTest main];
 
-    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate distantFuture]];
+	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate distantFuture]];
 
-    [pool drain];
-    return 0;
-}
+	[pool drain];
+	return (0);
+	}

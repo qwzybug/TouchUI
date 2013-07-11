@@ -44,26 +44,26 @@
 @synthesize locationManager;
 
 - (void)main
-    {
-    
-    CLLocation *theLocation = [[[CLLocation alloc] initWithLatitude:37.7793 longitude:-122.4192] autorelease];
-    
-    NSLog(@"%@", [theLocation geohashWithPrecision:12]);
+	{
 
-    theLocation = [[[CLLocation alloc] initWithLatitude:42.6 longitude:-5.6] autorelease];
-    NSLog(@"%@", [theLocation geohashWithPrecision:12]);
-    
-    self.locationManager = [[[CLLocationManager alloc] init] autorelease];
-    self.locationManager.delegate = self;
-    
+	CLLocation *theLocation = [[[CLLocation alloc] initWithLatitude:37.7793 longitude:-122.4192] autorelease];
+
+	NSLog(@"%@", [theLocation geohashWithPrecision:12]);
+
+	theLocation = [[[CLLocation alloc] initWithLatitude:42.6 longitude:-5.6] autorelease];
+	NSLog(@"%@", [theLocation geohashWithPrecision:12]);
+
+	self.locationManager = [[[CLLocationManager alloc] init] autorelease];
+	self.locationManager.delegate = self;
+
 //    [self.locationManager startUpdatingLocation];
-    }
+	}
 
 - (void)locationManager:(CLLocationManager *)manager
-	didUpdateToLocation:(CLLocation *)newLocation
-	fromLocation:(CLLocation *)oldLocation
-{
-NSLog(@"%@", [newLocation geohash]);
-}
+        didUpdateToLocation:(CLLocation *)newLocation
+        fromLocation:(CLLocation *)oldLocation
+	{
+	NSLog(@"%@", [newLocation geohash]);
+	}
 
 @end

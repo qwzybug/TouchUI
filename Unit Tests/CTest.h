@@ -33,7 +33,7 @@
 
 @interface CTest : NSObject {
 
-}
+	}
 
 - (void)main;
 

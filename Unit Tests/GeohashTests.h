@@ -34,6 +34,6 @@
 
 @interface GeohashTests : SenTestCase {
 
-}
+	}
 
 @end
