@@ -45,59 +45,59 @@ static void *kCAlertViewBlockHelperKey;
 @implementation UIAlertView (BlockExtensions)
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
-    {
-    if ((self = [self initWithTitle:title message:message delegate:NULL cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, NULL]) != NULL)
-        {
-        if (otherButtonTitles)
-            {
-            va_list theArgs;
-            va_start(theArgs, otherButtonTitles);
-            id theArg = NULL;
-            while ((theArg = va_arg(theArgs, id)) != NULL)
-                {
-                [self addButtonWithTitle:theArg];
-                }
-            va_end(theArgs);
-            }
-        }
-    return(self);
-    }
+	{
+	if ((self = [self initWithTitle:title message:message delegate:NULL cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, NULL]) != NULL)
+		{
+		if (otherButtonTitles)
+			{
+			va_list theArgs;
+			va_start(theArgs, otherButtonTitles);
+			id theArg = NULL;
+			while ((theArg = va_arg(theArgs, id)) != NULL)
+				{
+				[self addButtonWithTitle:theArg];
+				}
+			va_end(theArgs);
+			}
+		}
+	return (self);
+	}
 
 - (void (^)(NSInteger))buttonHandler
-    {
-    CAlertViewBlockHelper *theHelper = objc_getAssociatedObject(self, &kCAlertViewBlockHelperKey);
-    return(theHelper.buttonHandler);
-    }
+	{
+	CAlertViewBlockHelper *theHelper = objc_getAssociatedObject(self, &kCAlertViewBlockHelperKey);
+	return (theHelper.buttonHandler);
+	}
 
 - (void)setButtonHandler:(void (^)(NSInteger))buttonHandler
-    {
-    CAlertViewBlockHelper *theHelper = objc_getAssociatedObject(self, &kCAlertViewBlockHelperKey);
-    if (theHelper == NULL)
-        {
-        theHelper = [[CAlertViewBlockHelper alloc] init];
-        objc_setAssociatedObject(self, &kCAlertViewBlockHelperKey, theHelper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        self.delegate = theHelper;
-        }
-    theHelper.buttonHandler = buttonHandler;
-    }
+	{
+	CAlertViewBlockHelper *theHelper = objc_getAssociatedObject(self, &kCAlertViewBlockHelperKey);
+	if (theHelper == NULL)
+		{
+		theHelper = [[CAlertViewBlockHelper alloc] init];
+		objc_setAssociatedObject(self, &kCAlertViewBlockHelperKey, theHelper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		self.delegate = theHelper;
+		}
+	theHelper.buttonHandler = buttonHandler;
+	}
 
 - (void (^)(void))cancelHandler
-    {
-    CAlertViewBlockHelper *theHelper = objc_getAssociatedObject(self, &kCAlertViewBlockHelperKey);
-    return(theHelper.cancelHandler);
-    }
+	{
+	CAlertViewBlockHelper *theHelper = objc_getAssociatedObject(self, &kCAlertViewBlockHelperKey);
+	return (theHelper.cancelHandler);
+	}
 
 - (void)setCancelHandler:(void (^)(void))cancelHandler
-    {
-    CAlertViewBlockHelper *theHelper = objc_getAssociatedObject(self, &kCAlertViewBlockHelperKey);
-    if (theHelper == NULL)
-        {
-        theHelper = [[CAlertViewBlockHelper alloc] init];
-        objc_setAssociatedObject(self, &kCAlertViewBlockHelperKey, theHelper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        self.delegate = theHelper;
-        }
-    theHelper.cancelHandler = cancelHandler;
-    }
+	{
+	CAlertViewBlockHelper *theHelper = objc_getAssociatedObject(self, &kCAlertViewBlockHelperKey);
+	if (theHelper == NULL)
+		{
+		theHelper = [[CAlertViewBlockHelper alloc] init];
+		objc_setAssociatedObject(self, &kCAlertViewBlockHelperKey, theHelper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		self.delegate = theHelper;
+		}
+	theHelper.cancelHandler = cancelHandler;
+	}
 
 @end
 
@@ -109,20 +109,20 @@ static void *kCAlertViewBlockHelperKey;
 @synthesize cancelHandler;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
-    {
-    if (self.buttonHandler)
-        {
-        self.buttonHandler(buttonIndex);
-        }
-    }
+	{
+	if (self.buttonHandler)
+		{
+		self.buttonHandler(buttonIndex);
+		}
+	}
 
 - (void)alertViewCancel:(UIAlertView *)alertView;
-    {
-    if (self.cancelHandler)
-        {
-        self.cancelHandler();
-        }
-    }
+	{
+	if (self.cancelHandler)
+		{
+		self.cancelHandler();
+		}
+	}
 
 @end
 

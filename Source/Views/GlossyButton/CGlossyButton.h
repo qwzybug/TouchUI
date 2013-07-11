@@ -33,7 +33,7 @@
 
 @interface CGlossyButton : UIButton {
 
-}
+	}
 
 + (CGlossyButton *)buttonWithTitle:(NSString *)inTitle target:(id)inTarget action:(SEL)inAction;
 

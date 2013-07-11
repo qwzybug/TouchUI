@@ -54,11 +54,11 @@
 			[theScanner scanInteger:&theMajorVersion];
 			[theScanner scanString:@"." intoString:NULL];
 			[theScanner scanInteger:&theMinorVersion];
-			
+
 			sNumericSystemVersion = theMajorVersion * 10000 + theMinorVersion * 100;
 			}
 		}
-	return(sNumericSystemVersion);
+	return (sNumericSystemVersion);
 	}
 
 @end

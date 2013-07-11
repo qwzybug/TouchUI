@@ -33,7 +33,7 @@
 
 @interface CSpinnerTableViewCell : UITableViewCell {
 	UIActivityIndicatorView *activityIndictor;
-}
+	}
 
 @property (readwrite, nonatomic, assign) BOOL spinning;
 @property (readwrite, nonatomic, retain) UIActivityIndicatorView *activityIndictor;

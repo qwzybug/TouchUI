@@ -35,14 +35,14 @@ typedef enum {
 	LayoutMode_VerticalStack,
 	LayoutMode_HorizontalStack,
 	}
-	ELayoutMode;
+ELayoutMode;
 
 @interface CLayoutView : UIView {
 	ELayoutMode mode;
 	CGSize gap;
 	BOOL fitViews;
 	UIView *__unsafe_unretained flexibleView;
-}
+	}
 
 @property (readwrite, nonatomic, assign) ELayoutMode mode;
 @property (readwrite, nonatomic, assign) CGSize gap;

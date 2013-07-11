@@ -43,8 +43,7 @@ extern NSString *kBetterLocationManagerDidFailWithUserDeniedErrorNotification /*
 extern NSString *kBetterLocationManagerNewLocationKey /* = @"NewLocation" */;
 extern NSString *kBetterLocationManagerOldLocationKey /* = @"OldLocation" */;
 
-@interface CBetterLocationManager : NSObject <CLLocationManagerDelegate> {
-}
+@interface CBetterLocationManager : NSObject <CLLocationManagerDelegate>
 
 /// This is the CoreLocation location manager object. Generally you should not interact with this directly but go through CBetterLocationManager properties and methods instead.
 @property (readwrite, nonatomic, retain) CLLocationManager *locationManager;

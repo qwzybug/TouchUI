@@ -34,34 +34,34 @@
 @implementation UITableViewCell (UITableViewCell_Extensions)
 
 + (UITableViewCell *)cellWithPlaceholderText:(NSString *)inPlaceholderText reuseIdentifier:(NSString *)inReuseIdentifier
-{
-UITableViewCell *theCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:inReuseIdentifier];
-theCell.accessoryType = UITableViewCellAccessoryNone;
-theCell.selectionStyle = UITableViewCellSelectionStyleNone;
-theCell.textLabel.frame = CGRectMake(0, 0, 320, 44);
-theCell.textLabel.textAlignment = NSTextAlignmentCenter;
-theCell.textLabel.textColor = [UIColor grayColor];
-theCell.textLabel.text = inPlaceholderText;
-return(theCell);
-}
+	{
+	UITableViewCell *theCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:inReuseIdentifier];
+	theCell.accessoryType = UITableViewCellAccessoryNone;
+	theCell.selectionStyle = UITableViewCellSelectionStyleNone;
+	theCell.textLabel.frame = CGRectMake(0, 0, 320, 44);
+	theCell.textLabel.textAlignment = NSTextAlignmentCenter;
+	theCell.textLabel.textColor = [UIColor grayColor];
+	theCell.textLabel.text = inPlaceholderText;
+	return (theCell);
+	}
 
 - (id)initWithReuseIdentifier:(NSString *)inReuseIdentifier
-{
-if ((self = [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:inReuseIdentifier]) != NULL)
 	{
+	if ((self = [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:inReuseIdentifier]) != NULL)
+		{
+		}
+	return (self);
 	}
-return(self);
-}
 
 - (void)setAccessoryImage:(UIImage *)inImage
-{
-UIImageView *theImageView = [[UIImageView alloc] initWithImage:inImage];
-self.accessoryView = theImageView;
-}
+	{
+	UIImageView *theImageView = [[UIImageView alloc] initWithImage:inImage];
+	self.accessoryView = theImageView;
+	}
 
 - (void)setAccessoryImageName:(NSString *)inString
-{
-[self setAccessoryImage:[UIImage imageNamed:inString]];
-}
+	{
+	[self setAccessoryImage:[UIImage imageNamed:inString]];
+	}
 
 @end

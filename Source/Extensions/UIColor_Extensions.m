@@ -35,19 +35,19 @@
 @implementation UIColor (UIColor_Extensions)
 
 + (UIColor *)colorWithString:(NSString *)inString
-{
-NSArray *theComponents = [inString componentsSeparatedByString:@" "];
-if (theComponents.count != 4)
-	return(NULL);
+	{
+	NSArray *theComponents = [inString componentsSeparatedByString:@" "];
+	if (theComponents.count != 4)
+		return (NULL);
 
-CGFloat theRed = (CGFloat)[[theComponents objectAtIndex:0] doubleValue];
-CGFloat theGreen = (CGFloat)[[theComponents objectAtIndex:1] doubleValue];
-CGFloat theBlue = (CGFloat)[[theComponents objectAtIndex:2] doubleValue];
-CGFloat theAlpha = (CGFloat)[[theComponents objectAtIndex:3] doubleValue];
+	CGFloat theRed = (CGFloat)[[theComponents objectAtIndex:0] doubleValue];
+	CGFloat theGreen = (CGFloat)[[theComponents objectAtIndex:1] doubleValue];
+	CGFloat theBlue = (CGFloat)[[theComponents objectAtIndex:2] doubleValue];
+	CGFloat theAlpha = (CGFloat)[[theComponents objectAtIndex:3] doubleValue];
 
-UIColor *theColor = [self colorWithRed:theRed green:theGreen blue:theBlue alpha:theAlpha];
-return(theColor);
-}
+	UIColor *theColor = [self colorWithRed:theRed green:theGreen blue:theBlue alpha:theAlpha];
+	return (theColor);
+	}
 
 
 

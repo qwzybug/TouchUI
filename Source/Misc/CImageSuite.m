@@ -15,22 +15,22 @@
 @synthesize name;
 
 + (CImageSuite *)imageSuiteNamed:(NSString *)inName
-    {
-    return([[self alloc] initWithName:inName]);
-    }
-    
+	{
+	return ([[self alloc] initWithName:inName]);
+	}
+
 - (id)initWithName:(NSString *)inName
-    {
-    if ((self = [super init]) != NULL)
-        {
-        name = inName;
-        }
-    return self;
-    }
+	{
+	if ((self = [super init]) != NULL)
+		{
+		name = inName;
+		}
+	return (self);
+	}
 
 - (UIImage *)imageForState:(UIControlState)inState
-    {
-    return([[CImageLoader sharedInstance] imageNamed:self.name state:inState]);
-    }
+	{
+	return ([[CImageLoader sharedInstance] imageNamed:self.name state:inState]);
+	}
 
 @end

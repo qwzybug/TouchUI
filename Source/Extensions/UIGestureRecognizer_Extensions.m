@@ -38,13 +38,13 @@ static void *kUserInfoKey = NULL;
 @implementation UIGestureRecognizer (Extension)
 
 - (id)userInfo
-    {
-    return(objc_getAssociatedObject(self, &kUserInfoKey));
-    }
+	{
+	return (objc_getAssociatedObject(self, &kUserInfoKey));
+	}
 
 - (void)setUserInfo:(id)inUserInfo
-    {
-    objc_setAssociatedObject(self, &kUserInfoKey, inUserInfo, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
+	{
+	objc_setAssociatedObject(self, &kUserInfoKey, inUserInfo, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
 
 @end

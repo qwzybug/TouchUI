@@ -34,74 +34,74 @@
 @implementation UIView (UIView_LayoutExtensions)
 
 - (void)sizeToFit:(CGSize)inSize;
-{
-CGSize theSize = [self sizeThatFits:inSize];
+	{
+	CGSize theSize = [self sizeThatFits:inSize];
 // TODO: understand why its not making this large enough to show all the text
-theSize.width += 10;
-theSize.width = MIN(theSize.width, inSize.width);
-CGRect theFrame = self.frame;
-theFrame.size = theSize;
-self.frame = theFrame;
-}
+	theSize.width += 10;
+	theSize.width = MIN(theSize.width, inSize.width);
+	CGRect theFrame = self.frame;
+	theFrame.size = theSize;
+	self.frame = theFrame;
+	}
 
 - (void)layoutSubviewsUsingMethod:(ELayoutMethod)inMethod
-{
-switch (inMethod)
 	{
-	case LayoutMethod_MakeColumn:
+	switch (inMethod)
 		{
-		CGFloat theMaxY = 0;
+	    case LayoutMethod_MakeColumn:
+		    {
+		    CGFloat theMaxY = 0;
 
-		for (UIView *theSubview in self.subviews)
-			{
-			if (theSubview.hidden == YES)
-				{
-				continue;
-				}
-			CGRect theFrame = theSubview.frame;
-			theFrame.origin.y = theMaxY;
-			theSubview.frame = theFrame;
+		    for (UIView *theSubview in self.subviews)
+			    {
+			    if (theSubview.hidden == YES)
+				    {
+				    continue;
+				    }
+			    CGRect theFrame = theSubview.frame;
+			    theFrame.origin.y = theMaxY;
+			    theSubview.frame = theFrame;
 
-			theMaxY = CGRectGetMaxY(theSubview.frame);
-			}
+			    theMaxY = CGRectGetMaxY(theSubview.frame);
+			    }
+		    }
+		    break;
+	    default:
+		    break;
 		}
-		break;
-	default:
-		break;
 	}
-}
 
 - (void)adjustFrameToFramesOfSubviews
-{
-CGRect theRect = CGRectZero;
-
-for (UIView *theView in self.subviews)
 	{
-	if (theView.hidden == YES)
-		{
-		continue;
-		}
-	theRect = CGRectUnion(theRect, theView.frame);
-	}
+	CGRect theRect = CGRectZero;
 
-self.frame = theRect;
-}
+	for (UIView *theView in self.subviews)
+		{
+		if (theView.hidden == YES)
+			{
+			continue;
+			}
+		theRect = CGRectUnion(theRect, theView.frame);
+		}
+
+	self.frame = theRect;
+	}
 
 - (void)dumpViewTree
-{
-[self dumpViewTree:0 maxDepth:2];
-}
+	{
+	[self dumpViewTree:0 maxDepth:2];
+	}
 
 - (void)dumpViewTree:(int)inCurrentDepth maxDepth:(int)inMaxDepth;
-{
-if (inCurrentDepth >= inMaxDepth)
-	return;
-char theSpaces[] = "                                                                                                                                ";
-theSpaces[inCurrentDepth] = '\0';
-for (UIView *theView in self.subviews)
 	{
-	[theView dumpViewTree:inCurrentDepth + 1 maxDepth:inMaxDepth];
+	if (inCurrentDepth >= inMaxDepth)
+		return;
+	char theSpaces[] = "                                                                                                                                ";
+	theSpaces[inCurrentDepth] = '\0';
+	for (UIView *theView in self.subviews)
+		{
+		[theView dumpViewTree:inCurrentDepth + 1 maxDepth:inMaxDepth];
+		}
 	}
-}
 
 @end

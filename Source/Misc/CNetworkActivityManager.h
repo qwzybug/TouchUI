@@ -31,8 +31,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CNetworkActivityManager : NSObject {
-}
+@interface CNetworkActivityManager : NSObject
 
 @property (readonly, nonatomic, assign) NSInteger count;
 @property (readwrite, nonatomic, assign) NSTimeInterval delay;

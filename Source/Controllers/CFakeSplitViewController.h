@@ -34,7 +34,7 @@
 @interface CFakeSplitViewController : UIViewController {
 	UIViewController *masterViewController;
 	UIViewController *detailViewController;
-}
+	}
 
 @property (readwrite, nonatomic, retain) UIViewController *masterViewController;
 @property (readwrite, nonatomic, retain) UIViewController *detailViewController;

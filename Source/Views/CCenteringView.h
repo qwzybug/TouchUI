@@ -33,7 +33,7 @@
 
 @interface CCenteringView : UIView {
 
-}
+	}
 
 - (id)initWithView:(UIView *)inView;
 

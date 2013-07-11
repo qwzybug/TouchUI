@@ -61,325 +61,325 @@
 @synthesize actionButton;
 
 - (id)init
-{
-if ((self = [self initWithNibName:NULL bundle:NULL]) != NULL)
 	{
+	if ((self = [self initWithNibName:NULL bundle:NULL]) != NULL)
+		{
+		}
+	return (self);
 	}
-return(self);
-}
 
 - (void)dealloc
-{
-if (webView.delegate == self)
-	webView.delegate = nil;
-}
+	{
+	if (webView.delegate == self)
+		webView.delegate = nil;
+	}
 
 #pragma mark UIViewController
 
 - (void)loadView
-{
-[super loadView];
-//
-
-CGRect theFrame = [UIScreen mainScreen].applicationFrame;
-
-self.view = [[UIView alloc] initWithFrame:theFrame];
-self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-//
-
-CGRect theWebViewFrame = self.view.bounds;
-self.webView.frame = theWebViewFrame;
-[self.view addSubview:self.webView];
-
-if (self.toolbar)
 	{
-	UIToolbar *theToolbar = self.toolbar;
-	CGRect theToolbarFrame = theToolbar.frame;
-	
-	theWebViewFrame.size.height -= theToolbarFrame.size.height;
-	theToolbarFrame.origin.y = CGRectGetMaxY(theWebViewFrame);
-	theToolbarFrame.size.width = theWebViewFrame.size.width;
+	[super loadView];
+//
 
+	CGRect theFrame = [UIScreen mainScreen].applicationFrame;
+
+	self.view = [[UIView alloc] initWithFrame:theFrame];
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+//
+
+	CGRect theWebViewFrame = self.view.bounds;
 	self.webView.frame = theWebViewFrame;
-	theToolbar.frame = theToolbarFrame;
-	[self.view addSubview:self.toolbar];
+	[self.view addSubview:self.webView];
+
+	if (self.toolbar)
+		{
+		UIToolbar *theToolbar = self.toolbar;
+		CGRect theToolbarFrame = theToolbar.frame;
+
+		theWebViewFrame.size.height -= theToolbarFrame.size.height;
+		theToolbarFrame.origin.y = CGRectGetMaxY(theWebViewFrame);
+		theToolbarFrame.size.width = theWebViewFrame.size.width;
+
+		self.webView.frame = theWebViewFrame;
+		theToolbar.frame = theToolbarFrame;
+		[self.view addSubview:self.toolbar];
+		}
 	}
-}
 
 - (void)viewDidLoad;
-{
-[super viewDidLoad];
+	{
+	[super viewDidLoad];
 
-if (self.homeURL)
-	[self loadURL:self.homeURL];
+	if (self.homeURL)
+		[self loadURL:self.homeURL];
 
-[self updateUI];
-}
+	[self updateUI];
+	}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-return(YES);
-}
+	{
+	return (YES);
+	}
 
 #pragma mark -
 
 - (UIWebView *)webView
-{
-if (webView == NULL)
 	{
-	webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
-	webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	webView.scalesPageToFit = YES;
-	webView.dataDetectorTypes = UIDataDetectorTypeLink;
-	webView.delegate = self;
+	if (webView == NULL)
+		{
+		webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+		webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		webView.scalesPageToFit = YES;
+		webView.dataDetectorTypes = UIDataDetectorTypeLink;
+		webView.delegate = self;
+		}
+	return (webView);
 	}
-return(webView);
-}
 
 - (UIToolbar *)toolbar
-{
-if (toolbar == NULL)
 	{
-	toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+	if (toolbar == NULL)
+		{
+		toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
 //	toolbar.barStyle = UIBarStyleBlack;
-	toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-	
-	toolbar.items = [NSArray arrayWithObjects:
-		self.homeButton,
-		self.backButton,
-		self.forwardsButton,
-		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:NULL action:NULL],
-		self.reloadButton,
-		self.actionButton,
-		NULL];
+		toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+
+		toolbar.items = [NSArray arrayWithObjects:
+		                 self.homeButton,
+		                 self.backButton,
+		                 self.forwardsButton,
+		                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:NULL action:NULL],
+		                 self.reloadButton,
+		                 self.actionButton,
+		                 NULL];
+		}
+	return (toolbar);
 	}
-return(toolbar);
-}
 
 - (UIBarButtonItem *)homeButton
-{
-if (homeButton == NULL)
 	{
-	homeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"browser-snapback.png"] style:UIBarButtonItemStylePlain target:self action:@selector(home:)];
+	if (homeButton == NULL)
+		{
+		homeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"browser-snapback.png"] style:UIBarButtonItemStylePlain target:self action:@selector(home:)];
+		}
+	return (homeButton);
 	}
-return(homeButton);
-}
 
 - (UIBarButtonItem *)backButton
-{
-if (backButton == NULL)
 	{
-	backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"browser-back.png"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
+	if (backButton == NULL)
+		{
+		backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"browser-back.png"] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
+		}
+	return (backButton);
 	}
-return(backButton);
-}
 
 - (UIBarButtonItem *)forwardsButton
-{
-if (forwardsButton == NULL)
 	{
-	forwardsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"browser-forward.png"] style:UIBarButtonItemStylePlain target:self action:@selector(forward:)];
+	if (forwardsButton == NULL)
+		{
+		forwardsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"browser-forward.png"] style:UIBarButtonItemStylePlain target:self action:@selector(forward:)];
+		}
+	return (forwardsButton);
 	}
-return(forwardsButton);
-}
 
 - (UIBarButtonItem *)reloadButton
-{
-if (reloadButton == NULL)
 	{
-	reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)];
+	if (reloadButton == NULL)
+		{
+		reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload:)];
+		}
+	return (reloadButton);
 	}
-return(reloadButton);
-}
 
 - (UIBarButtonItem *)activitySpinnerButton
-{
-if (activitySpinnerButton == NULL)
 	{
-	UIActivityIndicatorView *theSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-	[theSpinner startAnimating];
-	
-	activitySpinnerButton = [[UIBarButtonItem alloc] initWithCustomView:theSpinner];	
+	if (activitySpinnerButton == NULL)
+		{
+		UIActivityIndicatorView *theSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		[theSpinner startAnimating];
+
+		activitySpinnerButton = [[UIBarButtonItem alloc] initWithCustomView:theSpinner];
+		}
+	return (activitySpinnerButton);
 	}
-return(activitySpinnerButton);
-}
 
 - (UIBarButtonItem *)actionButton
-{
-if (actionButton == NULL)
 	{
-	actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(action:)];
+	if (actionButton == NULL)
+		{
+		actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(action:)];
+		}
+	return (actionButton);
 	}
-return(actionButton);
-}
 
 #pragma mark -
 
 - (void)setRequestedURL:(NSURL *)inURL;
-{
-if (requestedURL != inURL)
+	{
+	if (requestedURL != inURL)
+		{
+		if (requestedURL != NULL)
+			{
+			requestedURL = NULL;
+			}
+
+		if (inURL != NULL)
+			{
+			requestedURL = inURL;
+
+			NSURLRequest *theRequest = [NSURLRequest requestWithURL:inURL];
+			[self.webView loadRequest:theRequest];
+			}
+		}
+	}
+
+- (BOOL)isHome
+	{
+	return ([self.currentURL isEqual:self.homeURL]);
+	}
+
+#pragma mark -
+
+- (void)loadURL:(NSURL *)inURL;
 	{
 	if (requestedURL != NULL)
 		{
 		requestedURL = NULL;
 		}
-	
-	if (inURL != NULL)
-		{
-		requestedURL = inURL;
+	requestedURL = inURL;
 
-		NSURLRequest *theRequest = [NSURLRequest requestWithURL:inURL];
-		[self.webView loadRequest:theRequest];
-		}
+	NSURLRequest *theRequest = [NSURLRequest requestWithURL:self.requestedURL];
+	[self.webView loadRequest:theRequest];
 	}
-}
-
-- (BOOL)isHome
-{
-return([self.currentURL isEqual:self.homeURL]);
-}
-
-#pragma mark -
-
-- (void)loadURL:(NSURL *)inURL;
-{
-if (requestedURL != NULL)
-	{
-	requestedURL = NULL;
-	}
-requestedURL = inURL;
-
-NSURLRequest *theRequest = [NSURLRequest requestWithURL:self.requestedURL];
-[self.webView loadRequest:theRequest];
-}
 
 - (void)updateUI
-{
-self.homeButton.enabled = !self.isHome;
-
-self.backButton.enabled = self.webView.canGoBack;
-self.forwardsButton.enabled = self.webView.canGoForward;
-
-self.actionButton.enabled = !self.webView.loading;
-
-if (self.webView.loading == YES)
 	{
-	UIBarButtonItem *theBarButtonItem = self.activitySpinnerButton;
-	NSMutableArray *theItems = [self.toolbar.items mutableCopy];
-	NSInteger theIndex = [theItems indexOfObject:self.reloadButton];
-	if (theIndex != NSNotFound)
+	self.homeButton.enabled = !self.isHome;
+
+	self.backButton.enabled = self.webView.canGoBack;
+	self.forwardsButton.enabled = self.webView.canGoForward;
+
+	self.actionButton.enabled = !self.webView.loading;
+
+	if (self.webView.loading == YES)
 		{
-		[theItems replaceObjectAtIndex:theIndex withObject:theBarButtonItem];
-		self.toolbar.items = theItems;
+		UIBarButtonItem *theBarButtonItem = self.activitySpinnerButton;
+		NSMutableArray *theItems = [self.toolbar.items mutableCopy];
+		NSInteger theIndex = [theItems indexOfObject:self.reloadButton];
+		if (theIndex != NSNotFound)
+			{
+			[theItems replaceObjectAtIndex:theIndex withObject:theBarButtonItem];
+			self.toolbar.items = theItems;
+			}
+		}
+	else
+		{
+		UIBarButtonItem *theBarButtonItem = self.reloadButton;
+		NSMutableArray *theItems = [self.toolbar.items mutableCopy];
+		NSInteger theIndex = [theItems indexOfObject:self.activitySpinnerButton];
+		if (theIndex != NSNotFound)
+			{
+			[theItems replaceObjectAtIndex:theIndex withObject:theBarButtonItem];
+			self.toolbar.items = theItems;
+			}
 		}
 	}
-else
-	{
-	UIBarButtonItem *theBarButtonItem = self.reloadButton;
-	NSMutableArray *theItems = [self.toolbar.items mutableCopy];
-	NSInteger theIndex = [theItems indexOfObject:self.activitySpinnerButton];
-	if (theIndex != NSNotFound)
-		{
-		[theItems replaceObjectAtIndex:theIndex withObject:theBarButtonItem];
-		self.toolbar.items = theItems;
-		}
-	}
-}
 
 - (void)resetWebView
-{
-CGRect theFrame = self.webView.frame;
+	{
+	CGRect theFrame = self.webView.frame;
 
-[webView removeFromSuperview];
-webView = NULL;
+	[webView removeFromSuperview];
+	webView = NULL;
 
-self.webView.frame = theFrame;
-[self.view addSubview:self.webView];
-}
+	self.webView.frame = theFrame;
+	[self.view addSubview:self.webView];
+	}
 
 - (void)hideToolbar
-{
-if (!self.toolbar.hidden)
 	{
-	CGRect theWebViewFrame = self.webView.frame;
-	CGRect theToolbarFrame = self.toolbar.frame;
-	theWebViewFrame.size.height += theToolbarFrame.size.height;
-	self.webView.frame = theWebViewFrame;
-	self.toolbar.hidden = YES;
+	if (!self.toolbar.hidden)
+		{
+		CGRect theWebViewFrame = self.webView.frame;
+		CGRect theToolbarFrame = self.toolbar.frame;
+		theWebViewFrame.size.height += theToolbarFrame.size.height;
+		self.webView.frame = theWebViewFrame;
+		self.toolbar.hidden = YES;
+		}
 	}
-}
 
 - (void)showToolbar
-{
-if (self.toolbar.hidden)
 	{
-	CGRect theWebViewFrame = self.webView.frame;
-	CGRect theToolbarFrame = self.toolbar.frame;
-	theWebViewFrame.size.height -= theToolbarFrame.size.height;
-	self.webView.frame = theWebViewFrame;
-	self.toolbar.hidden = NO;
+	if (self.toolbar.hidden)
+		{
+		CGRect theWebViewFrame = self.webView.frame;
+		CGRect theToolbarFrame = self.toolbar.frame;
+		theWebViewFrame.size.height -= theToolbarFrame.size.height;
+		self.webView.frame = theWebViewFrame;
+		self.toolbar.hidden = NO;
+		}
 	}
-}
 
 #pragma mark -
 
 - (IBAction)back:(id)inSender
-{
-[self.webView goBack];
-}
+	{
+	[self.webView goBack];
+	}
 
 - (IBAction)forward:(id)inSender
-{
-[self.webView goForward];
-}
+	{
+	[self.webView goForward];
+	}
 
 - (IBAction)reload:(id)inSender
-{
-[self.webView reload];
-}
+	{
+	[self.webView reload];
+	}
 
 - (IBAction)home:(id)inSender
-{
-if (self.homeURL)
-	[self loadURL:self.homeURL];
-}
+	{
+	if (self.homeURL)
+		[self loadURL:self.homeURL];
+	}
 
 - (IBAction)action:(id)inSender
-{
+	{
 //CURLOpener *theActionSheet = [[CURLOpener alloc] initWithParentViewController:self URL:self.currentURL];
 //
 //if ([theActionSheet respondsToSelector:@selector(showFromBarButtonItem:animated:)])
 //	[theActionSheet showFromBarButtonItem:inSender animated:YES];
 //else
 //	[theActionSheet showFromToolbar:self.toolbar];
-}
+	}
 
 #pragma mark -
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-return(YES);
-}
+	{
+	return (YES);
+	}
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
-{
-[self updateUI];
-}
+	{
+	[self updateUI];
+	}
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-if (!self.dontChangeTitle)
-	self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+	{
+	if (!self.dontChangeTitle)
+		self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 
-self.currentURL = [[NSURL URLWithString:[self.webView stringByEvaluatingJavaScriptFromString:@"window.location.href"]] standardizedURL];
+	self.currentURL = [[NSURL URLWithString:[self.webView stringByEvaluatingJavaScriptFromString:@"window.location.href"]] standardizedURL];
 
-[self updateUI];
-}
+	[self updateUI];
+	}
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-[self updateUI];
-}
+	{
+	[self updateUI];
+	}
 
 @end

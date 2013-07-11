@@ -37,7 +37,7 @@
 	UIButton *button;
 	id __unsafe_unretained target;
 	SEL action;
-}
+	}
 
 @property (readwrite, nonatomic, retain) UIButton *button;
 @property (readwrite, nonatomic, assign) id target;

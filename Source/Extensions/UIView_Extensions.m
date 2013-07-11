@@ -34,35 +34,35 @@
 @implementation UIView (UIView_Extensions)
 
 - (void)setClipsToBoundsRecursively:(BOOL)clips;
-{
-UIView *currentView = self;    
-do {
-	currentView.clipsToBounds = clips;
-    }
-while ((currentView = [currentView superview]));
-}
+	{
+	UIView *currentView = self;
+	do {
+		currentView.clipsToBounds = clips;
+		}
+	while ((currentView = [currentView superview]));
+	}
 
 - (void)dump:(NSInteger)inDepth
-{
-char theSpaces[] = "..........";
-
-printf("%.*s%s %s (bgColor:%s, hidden:%d, opaque:%d, alpha:%g, clipsToBounds:%d)\n", (int)MIN(inDepth, strlen(theSpaces)), theSpaces, [[self description] UTF8String], [NSStringFromCGRect(self.frame) UTF8String], [[self.backgroundColor description] UTF8String], self.hidden, self.opaque, self.alpha, self.clipsToBounds);
-for (UIView *theView in self.subviews)
 	{
-	[theView dump:inDepth + 1];
+	char theSpaces[] = "..........";
+
+	printf("%.*s%s %s (bgColor:%s, hidden:%d, opaque:%d, alpha:%g, clipsToBounds:%d)\n", (int)MIN(inDepth, strlen(theSpaces)), theSpaces, [[self description] UTF8String], [NSStringFromCGRect(self.frame) UTF8String], [[self.backgroundColor description] UTF8String], self.hidden, self.opaque, self.alpha, self.clipsToBounds);
+	for (UIView *theView in self.subviews)
+		{
+		[theView dump:inDepth + 1];
+		}
 	}
-}
 
 - (void)moveToSuperview:(UIView *)inSuperview
-{
-if (inSuperview != self.superview)
 	{
-	CGRect theFrame = self.frame;
-	theFrame = [inSuperview convertRect:theFrame fromView:self.superview];
-	[self removeFromSuperview];
-	[inSuperview addSubview:self];
-	self.frame = theFrame;
+	if (inSuperview != self.superview)
+		{
+		CGRect theFrame = self.frame;
+		theFrame = [inSuperview convertRect:theFrame fromView:self.superview];
+		[self removeFromSuperview];
+		[inSuperview addSubview:self];
+		self.frame = theFrame;
+		}
 	}
-}
 
 @end

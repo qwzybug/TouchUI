@@ -34,7 +34,7 @@
 @interface CWebViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate> {
 	NSURL *homeURL;
 	BOOL dontChangeTitle;
-	
+
 	NSURL *__unsafe_unretained requestedURL;
 	NSURL *currentURL;
 
@@ -45,8 +45,8 @@
 	IBOutlet UIBarButtonItem *forwardsButton;
 	IBOutlet UIBarButtonItem *reloadButton;
 	IBOutlet UIBarButtonItem *activitySpinnerButton;
-	IBOutlet UIBarButtonItem *actionButton;	
-}
+	IBOutlet UIBarButtonItem *actionButton;
+	}
 
 @property (readwrite, nonatomic, retain) NSURL *homeURL;
 @property (readwrite, nonatomic, assign) BOOL dontChangeTitle;

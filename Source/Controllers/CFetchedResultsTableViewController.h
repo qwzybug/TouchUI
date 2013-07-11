@@ -33,8 +33,7 @@
 
 #import <CoreData/CoreData.h>
 
-@interface CFetchedResultsTableViewController : CTableViewController <NSFetchedResultsControllerDelegate> {
-}
+@interface CFetchedResultsTableViewController : CTableViewController <NSFetchedResultsControllerDelegate>
 
 @property (readwrite, nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (readwrite, nonatomic, strong) NSFetchRequest *fetchRequest;

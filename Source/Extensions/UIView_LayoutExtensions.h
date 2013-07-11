@@ -33,7 +33,7 @@
 
 typedef enum {
 	LayoutMethod_MakeColumn,
-} ELayoutMethod;
+	} ELayoutMethod;
 
 
 @interface UIView (UIView_LayoutExtensions)

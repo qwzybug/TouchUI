@@ -36,7 +36,7 @@
 	UIView *viewTwo;
 	UIViewAnimationTransition transition;
 	float animationDuration;
-}
+	}
 
 @property (readwrite, nonatomic, retain) UIView *viewOne;
 @property (readwrite, nonatomic, retain) UIView *viewTwo;

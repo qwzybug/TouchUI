@@ -38,8 +38,7 @@ extern NSString *ErrorPresenter_ErrorTitleKey /* = @"error_title" */;
 - (void)presentError:(NSError *)inError;
 @end
 
-@interface CErrorPresenter : NSObject {
-}
+@interface CErrorPresenter : NSObject
 
 + (CErrorPresenter *)sharedInstance;
 

@@ -60,7 +60,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	if ((self = [self initWithNibName:NULL bundle:NULL]) != NULL)
 		{
 		}
-	return(self);
+	return (self);
 	}
 
 - (id)initWithNibName:(NSString *)inNibName bundle:(NSBundle *)inBundle
@@ -73,7 +73,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		else
 			self.templateFilePath = [[NSBundle mainBundle] pathForResource:NSStringFromClass([self class]) ofType:@"plist"];
 		}
-	return(self);
+	return (self);
 	}
 
 
@@ -92,7 +92,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	{
 	NSAssert(self.templateFilePath.length > 0, @"No template path");
 	NSDictionary *theTemplateDictionary = [[NSDictionary alloc] initWithContentsOfFile:self.templateFilePath];
-	return(theTemplateDictionary);
+	return (theTemplateDictionary);
 	}
 
 - (NSArray *)sections
@@ -101,7 +101,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		{
 		sections = [self processTemplate];
 		}
-	return(sections);
+	return (sections);
 	}
 
 #pragma mark -
@@ -119,20 +119,20 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 	{
-	return([self.sections count]);
+	return ([self.sections count]);
 	}
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
 	{
 	NSDictionary *theSection = [self.sections objectAtIndex:section];
-	return([[theSection objectForKey:@"rows"] count]);
+	return ([[theSection objectForKey:@"rows"] count]);
 	}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 	{
 	NSDictionary *theSection = [self.sections objectAtIndex:section];
 	NSDictionary *theSectionTemplate = [theSection objectForKey:@"template"];
-	return([theSectionTemplate objectForKey:@"title"]);
+	return ([theSectionTemplate objectForKey:@"title"]);
 	}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -143,7 +143,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		{
 		theCell = [self.cellsByRow objectForKey:indexPath];
 		if (theCell)
-			return(theCell);
+			return (theCell);
 		}
 
 	NSDictionary *theSection = [self.sections objectAtIndex:indexPath.section];
@@ -178,7 +178,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 			{
 			theCell = [[theClass alloc] initWithReuseIdentifier:theReuseIdentifier];
 			}
-			
+
 		NSString *theOutletName = [theRow objectForKey:@"outlet"];
 		if (theOutletName)
 			{
@@ -213,7 +213,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 			[theCell setValue:theValue forKeyPath:theKey];
 			}
 
-		@catch (NSException * e)
+		@catch (NSException *e)
 			{
 			NSLog(@"Error: %@", e);
 			}
@@ -233,7 +233,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 
 	[self.cellsByRow setObject:theCell forKey:indexPath];
 
-	return(theCell);
+	return (theCell);
 	}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -259,7 +259,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		theHeight = (CGFloat)[theHeightValue doubleValue];
 		}
 
-	return(theHeight);
+	return (theHeight);
 	}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -297,11 +297,11 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 	{
 	NSMutableArray *theSections = [NSMutableArray array];
 	//
-	for (NSDictionary *theSectionDictionary in [self.templateDictionary objectForKey:@"sections"])
+	for (NSDictionary *theSectionDictionary in [self.templateDictionary objectForKey : @"sections"])
 		{
 		NSMutableArray *theRows = [NSMutableArray array];
 
-		for (NSDictionary *theRowDictionary in [theSectionDictionary objectForKey:@"rows"])
+		for (NSDictionary *theRowDictionary in [theSectionDictionary objectForKey : @"rows"])
 			{
 			NSString *theHiddenPredicateString = [theRowDictionary objectForKey:@"hiddenPredicate"];
 
@@ -318,15 +318,15 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 		if (theRows.count > 0)
 			{
 			NSDictionary *theSection = [NSDictionary dictionaryWithObjectsAndKeys:
-				theSectionDictionary, @"template",
-				theRows, @"rows",
-				NULL];
+			                            theSectionDictionary, @"template",
+			                            theRows, @"rows",
+			                            NULL];
 
 			[theSections addObject:theSection];
 			}
 		}
 
-	return(theSections);
+	return (theSections);
 	}
 
 
@@ -399,7 +399,7 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 			[theSettingsDictionary setObject:theValue forKey:theDestinationPath];
 		}
 
-	return(theSettingsDictionary);
+	return (theSettingsDictionary);
 	}
 
 - (void)dynamicCellDidResize:(id <CDynamicCell>)inCell;
@@ -440,13 +440,13 @@ static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString);
 static UITableViewCellStyle UITableViewCellStyleForString(NSString *inString)
 	{
 	if ([inString isEqualToString:@"UITableViewCellStyleDefault"])
-		return(UITableViewCellStyleDefault);
+		return (UITableViewCellStyleDefault);
 	else if ([inString isEqualToString:@"UITableViewCellStyleValue1"])
-		return(UITableViewCellStyleValue1);
+		return (UITableViewCellStyleValue1);
 	else if ([inString isEqualToString:@"UITableViewCellStyleValue2"])
-		return(UITableViewCellStyleValue2);
+		return (UITableViewCellStyleValue2);
 	else if ([inString isEqualToString:@"UITableViewCellStyleSubtitle"])
-		return(UITableViewCellStyleSubtitle);
+		return (UITableViewCellStyleSubtitle);
 	else
-		return(UITableViewCellStyleDefault);
+		return (UITableViewCellStyleDefault);
 	}

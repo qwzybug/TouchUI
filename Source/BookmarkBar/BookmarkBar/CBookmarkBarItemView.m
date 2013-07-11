@@ -45,87 +45,87 @@
 @synthesize label;
 
 + (CBookmarkBarItemView *)bookmarkBarItemView
-{
-CBookmarkBarItemView *theItem = [self buttonWithType:UIButtonTypeCustom];
-theItem.adjustsImageWhenHighlighted = NO;
-theItem.adjustsImageWhenDisabled = NO;
-theItem.showsTouchWhenHighlighted = YES;
-return(theItem);
-}
+	{
+	CBookmarkBarItemView *theItem = [self buttonWithType:UIButtonTypeCustom];
+	theItem.adjustsImageWhenHighlighted = NO;
+	theItem.adjustsImageWhenDisabled = NO;
+	theItem.showsTouchWhenHighlighted = YES;
+	return (theItem);
+	}
 
 #pragma mark -
 
 - (CBookmarkBarItem *)item
-{
-return(item);
-}
+	{
+	return (item);
+	}
 
 - (void)setItem:(CBookmarkBarItem *)inItem
-{
-if (item != inItem)
 	{
-	item = inItem;
+	if (item != inItem)
+		{
+		item = inItem;
 
-	[self setNeedsLayout];
+		[self setNeedsLayout];
+		}
 	}
-}
 
 #pragma mark -
 - (void)layoutSubviews
-{
-[super layoutSubviews];
-//
-if (self.label == NULL)
 	{
-	self.label = [[UILabel alloc] initWithFrame:self.bounds];
-	self.label.backgroundColor = [UIColor clearColor];
+	[super layoutSubviews];
+//
+	if (self.label == NULL)
+		{
+		self.label = [[UILabel alloc] initWithFrame:self.bounds];
+		self.label.backgroundColor = [UIColor clearColor];
 
-	[self addSubview:self.label];
+		[self addSubview:self.label];
+		}
+
+	self.label.text = self.item.title;
+	self.label.textColor = self.item.titleColor;
+	self.label.font = self.item.font;
 	}
-
-self.label.text = self.item.title;
-self.label.textColor = self.item.titleColor;
-self.label.font = self.item.font;
-}
 
 - (void)sizeToFit
-{
-[super sizeToFit];
-[self layoutIfNeeded];
+	{
+	[super sizeToFit];
+	[self layoutIfNeeded];
 
-CGFloat theSavedHeight = self.label.frame.size.height;
-[self.label sizeToFit];
-CGRect theFrame = self.label.frame;
-theFrame.origin.x += self.bookmarkBar.gap3;
-theFrame.size.height = theSavedHeight;
-self.label.frame = theFrame;
+	CGFloat theSavedHeight = self.label.frame.size.height;
+	[self.label sizeToFit];
+	CGRect theFrame = self.label.frame;
+	theFrame.origin.x += self.bookmarkBar.gap3;
+	theFrame.size.height = theSavedHeight;
+	self.label.frame = theFrame;
 
 
-theFrame = self.frame;
-theFrame.size.width = self.label.bounds.size.width + self.bookmarkBar.gap3 * 2;
-self.frame = theFrame;
-}
+	theFrame = self.frame;
+	theFrame.size.width = self.label.bounds.size.width + self.bookmarkBar.gap3 * 2;
+	self.frame = theFrame;
+	}
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event;
-{
-[super endTrackingWithTouch:touch withEvent:event];
-
-SEL theAction = self.item.action;
-id theTarget = self.item.target;
-self.bookmarkBar.selectedItem = self.item;
-
-if (theTarget && theAction && [theTarget respondsToSelector:theAction])
 	{
-	[theTarget performSelector:theAction withObject:self.item];
+	[super endTrackingWithTouch:touch withEvent:event];
+
+	SEL theAction = self.item.action;
+	id theTarget = self.item.target;
+	self.bookmarkBar.selectedItem = self.item;
+
+	if (theTarget && theAction && [theTarget respondsToSelector:theAction])
+		{
+		[theTarget performSelector:theAction withObject:self.item];
+		}
 	}
-}
 
 - (void)update
-{
-[self setBackgroundImage:self.item.image forState:UIControlStateNormal];
+	{
+	[self setBackgroundImage:self.item.image forState:UIControlStateNormal];
 
-[self layoutSubviews];
-[self setNeedsDisplay];
-}
+	[self layoutSubviews];
+	[self setNeedsDisplay];
+	}
 
 @end

@@ -36,25 +36,25 @@
 @implementation CCenteringView
 
 - (id)initWithView:(UIView *)inView
-{
-if ((self = [super initWithFrame:inView.frame]) != NULL)
 	{
-	self.autoresizesSubviews = NO;
+	if ((self = [super initWithFrame:inView.frame]) != NULL)
+		{
+		self.autoresizesSubviews = NO;
 
-	CGRect theFrame = { CGPointZero, inView.frame.size };
+		CGRect theFrame = { CGPointZero, inView.frame.size };
 
-	inView.frame = theFrame;
+		inView.frame = theFrame;
 
-	[self addSubview:inView];
+		[self addSubview:inView];
 
+		}
+	return (self);
 	}
-return(self);
-}
 
 - (void)layoutSubviews
-{
-UIView *theView = [self.subviews lastObject];
-theView.frame = ScaleAndAlignRectToRect(theView.bounds, self.bounds, ImageScaling_None, ImageAlignment_Center);
-}
+	{
+	UIView *theView = [self.subviews lastObject];
+	theView.frame = ScaleAndAlignRectToRect(theView.bounds, self.bounds, ImageScaling_None, ImageAlignment_Center);
+	}
 
 @end

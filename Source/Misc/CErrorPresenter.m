@@ -42,64 +42,64 @@ NSString *ErrorPresenter_ErrorTitleKey = @"error_title";
 static CErrorPresenter *gSharedInstance = NULL;
 
 + (CErrorPresenter *)sharedInstance
-    {
-    static dispatch_once_t sOnceToken = 0;
-    dispatch_once(&sOnceToken, ^{
-        gSharedInstance = [[CErrorPresenter alloc] init];
-        });
-    return(gSharedInstance);
-    }
+	{
+	static dispatch_once_t sOnceToken = 0;
+	dispatch_once(&sOnceToken, ^{
+	                      gSharedInstance = [[CErrorPresenter alloc] init];
+			      });
+	return (gSharedInstance);
+	}
 
 - (void)presentError:(NSError *)inError
-    {
-    if ([NSThread isMainThread] == NO)
-        {
-        [self performSelectorOnMainThread:@selector(presentError:) withObject:inError waitUntilDone:YES];
-        return;
-        }
+	{
+	if ([NSThread isMainThread] == NO)
+		{
+		[self performSelectorOnMainThread:@selector(presentError:) withObject:inError waitUntilDone:YES];
+		return;
+		}
 //    UIResponder *theResponder = AssertCast_(UIResponder, [UIApplication sharedApplication].keyWindow);
-    UIWindow *theWindow = [UIApplication sharedApplication].keyWindow;
-    UIViewController *theViewController = theWindow.rootViewController;
-    theViewController = [theViewController findChildViewControllerThatConformsToProtocol:@protocol(CErrorPresenter)];
-    id <CErrorPresenter> thePresenter = (id <CErrorPresenter>)theViewController;
-    if (thePresenter)
-        {
-        [thePresenter presentError:inError];
-        }
-    else
-        {
-        NSString *theTitle = NULL;
-        theTitle = [inError.userInfo objectForKey:ErrorPresenter_ErrorTitleKey];
+	UIWindow *theWindow = [UIApplication sharedApplication].keyWindow;
+	UIViewController *theViewController = theWindow.rootViewController;
+	theViewController = [theViewController findChildViewControllerThatConformsToProtocol:@protocol(CErrorPresenter)];
+	id <CErrorPresenter> thePresenter = (id <CErrorPresenter>)theViewController;
+	if (thePresenter)
+		{
+		[thePresenter presentError:inError];
+		}
+	else
+		{
+		NSString *theTitle = NULL;
+		theTitle = [inError.userInfo objectForKey:ErrorPresenter_ErrorTitleKey];
 
-        if (theTitle == NULL)
-            theTitle = @"Error";
+		if (theTitle == NULL)
+			theTitle = @"Error";
 
-        NSString *theMessage = NULL;
-        NSString *theLocalizedDescription = [inError.userInfo objectForKey:NSLocalizedDescriptionKey];
-        if (theLocalizedDescription)
-            {
-            NSMutableString *theMutableMessage = [theLocalizedDescription mutableCopy];
-            
-            NSString *theRecoverySuggestion = [inError.userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
-            if (theRecoverySuggestion != NULL)
-                {
-                [theMutableMessage appendFormat:@"\n%@", theRecoverySuggestion];
-                }
-                
-            theMessage = theMutableMessage;
-            }
+		NSString *theMessage = NULL;
+		NSString *theLocalizedDescription = [inError.userInfo objectForKey:NSLocalizedDescriptionKey];
+		if (theLocalizedDescription)
+			{
+			NSMutableString *theMutableMessage = [theLocalizedDescription mutableCopy];
 
-        if (theMessage == NULL)
-            {
-            theMessage = inError.localizedDescription;
-            }
+			NSString *theRecoverySuggestion = [inError.userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
+			if (theRecoverySuggestion != NULL)
+				{
+				[theMutableMessage appendFormat:@"\n%@", theRecoverySuggestion];
+				}
 
-        NSString *theCancelButtonTitle = @"OK";
+			theMessage = theMutableMessage;
+			}
 
-        UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:theTitle message:theMessage delegate:NULL cancelButtonTitle:theCancelButtonTitle otherButtonTitles:NULL, NULL];
-        [theAlert show];
-        }
-    }
+		if (theMessage == NULL)
+			{
+			theMessage = inError.localizedDescription;
+			}
+
+		NSString *theCancelButtonTitle = @"OK";
+
+		UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:theTitle message:theMessage delegate:NULL cancelButtonTitle:theCancelButtonTitle otherButtonTitles:NULL, NULL];
+		[theAlert show];
+		}
+	}
 
 @end
 
@@ -107,9 +107,9 @@ static CErrorPresenter *gSharedInstance = NULL;
 
 @implementation NSError (UIError_ErrorPresenterExtensions)
 - (void)present
-    {
-    [[CErrorPresenter sharedInstance] presentError:self];
-    }
+	{
+	[[CErrorPresenter sharedInstance] presentError:self];
+	}
 @end
 
 

@@ -32,17 +32,17 @@
 #import <UIKit/UIKit.h>
 
 typedef enum
-{
+	{
 	UITextVerticalAlignmentCenter,
 	UITextVerticalAlignmentTop,
 	UITextVerticalAlignmentBottom
-} UITextVerticalAlignment;
+	} UITextVerticalAlignment;
 
 @interface CBetterLabel : UILabel
-{
+	{
 	UITextVerticalAlignment verticalAlignment;
 	BOOL variableHeightText;
-}
+	}
 
 @property (assign, nonatomic) UITextVerticalAlignment verticalAlignment;
 @property (assign, nonatomic) BOOL variableHeightText;

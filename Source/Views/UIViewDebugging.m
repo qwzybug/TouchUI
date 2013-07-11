@@ -32,10 +32,10 @@
 #import "UIViewDebugging.h"
 
 void UIViewDump(UIView *inView, int inLevel)
-{
-char theSpaces[] = "                                                          ";
+	{
+	char theSpaces[] = "                                                          ";
 
-printf("%.*s%s\n", inLevel, theSpaces, [[inView description] UTF8String]);
-for (UIView *theSubview in inView.subviews)
-	UIViewDump(theSubview, inLevel + 1);
-}
+	printf("%.*s%s\n", inLevel, theSpaces, [[inView description] UTF8String]);
+	for (UIView *theSubview in inView.subviews)
+		UIViewDump(theSubview, inLevel + 1);
+	}

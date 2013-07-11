@@ -47,110 +47,110 @@
 @synthesize autoHideDelay;
 
 - (id)initWithCoder:(NSCoder *)inCoder
-{
-if ((self = [super initWithCoder:inCoder]) != NULL)
 	{
-	[super setFrame:CGRectMake(0, -64, 320, 480)];
-	self.autoHideStatusBar = YES;
-	self.autoHideDelay = 5.0;
-    }
-return(self);
-}
+	if ((self = [super initWithCoder:inCoder]) != NULL)
+		{
+		[super setFrame:CGRectMake(0, -64, 320, 480)];
+		self.autoHideStatusBar = YES;
+		self.autoHideDelay = 5.0;
+		}
+	return (self);
+	}
 
 - (void)dealloc
-{
-[autoHideTimer invalidate];
-}
+	{
+	[autoHideTimer invalidate];
+	}
 
 #pragma mark -
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
-{
-[super willMoveToWindow:newWindow];
-
-if (newWindow != NULL)
 	{
-	[self setClipsToBoundsRecursively:NO];
+	[super willMoveToWindow:newWindow];
+
+	if (newWindow != NULL)
+		{
+		[self setClipsToBoundsRecursively:NO];
+		}
+	else
+		{
+		[self.autoHideTimer invalidate];
+		self.autoHideTimer = NULL;
+		//
+		if (self.autoHideStatusBar)
+			[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+		//
+		for (UIView *theView in self.autoHideViews)
+			theView.alpha = 1.0;
+		}
 	}
-else
+
+- (void)didMoveToWindow
+	{
+	[super didMoveToWindow];
+
+	[self setClipsToBoundsRecursively:NO];
+	if (self.window && self.autoHideTimer == NULL)
+		{
+		self.autoHideTimer = [NSTimer scheduledTimerWithTimeInterval:self.autoHideDelay target:self selector:@selector(autoHideTimer:) userInfo:NULL repeats:NO];
+		}
+	}
+
+- (void)setFrame:(CGRect)inFrame
+	{
+	[super setFrame:CGRectMake(0, -64, 320, 480)];
+	}
+
+- (void)showUI;
 	{
 	[self.autoHideTimer invalidate];
 	self.autoHideTimer = NULL;
-	//
+
 	if (self.autoHideStatusBar)
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
-	//
-	for (UIView *theView in self.autoHideViews)
-		theView.alpha = 1.0;
+
+	if (self.autoHideViews != NULL)
+		{
+		[UIView beginAnimations:NULL context:NULL];
+		[UIView setAnimationCurve:UIViewAnimationCurveLinear];
+		[UIView setAnimationDuration:0.4];
+
+		for (UIView *theView in self.autoHideViews)
+			theView.alpha = 1.0;
+
+		[UIView commitAnimations];
+		}
+
+	if (self.autoHideTimer == NULL)
+		{
+		self.autoHideTimer = [NSTimer scheduledTimerWithTimeInterval:self.autoHideDelay target:self selector:@selector(autoHideTimer:) userInfo:NULL repeats:NO];
+		}
 	}
-}
-
-- (void)didMoveToWindow
-{
-[super didMoveToWindow];
-
-[self setClipsToBoundsRecursively:NO];
-if (self.window && self.autoHideTimer == NULL)
-	{
-	self.autoHideTimer = [NSTimer scheduledTimerWithTimeInterval:self.autoHideDelay target:self selector:@selector(autoHideTimer:) userInfo:NULL repeats:NO];
-	}
-}
-
-- (void)setFrame:(CGRect)inFrame
-{
-[super setFrame:CGRectMake(0, -64, 320, 480)];
-}
-
-- (void)showUI;
-{
-[self.autoHideTimer invalidate];
-self.autoHideTimer = NULL;
-
-if (self.autoHideStatusBar)
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
-
-if (self.autoHideViews != NULL)
-	{
-	[UIView beginAnimations:NULL context:NULL];
-	[UIView setAnimationCurve:UIViewAnimationCurveLinear];
-	[UIView setAnimationDuration:0.4];
-
-	for (UIView *theView in self.autoHideViews)
-		theView.alpha = 1.0;
-
-	[UIView commitAnimations];
-	}
-
-if (self.autoHideTimer == NULL)
-	{
-	self.autoHideTimer = [NSTimer scheduledTimerWithTimeInterval:self.autoHideDelay target:self selector:@selector(autoHideTimer:) userInfo:NULL repeats:NO];
-	}
-}
 
 - (void)hideUI;
-{
-if (self.autoHideStatusBar)
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
+	{
+	if (self.autoHideStatusBar)
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
 
-if (self.autoHideViews != NULL)
-	{	
-	[UIView beginAnimations:NULL context:NULL];
-	[UIView setAnimationCurve:UIViewAnimationCurveLinear];
-	[UIView setAnimationDuration:0.4];
+	if (self.autoHideViews != NULL)
+		{
+		[UIView beginAnimations:NULL context:NULL];
+		[UIView setAnimationCurve:UIViewAnimationCurveLinear];
+		[UIView setAnimationDuration:0.4];
 
-	for (UIView *theView in self.autoHideViews)
-		theView.alpha = 0.0;
+		for (UIView *theView in self.autoHideViews)
+			theView.alpha = 0.0;
 
-	[UIView commitAnimations];
+		[UIView commitAnimations];
+		}
 	}
-}
 
 
 - (void)autoHideTimer:(id)inParam
-{
-self.autoHideTimer = NULL;
+	{
+	self.autoHideTimer = NULL;
 
-[self hideUI];
-}
+	[self hideUI];
+	}
 
 @end

@@ -31,7 +31,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> 
+@interface CTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (readwrite, nonatomic, strong) IBOutlet UITableView *tableView;
 @property (readwrite, nonatomic, assign) UITableViewStyle initialStyle;

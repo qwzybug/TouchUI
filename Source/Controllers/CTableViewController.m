@@ -61,227 +61,227 @@ static void *kTableFooterViewFrameKey;
 @synthesize observingTableFooterFrame;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-    {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
-        {
-        initialStyle = UITableViewStylePlain;
-        clearsSelectionOnViewWillAppear = YES;
-        }
-    return(self);
-    }
-  
-#pragma mark -    
+	{
+	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
+		{
+		initialStyle = UITableViewStylePlain;
+		clearsSelectionOnViewWillAppear = YES;
+		}
+	return (self);
+	}
+
+#pragma mark -
 
 - (void)didReceiveMemoryWarning
-    {
-    [super didReceiveMemoryWarning];
-    }
+	{
+	[super didReceiveMemoryWarning];
+	}
 
 - (void)loadView
-    {
-    [super loadView];
-    //
-    if (self.view == NULL)
-        {
-        CGRect theViewFrame = [[UIScreen mainScreen] applicationFrame];
-        UIView *theView = [[UITableView alloc] initWithFrame:theViewFrame];
-        theView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        //
-        self.view = theView;
-        }
+	{
+	[super loadView];
+	//
+	if (self.view == NULL)
+		{
+		CGRect theViewFrame = [[UIScreen mainScreen] applicationFrame];
+		UIView *theView = [[UITableView alloc] initWithFrame:theViewFrame];
+		theView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+		//
+		self.view = theView;
+		}
 
-    if (self.tableView == NULL)
-        {
-        if ([self.view isKindOfClass:[UITableView class]])
-            {
-            self.tableView = (UITableView *)self.view;
-            }
-        else
-            {
-            CGRect theViewFrame = self.view.bounds;
-            UITableView *theTableView = [[UITableView alloc] initWithFrame:theViewFrame style:self.initialStyle];
-            theTableView.delegate = self;
-            theTableView.dataSource = self;
-            theTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-            //
-            [self.view addSubview:theTableView];
-            self.tableView = theTableView;
-            }
-        }
-    }
+	if (self.tableView == NULL)
+		{
+		if ([self.view isKindOfClass:[UITableView class]])
+			{
+			self.tableView = (UITableView *)self.view;
+			}
+		else
+			{
+			CGRect theViewFrame = self.view.bounds;
+			UITableView *theTableView = [[UITableView alloc] initWithFrame:theViewFrame style:self.initialStyle];
+			theTableView.delegate = self;
+			theTableView.dataSource = self;
+			theTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+			//
+			[self.view addSubview:theTableView];
+			self.tableView = theTableView;
+			}
+		}
+	}
 
 - (void)viewDidLoad
-    {
-    [super viewDidLoad];
+	{
+	[super viewDidLoad];
 
-    if (self.tableBackgroundView != NULL)
-        {
-        self.tableView.backgroundView = self.tableBackgroundView;
-        }
+	if (self.tableBackgroundView != NULL)
+		{
+		self.tableView.backgroundView = self.tableBackgroundView;
+		}
 
-    if (self.tableHeaderView != NULL)
-        {
-        self.tableView.tableHeaderView = self.tableHeaderView;
-        }
+	if (self.tableHeaderView != NULL)
+		{
+		self.tableView.tableHeaderView = self.tableHeaderView;
+		}
 
-    if (self.tableFooterView != NULL)
-        {
-        self.tableView.tableFooterView = self.tableFooterView;
-        }
-    }
+	if (self.tableFooterView != NULL)
+		{
+		self.tableView.tableFooterView = self.tableFooterView;
+		}
+	}
 
 - (void)viewWillUnload
-    {
-    [super viewWillUnload];
-    //
-    self.tableView = NULL;    
-    self.tableBackgroundView = NULL;
-    self.tableHeaderView = NULL;
-    self.tableFooterView = NULL;
-    }
+	{
+	[super viewWillUnload];
+	//
+	self.tableView = NULL;
+	self.tableBackgroundView = NULL;
+	self.tableHeaderView = NULL;
+	self.tableFooterView = NULL;
+	}
 
 - (void)viewWillAppear:(BOOL)inAnimated
-    {
-    [super viewWillAppear:inAnimated];
-    //
-    [self.tableView reloadData];
-    //
-    if (self.clearsSelectionOnViewWillAppear == YES)
-        {
-        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
-        }
+	{
+	[super viewWillAppear:inAnimated];
+	//
+	[self.tableView reloadData];
+	//
+	if (self.clearsSelectionOnViewWillAppear == YES)
+		{
+		[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:inAnimated];
+		}
 
-    if (self.tableHeaderView != NULL && self.observingTableHeaderFrame == NO)
-        {
-        self.observingTableHeaderFrame = YES;
-        [self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kTableHeaderViewFrameKey];
-        }
+	if (self.tableHeaderView != NULL && self.observingTableHeaderFrame == NO)
+		{
+		self.observingTableHeaderFrame = YES;
+		[self addObserver:self forKeyPath:@"tableView.tableHeaderView.frame" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:&kTableHeaderViewFrameKey];
+		}
 
-    if (self.tableFooterView != NULL && self.observingTableFooterFrame == NO)
-        {
-        self.observingTableFooterFrame = YES;
-        [self addObserver:self forKeyPath:@"tableView.tableFooterView.frame" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kTableFooterViewFrameKey];
-        }
-    }
+	if (self.tableFooterView != NULL && self.observingTableFooterFrame == NO)
+		{
+		self.observingTableFooterFrame = YES;
+		[self addObserver:self forKeyPath:@"tableView.tableFooterView.frame" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:&kTableFooterViewFrameKey];
+		}
+	}
 
 - (void)viewDidAppear:(BOOL)inAnimated
-    {
-    [super viewDidAppear:inAnimated];
-    //
-    [self.tableView flashScrollIndicators];
-    }
+	{
+	[super viewDidAppear:inAnimated];
+	//
+	[self.tableView flashScrollIndicators];
+	}
 
 - (void)viewWillDisappear:(BOOL)animated
-    {
-    [super viewDidDisappear:animated];
-    //
-    if (self.observingTableHeaderFrame == YES)
-        {
-        self.observingTableHeaderFrame = NO;
-        [self removeObserver:self forKeyPath:@"tableView.tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
-        }
+	{
+	[super viewDidDisappear:animated];
+	//
+	if (self.observingTableHeaderFrame == YES)
+		{
+		self.observingTableHeaderFrame = NO;
+		[self removeObserver:self forKeyPath:@"tableView.tableHeaderView.frame" context:&kTableHeaderViewFrameKey];
+		}
 
-    if (self.observingTableFooterFrame == YES)
-        {
-        self.observingTableFooterFrame = NO;
-        [self removeObserver:self forKeyPath:@"tableView.tableFooterView.frame" context:&kTableFooterViewFrameKey];
-        }
-    }
+	if (self.observingTableFooterFrame == YES)
+		{
+		self.observingTableFooterFrame = NO;
+		[self removeObserver:self forKeyPath:@"tableView.tableFooterView.frame" context:&kTableFooterViewFrameKey];
+		}
+	}
 
 #pragma mark -
 
 - (UIBarButtonItem *)addButtonItem
-    {
-    if (addButtonItem == NULL)
-        {
-        addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
-        }
-    return(addButtonItem);
-    }
+	{
+	if (addButtonItem == NULL)
+		{
+		addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
+		}
+	return (addButtonItem);
+	}
 
 #pragma mark -
 
 - (void)setEditing:(BOOL)inEditing animated:(BOOL)inAnimated
-    {
-    [super setEditing:inEditing animated:inAnimated];
-    //
-    [self.tableView setEditing:inEditing animated:inAnimated];
+	{
+	[super setEditing:inEditing animated:inAnimated];
+	//
+	[self.tableView setEditing:inEditing animated:inAnimated];
 
-    self.addButtonItem.enabled = !inEditing;
-    }
+	self.addButtonItem.enabled = !inEditing;
+	}
 
 - (void)setTableHeaderView:(UIView *)inTableHeaderView
-    {
-    if (tableHeaderView != inTableHeaderView)
-        {
-        tableHeaderView = inTableHeaderView;
-        self.tableView.tableHeaderView = inTableHeaderView;
-        }
-    }
+	{
+	if (tableHeaderView != inTableHeaderView)
+		{
+		tableHeaderView = inTableHeaderView;
+		self.tableView.tableHeaderView = inTableHeaderView;
+		}
+	}
 
 - (void)setTableFooterView:(UIView *)inTableFooterView
-    {
-    if (tableFooterView != inTableFooterView)
-        {
-        tableFooterView = inTableFooterView;
-        self.tableView.tableFooterView = inTableFooterView;
-        }
-    }
+	{
+	if (tableFooterView != inTableFooterView)
+		{
+		tableFooterView = inTableFooterView;
+		self.tableView.tableFooterView = inTableFooterView;
+		}
+	}
 
 - (IBAction)add:(id)inSender
-    {
-    }
+	{
+	}
 
 #pragma mark -
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section
-    {
-    return(0);
-    }
+	{
+	return (0);
+	}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-    {
-    return(NULL);
-    }
-    
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-    {
-    if (context == &kTableHeaderViewFrameKey && self.observingTableHeaderFrame == YES)
-        {
-        CGRect theNewRect = [[change valueForKey:@"new"] CGRectValue];
-        CGRect theOldRect = [[change valueForKey:@"old"] CGRectValue];
-        
-        if(CGRectEqualToRect(theNewRect, theOldRect))
-           {
-           // LOL it didn't actually change yo
-           }
-        else
-           { // abuse the table
-           self.observingTableHeaderFrame = NO;
-           self.tableView.tableHeaderView = NULL;
-           self.tableView.tableHeaderView = self.tableHeaderView;
-           self.observingTableHeaderFrame = YES;
-           }
+	{
+	return (NULL);
+	}
 
-        }
-    else if (context == &kTableFooterViewFrameKey && self.observingTableFooterFrame == YES)
-        {
-        CGRect theNewRect = [[change valueForKey:@"new"] CGRectValue];
-        CGRect theOldRect = [[change valueForKey:@"old"] CGRectValue];
-        
-        if(CGRectEqualToRect(theNewRect, theOldRect))
-            {
-            // LOL it didn't actually change yo
-            }
-        else
-            { // abuse the table
-            self.observingTableFooterFrame = NO;
-            self.tableView.tableFooterView = NULL;
-            self.tableView.tableFooterView = self.tableFooterView;
-            self.observingTableFooterFrame = YES;
-            }
-        }
-    }
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+	{
+	if (context == &kTableHeaderViewFrameKey && self.observingTableHeaderFrame == YES)
+		{
+		CGRect theNewRect = [[change valueForKey:@"new"] CGRectValue];
+		CGRect theOldRect = [[change valueForKey:@"old"] CGRectValue];
+
+		if (CGRectEqualToRect(theNewRect, theOldRect))
+			{
+			// LOL it didn't actually change yo
+			}
+		else
+			{ // abuse the table
+			self.observingTableHeaderFrame = NO;
+			self.tableView.tableHeaderView = NULL;
+			self.tableView.tableHeaderView = self.tableHeaderView;
+			self.observingTableHeaderFrame = YES;
+			}
+
+		}
+	else if (context == &kTableFooterViewFrameKey && self.observingTableFooterFrame == YES)
+		{
+		CGRect theNewRect = [[change valueForKey:@"new"] CGRectValue];
+		CGRect theOldRect = [[change valueForKey:@"old"] CGRectValue];
+
+		if (CGRectEqualToRect(theNewRect, theOldRect))
+			{
+			// LOL it didn't actually change yo
+			}
+		else
+			{ // abuse the table
+			self.observingTableFooterFrame = NO;
+			self.tableView.tableFooterView = NULL;
+			self.tableView.tableFooterView = self.tableFooterView;
+			self.observingTableFooterFrame = YES;
+			}
+		}
+	}
 
 @end
 

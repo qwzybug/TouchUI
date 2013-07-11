@@ -45,70 +45,70 @@ static void *kGenericBlockHelper;
 @synthesize handler;
 
 + (CGenericBlockHelper *)genericBlockHelperForObject:(id)inObject selector:(SEL)inSelector
-    {
-    CGenericBlockHelper *theHelper = [self genericBlockHelperForObject:inObject ofClass:[inObject class]];
-    Class theClass = [self class];
-    if (class_respondsToSelector(theClass, inSelector) == NO)
-        {
-        void (^theIMPBlock)(CGenericBlockHelper * _self) = ^(CGenericBlockHelper * _self) {
-            if (_self.handler != NULL)
-                {
-                _self.handler();
-                }
-            };
-        IMP theIMP = imp_implementationWithBlock(theIMPBlock);
-        BOOL theResult = class_addMethod(theClass, inSelector, theIMP, "v:@");
-        if (theResult == NO)
-            {
-            return(NULL);
-            }
-        }
-    return(theHelper);
-    }
+	{
+	CGenericBlockHelper *theHelper = [self genericBlockHelperForObject:inObject ofClass:[inObject class]];
+	Class theClass = [self class];
+	if (class_respondsToSelector(theClass, inSelector) == NO)
+		{
+		void (^theIMPBlock)(CGenericBlockHelper *_self) = ^(CGenericBlockHelper *_self) {
+			if (_self.handler != NULL)
+				{
+				_self.handler();
+				}
+			};
+		IMP theIMP = imp_implementationWithBlock(theIMPBlock);
+		BOOL theResult = class_addMethod(theClass, inSelector, theIMP, "v:@");
+		if (theResult == NO)
+			{
+			return (NULL);
+			}
+		}
+	return (theHelper);
+	}
 
 + (CGenericBlockHelper *)genericBlockHelperForObject:(id)inObject ofClass:(Class)inClass
-    {
-    CGenericBlockHelper *theHelper = objc_getAssociatedObject(inObject, &kGenericBlockHelper);
-    if (theHelper == NULL)
-        {
+	{
+	CGenericBlockHelper *theHelper = objc_getAssociatedObject(inObject, &kGenericBlockHelper);
+	if (theHelper == NULL)
+		{
 //        NSString *theSubclassName = [NSString stringWithFormat:@"C%@_GenericBlockHelper", NSStringFromClass([inObject class])];
 //        Class theHelperClass = NSClassFromString(theSubclassName);
 //        if (theHelperClass == NULL)
 //            {
 //            Class mySubclass = objc_allocateClassPair([NSObject class], "MySubclass", 0);
-//            
+//
 //            theHelperClass = objc_allocateClassPair([CGenericBlockHelper class], [theSubclassName UTF8String], 0);
 //            NSParameterAssert(theHelperClass);
-//            
+//
 //            objc_registerClassPair(theHelperClass);
 //            }
 
-        Class theHelperClass = self;
-        theHelper = [[theHelperClass alloc] init];
-        objc_setAssociatedObject(inObject, &kGenericBlockHelper, theHelper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }
-    return(theHelper);
-    }
+		Class theHelperClass = self;
+		theHelper = [[theHelperClass alloc] init];
+		objc_setAssociatedObject(inObject, &kGenericBlockHelper, theHelper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		}
+	return (theHelper);
+	}
 
 - (id)init
-    {
-    if ((self = [super init]) != NULL)
-        {
-        }
-    return self;
-    }
+	{
+	if ((self = [super init]) != NULL)
+		{
+		}
+	return (self);
+	}
 
 - (BOOL)addHandler:(id)inHandler forSelector:(SEL)inSelector
-    {
-    if (class_respondsToSelector([self class], inSelector) == YES)
-        {
-        return(NO);
-        }
-        
-    IMP theIMP = imp_implementationWithBlock(inHandler);
-    BOOL theResult = class_addMethod([self class], inSelector, theIMP, "v:@");
-    return(theResult);
-    }
+	{
+	if (class_respondsToSelector([self class], inSelector) == YES)
+		{
+		return (NO);
+		}
+
+	IMP theIMP = imp_implementationWithBlock(inHandler);
+	BOOL theResult = class_addMethod([self class], inSelector, theIMP, "v:@");
+	return (theResult);
+	}
 
 @end
 

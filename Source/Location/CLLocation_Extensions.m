@@ -35,14 +35,14 @@
 @implementation CLLocation (CLLocation_Extensions)
 
 - (NSTimeInterval)age
-    {
-    return([[NSDate date] timeIntervalSinceDate:self.timestamp]);
-    }
+	{
+	return ([[NSDate date] timeIntervalSinceDate:self.timestamp]);
+	}
 
 - (CLLocation *)locationWithReferenceTimestamp
-    {
-    CLLocation *theLocation = [[CLLocation alloc] initWithCoordinate:self.coordinate altitude:self.altitude horizontalAccuracy:self.horizontalAccuracy verticalAccuracy:self.verticalAccuracy timestamp:[NSDate dateWithTimeIntervalSinceReferenceDate:0.0]];
-    return(theLocation);
-    }
+	{
+	CLLocation *theLocation = [[CLLocation alloc] initWithCoordinate:self.coordinate altitude:self.altitude horizontalAccuracy:self.horizontalAccuracy verticalAccuracy:self.verticalAccuracy timestamp:[NSDate dateWithTimeIntervalSinceReferenceDate:0.0]];
+	return (theLocation);
+	}
 
 @end

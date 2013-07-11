@@ -48,7 +48,7 @@
 
 
 	UIScrollView *scrollView;
-}
+	}
 
 @property (readwrite, nonatomic, retain) NSArray *items;
 @property (readwrite, nonatomic, retain) CBookmarkBarItem *selectedItem;

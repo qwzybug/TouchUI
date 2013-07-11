@@ -33,7 +33,7 @@
 
 @interface CBetterAlertView : UIAlertView {
 	id userInfo;
-}
+	}
 
 @property (readwrite, nonatomic, retain) id userInfo;
 

@@ -33,7 +33,7 @@
 
 @interface CHostingView : UIView {
 	UIViewController *viewController;
-}
+	}
 
 @property (readwrite, nonatomic, retain) UIViewController *viewController;
 

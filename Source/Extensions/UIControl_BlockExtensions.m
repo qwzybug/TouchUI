@@ -36,10 +36,10 @@
 @implementation UIControl (UIControl_BlockExtensions)
 
 - (void)addHandler:(void (^)(void))inHandler forControlEvents:(UIControlEvents)controlEvents
-    {
-    CGenericBlockHelper *theHelper = [CGenericBlockHelper genericBlockHelperForObject:inHandler selector:@selector(action)];
-    theHelper.handler = inHandler;
-    [self addTarget:theHelper action:@selector(action) forControlEvents:controlEvents];;
-    }
+	{
+	CGenericBlockHelper *theHelper = [CGenericBlockHelper genericBlockHelperForObject:inHandler selector:@selector(action)];
+	theHelper.handler = inHandler;
+	[self addTarget:theHelper action:@selector(action) forControlEvents:controlEvents];;
+	}
 
 @end

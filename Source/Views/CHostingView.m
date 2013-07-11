@@ -37,30 +37,30 @@
 @synthesize viewController;
 
 - (void)setViewController:(UIViewController *)inViewController
-{
-if (viewController != inViewController)
 	{
-	if (viewController)
+	if (viewController != inViewController)
 		{
-		[viewController viewWillDisappear:NO];
-		[viewController.view removeFromSuperview];
-		[viewController viewDidDisappear:NO];
-		
-		viewController = NULL;
-		}
-	
-	if (inViewController)
-		{
-		viewController = inViewController;
-		
-		viewController.view.frame = self.bounds;
-		viewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		
-		[viewController viewWillAppear:NO];
-		[self addSubview:viewController.view];
-		[viewController viewDidAppear:NO];
+		if (viewController)
+			{
+			[viewController viewWillDisappear:NO];
+			[viewController.view removeFromSuperview];
+			[viewController viewDidDisappear:NO];
+
+			viewController = NULL;
+			}
+
+		if (inViewController)
+			{
+			viewController = inViewController;
+
+			viewController.view.frame = self.bounds;
+			viewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+			[viewController viewWillAppear:NO];
+			[self addSubview:viewController.view];
+			[viewController viewDidAppear:NO];
+			}
 		}
 	}
-}
 
 @end

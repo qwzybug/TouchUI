@@ -34,47 +34,47 @@
 @implementation MKMapView (Extensions)
 
 - (MKMapPoint)centerMapPoint
-    {
-    return(MKMapPointForCoordinate(self.centerCoordinate));
-    }
+	{
+	return (MKMapPointForCoordinate(self.centerCoordinate));
+	}
 
 - (void)setCenterMapPoint:(MKMapPoint)inCenterMapPoint
-    {
-    self.centerCoordinate = MKCoordinateForMapPoint(inCenterMapPoint);
-    }
+	{
+	self.centerCoordinate = MKCoordinateForMapPoint(inCenterMapPoint);
+	}
 
 /// zoomLevel for MKMapView. zoomLevel should be consistent across multiple map views. Use this to set multiple map views to the same zoom level. Does not currently map to Google Map zoom levels - but _could_ be easily.
 - (double)zoomLevel
-    {
-    // TODO:define new type. TODO:should zoomLevel be a CLLocationAccuracy or CLLocationDistance perhaps instead of a double?
-    double theZoomLevel = 20 - log2(self.visibleMapRect.size.width / self.bounds.size.width);
-    return(theZoomLevel);
-    }
+	{
+	// TODO:define new type. TODO:should zoomLevel be a CLLocationAccuracy or CLLocationDistance perhaps instead of a double?
+	double theZoomLevel = 20 - log2(self.visibleMapRect.size.width / self.bounds.size.width);
+	return (theZoomLevel);
+	}
 
 - (void)setZoomLevel:(double)inZoomLevel
-    {
-    [self setCenterCoordinate:self.centerCoordinate zoomLevel:inZoomLevel animated:NO];
-    }
+	{
+	[self setCenterCoordinate:self.centerCoordinate zoomLevel:inZoomLevel animated:NO];
+	}
 
 - (void)setCenterCoordinate:(CLLocationCoordinate2D)inCoordinate zoomLevel:(double)inZoomLevel animated:(BOOL)inAnimated
-    {
-    const MKMapPoint theCurrentCenter = MKMapPointForCoordinate(inCoordinate);
-    const double theFector = exp2(20 - inZoomLevel);
-    const MKMapSize theSize = {
-        .width = self.bounds.size.width * theFector,
-        .height = self.bounds.size.height * theFector,
-        };
-    const MKMapPoint theOrigin = {
-        .x = theCurrentCenter.x - theSize.width * 0.5,
-        .y = theCurrentCenter.y - theSize.height * 0.5,
-        };
+	{
+	const MKMapPoint theCurrentCenter = MKMapPointForCoordinate(inCoordinate);
+	const double theFector = exp2(20 - inZoomLevel);
+	const MKMapSize theSize = {
+		.width = self.bounds.size.width * theFector,
+		.height = self.bounds.size.height * theFector,
+		};
+	const MKMapPoint theOrigin = {
+		.x = theCurrentCenter.x - theSize.width * 0.5,
+		.y = theCurrentCenter.y - theSize.height * 0.5,
+		};
 
-    self.visibleMapRect =  [self mapRectThatFits:(MKMapRect){ .origin = theOrigin, .size = theSize }];
-    }
+	self.visibleMapRect = [self mapRectThatFits:(MKMapRect) { .origin = theOrigin, .size = theSize }];
+	}
 
 @end
 
 NSString *NSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D inCLLocationCoordinate2D)
-    {
-    return([NSString stringWithFormat:@"%f,%f", inCLLocationCoordinate2D.latitude, inCLLocationCoordinate2D.longitude]);
-    }
+	{
+	return ([NSString stringWithFormat:@"%f,%f", inCLLocationCoordinate2D.latitude, inCLLocationCoordinate2D.longitude]);
+	}

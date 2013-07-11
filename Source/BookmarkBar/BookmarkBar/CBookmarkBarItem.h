@@ -48,7 +48,7 @@
 	NSInteger tag;
 	id representedObject;
 	id __unsafe_unretained view;
-}
+	}
 
 @property (readwrite, nonatomic, assign) CBookmarkBar *bookmarkBar;
 @property (readwrite, nonatomic, retain) NSString *title;

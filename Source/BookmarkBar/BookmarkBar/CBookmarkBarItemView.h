@@ -38,7 +38,7 @@
 	CBookmarkBar *__unsafe_unretained bookmarkBar;
 	CBookmarkBarItem *item;
 	UILabel *label;
-}
+	}
 
 @property (readwrite, nonatomic, assign) CBookmarkBar *bookmarkBar;
 @property (readwrite, nonatomic, retain) CBookmarkBarItem *item;

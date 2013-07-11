@@ -46,13 +46,13 @@
 @synthesize view;
 
 - (id)init
-{
-if ((self = [super init]) != NULL)
 	{
+	if ((self = [super init]) != NULL)
+		{
 //	font = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
 //	titleColor = [UIColor blackColor];
+		}
+	return (self);
 	}
-return(self);
-}
 
 @end

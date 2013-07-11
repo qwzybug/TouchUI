@@ -36,34 +36,34 @@
 @synthesize activityIndictor;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) != NULL)
 	{
-	self.activityIndictor = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-	self.activityIndictor.hidesWhenStopped = YES;
+	if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) != NULL)
+		{
+		self.activityIndictor = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		self.activityIndictor.hidesWhenStopped = YES;
+		}
+	return (self);
 	}
-return(self);
-}
 
 
 - (BOOL)spinning
-{
-return(self.activityIndictor.isAnimating);
-}
+	{
+	return (self.activityIndictor.isAnimating);
+	}
 
 - (void)setSpinning:(BOOL)inSpinning
-{
-if (inSpinning)
 	{
-	self.accessoryView = self.activityIndictor;
-	[self.activityIndictor startAnimating];
+	if (inSpinning)
+		{
+		self.accessoryView = self.activityIndictor;
+		[self.activityIndictor startAnimating];
+		}
+	else
+		{
+		self.accessoryView = NULL;
+		[self.activityIndictor stopAnimating];
+		}
 	}
-else
-	{
-	self.accessoryView = NULL;
-	[self.activityIndictor stopAnimating];
-	}
-}
 
 
 @end

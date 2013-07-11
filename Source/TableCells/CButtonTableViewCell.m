@@ -46,36 +46,36 @@
 @synthesize action;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
-{
-if ((self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) != NULL)
 	{
-	[self layoutSubviews];
-	
-	self.selectionStyle = UITableViewCellSelectionStyleNone;
-	self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+	if ((self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) != NULL)
+		{
+		[self layoutSubviews];
+
+		self.selectionStyle = UITableViewCellSelectionStyleNone;
+		self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+		}
+	return (self);
 	}
-return(self);
-}
 
 
 #pragma mark -
 
 - (void)layoutSubviews
-{
-[super layoutSubviews];
-
-if (self.button == NULL)
 	{
-	self.button = [CGlossyButton buttonWithTitle:@"TODO" target:self action:@selector(actionTapped:)];
-	self.button.frame = self.contentView.bounds;
-	[self.contentView addSubview:self.button];
+	[super layoutSubviews];
+
+	if (self.button == NULL)
+		{
+		self.button = [CGlossyButton buttonWithTitle:@"TODO" target:self action:@selector(actionTapped:)];
+		self.button.frame = self.contentView.bounds;
+		[self.contentView addSubview:self.button];
+		}
 	}
-}
 
 - (IBAction)actionTapped:(id)inSender
-{
-[self.target performSelector:self.action withObject:self];
-}
+	{
+	[self.target performSelector:self.action withObject:self];
+	}
 
 
 @end

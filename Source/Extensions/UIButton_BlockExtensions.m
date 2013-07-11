@@ -36,12 +36,12 @@
 @implementation UIButton (UIButton_BlockExtensions)
 
 + (id)buttonWithType:(UIButtonType)inButtonType title:(NSString *)inTitle handler:(void (^)(void))inHandler
-    {
-    UIButton *theButton = [UIButton buttonWithType:inButtonType];
-    [theButton setTitle:inTitle forState:UIControlStateNormal];
-    [theButton sizeToFit];
-    [theButton addHandler:inHandler forControlEvents:UIControlEventTouchUpInside];
-    return(theButton);
-    }
+	{
+	UIButton *theButton = [UIButton buttonWithType:inButtonType];
+	[theButton setTitle:inTitle forState:UIControlStateNormal];
+	[theButton sizeToFit];
+	[theButton addHandler:inHandler forControlEvents:UIControlEventTouchUpInside];
+	return (theButton);
+	}
 
 @end

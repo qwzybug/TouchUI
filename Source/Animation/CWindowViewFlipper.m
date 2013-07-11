@@ -39,44 +39,43 @@
 @synthesize animationDuration;
 
 - (id)init
-{
-if ((self = [super init]) != NULL)
 	{
-	self.transition = UIViewAnimationTransitionFlipFromLeft;
-	self.animationDuration = 0.5f;
+	if ((self = [super init]) != NULL)
+		{
+		self.transition = UIViewAnimationTransitionFlipFromLeft;
+		self.animationDuration = 0.5f;
+		}
+	return (self);
 	}
-return(self);
-}
-
 
 #pragma mark -
 
 - (void)flipView:(UIView *)inViewOne toView:(UIView *)inViewTwo
-{
-self.viewOne = inViewOne;
-self.viewTwo = inViewTwo;
+	{
+	self.viewOne = inViewOne;
+	self.viewTwo = inViewTwo;
 
-[self flip];
-}
+	[self flip];
+	}
 
 - (void)flip
-{
-UIView *theSuperView = self.viewOne.superview;
+	{
+	UIView *theSuperView = self.viewOne.superview;
 
-[UIView beginAnimations:NULL context:NULL];
-[UIView setAnimationDuration:animationDuration];
-[UIView setAnimationTransition:self.transition forView:theSuperView cache:YES];
+	[UIView beginAnimations:NULL context:NULL];
+	[UIView setAnimationDuration:animationDuration];
+	[UIView setAnimationTransition:self.transition forView:theSuperView cache:YES];
 
-[self.viewOne removeFromSuperview];
-[theSuperView addSubview:self.viewTwo];
+	[self.viewOne removeFromSuperview];
+	[theSuperView addSubview:self.viewTwo];
 
-[UIView commitAnimations];
+	[UIView commitAnimations];
 
-UIView *theTemp = self.viewOne;
-self.viewOne = self.viewTwo;
-self.viewTwo = theTemp;
+	UIView *theTemp = self.viewOne;
+	self.viewOne = self.viewTwo;
+	self.viewTwo = theTemp;
 
-self.transition = (self.transition == UIViewAnimationTransitionFlipFromLeft ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft);
-}
+	self.transition = (self.transition == UIViewAnimationTransitionFlipFromLeft ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft);
+	}
 
 @end

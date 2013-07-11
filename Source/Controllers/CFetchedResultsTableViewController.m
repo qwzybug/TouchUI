@@ -48,20 +48,20 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 @synthesize usePlaceholder;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-    {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
-        {
-        usePlaceholder = NO;
-        }
-    return(self);
-    }
+	{
+	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) != NULL)
+		{
+		usePlaceholder = NO;
+		}
+	return (self);
+	}
 
 #pragma mark -
 
 - (void)didReceiveMemoryWarning
-    {
-    [super didReceiveMemoryWarning];
-    }
+	{
+	[super didReceiveMemoryWarning];
+	}
 
 - (void)viewDidUnload
 	{
@@ -83,13 +83,13 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		{
 		NSLog(@"Error: %@", theError);
 		}
-		
+
 	[self.tableView reloadData];
 
-    if (self.usePlaceholder == YES)
-        {
-        [self updatePlaceholder:NO];
-        }
+	if (self.usePlaceholder == YES)
+		{
+		[self updatePlaceholder:NO];
+		}
 
 	if ([self.fetchedResultsController.fetchedObjects count] == 0)
 		{
@@ -102,9 +102,9 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	}
 
 - (void)viewWillDisappear:(BOOL)animated
-    {
+	{
 	self.fetchedResultsController.delegate = NULL;
-    }
+	}
 
 #pragma mark -
 
@@ -112,8 +112,8 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	{
 	if (fetchRequest != inFetchRequest)
 		{
-        self.fetchedResultsController = NULL;
-        fetchRequest = inFetchRequest;
+		self.fetchedResultsController = NULL;
+		fetchRequest = inFetchRequest;
 		}
 	}
 
@@ -123,24 +123,24 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		{
 		if (self.fetchRequest)
 			{
-            NSParameterAssert(self.fetchRequest != NULL);
-            NSParameterAssert(self.managedObjectContext != NULL);
-            
+			NSParameterAssert(self.fetchRequest != NULL);
+			NSParameterAssert(self.managedObjectContext != NULL);
+
 			fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:self.sectionNameKeypath cacheName:NULL];
 			fetchedResultsController.delegate = self;
 			}
 		}
-	return(fetchedResultsController);
+	return (fetchedResultsController);
 	}
 
 - (UIView *)placeholderView
 	{
 	if (placeholderView == NULL)
 		{
-        CGRect theRect = (CGRect){ .size = { .width = self.tableView.bounds.size.width, .height = 44 } };
-        theRect.origin.y = 44 * 1 + CGRectGetMaxY(self.tableView.tableHeaderView.frame);
-        
-        
+		CGRect theRect = (CGRect) { .size = { .width = self.tableView.bounds.size.width, .height = 44 } };
+		theRect.origin.y = 44 * 1 + CGRectGetMaxY(self.tableView.tableHeaderView.frame);
+
+
 		UILabel *theLabel = [[UILabel alloc] initWithFrame:theRect];
 		theLabel.textAlignment = NSTextAlignmentCenter;
 		theLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize] + 3];
@@ -150,7 +150,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		theLabel.text = @"No Rows";
 		self.placeholderView = theLabel;
 		}
-	return(placeholderView);
+	return (placeholderView);
 	}
 
 #pragma mark -
@@ -171,7 +171,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 				{
 				self.placeholderView.alpha = 0.0f;
 				[self.tableView addSubview:self.placeholderView];
-				
+
 				[UIView beginAnimations:@"SHOW_PLACEHOLDER" context:NULL];
 				[UIView setAnimationDelegate:self];
 				[UIView setAnimationDuration:kPlaceholderHideShowAnimationDuration];
@@ -220,7 +220,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		{
 		theNumberOfSections = 1;
 		}
-	return(theNumberOfSections);
+	return (theNumberOfSections);
 	}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -232,43 +232,43 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		id <NSFetchedResultsSectionInfo> theSection = [theSections objectAtIndex:section];
 		theNumberOfRows = theSection.numberOfObjects;
 		}
-	return(theNumberOfRows);
+	return (theNumberOfRows);
 	}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-    {
-    if (section < (NSInteger)[self.fetchedResultsController.sections count])
-        {
-        id <NSFetchedResultsSectionInfo> theSection = [self.fetchedResultsController.sections objectAtIndex:section];
-        return(theSection.name);
-        }
-    else
-        {
-        return(NULL);
-        }
-    }
+	{
+	if (section < (NSInteger)[self.fetchedResultsController.sections count])
+		{
+		id <NSFetchedResultsSectionInfo> theSection = [self.fetchedResultsController.sections objectAtIndex:section];
+		return (theSection.name);
+		}
+	else
+		{
+		return (NULL);
+		}
+	}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 	{
 	UITableViewCell *theCell = [self.tableView dequeueReusableCellWithIdentifier:@"CELL"];
 	if (theCell == NULL)
 		{
-		Class theClass = self.tableViewCellClass ?: [UITableViewCell class];
+		Class theClass = self.tableViewCellClass ? :[UITableViewCell class];
 		theCell = [[theClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"];
 		}
-	
+
 	NSManagedObject *theObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	
+
 	if ([theCell conformsToProtocol:@protocol(CManagedObjectTableViewCellProtocol)])
 		{
-		[(id <CManagedObjectTableViewCellProtocol>)theCell setManagedObject:theObject];
+		[(id < CManagedObjectTableViewCellProtocol >) theCell setManagedObject : theObject];
 		}
 	else
 		{
 		theCell.textLabel.text = [theObject description];
 		}
-	
-	return(theCell);
+
+	return (theCell);
 	}
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -276,28 +276,28 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 		{
 		NSManagedObject *theObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [self.managedObjectContext performBlockAndSave:^(void) {
-            [self.managedObjectContext deleteObject:theObject];
-            } error:NULL];
-		}   
+		[self.managedObjectContext performBlockAndSave:^(void) {
+		         [self.managedObjectContext deleteObject:theObject];
+			 } error:NULL];
+		}
 	else if (editingStyle == UITableViewCellEditingStyleInsert)
 		{
 		}
-		
+
 	if ([self.fetchedResultsController.fetchedObjects count] == 0)
 		{
 		[self setEditing:NO animated:YES];
 		}
-		
-    if (self.usePlaceholder == YES)
-        {
-        [self updatePlaceholder:YES];
-        }
+
+	if (self.usePlaceholder == YES)
+		{
+		[self updatePlaceholder:YES];
+		}
 	}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath;
 	{
-	return(UITableViewCellEditingStyleNone);
+	return (UITableViewCellEditingStyleNone);
 	}
 
 #pragma mark -
@@ -306,40 +306,40 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 	{
 	[self.tableView beginUpdates];
 	}
-  
+
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 	{
 	switch (type)
 		{
-		case NSFetchedResultsChangeInsert:
-			[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-			break;
-		case NSFetchedResultsChangeDelete:
-			[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-			break;
+	    case NSFetchedResultsChangeInsert:
+		    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+		    break;
+	    case NSFetchedResultsChangeDelete:
+		    [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+		    break;
 		}
 	}
- 
+
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
 	{
 	switch (type)
 		{
-		case NSFetchedResultsChangeInsert:
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-			withRowAnimation:UITableViewRowAnimationFade];
-			break;
-		case NSFetchedResultsChangeDelete:
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-			break;
-		case NSFetchedResultsChangeUpdate:
-	//		[self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-			break;
-		case NSFetchedResultsChangeMove:
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-			break;
+	    case NSFetchedResultsChangeInsert:
+		    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+		     withRowAnimation:UITableViewRowAnimationFade];
+		    break;
+	    case NSFetchedResultsChangeDelete:
+		    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		    break;
+	    case NSFetchedResultsChangeUpdate:
+		    //		[self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+		    break;
+	    case NSFetchedResultsChangeMove:
+		    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+		    break;
 		}
-		
+
 	if ([self.fetchedResultsController.fetchedObjects count] == 0)
 		{
 		[self editButtonItem].enabled = NO;
@@ -349,12 +349,12 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 		[self editButtonItem].enabled = YES;
 		}
 
-    if (self.usePlaceholder == YES)
-        {
-        [self updatePlaceholder:YES];
-        }
+	if (self.usePlaceholder == YES)
+		{
+		[self updatePlaceholder:YES];
+		}
 	}
- 
+
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 	{
 	[self.tableView endUpdates];

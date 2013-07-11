@@ -36,6 +36,6 @@
 @property (readwrite, nonatomic, copy) void (^buttonHandler)(NSInteger buttonIndex);
 @property (readwrite, nonatomic, copy) void (^cancelHandler)(void);
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... NS_REQUIRES_NIL_TERMINATION;
+- (id)initWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...NS_REQUIRES_NIL_TERMINATION;
 
 @end

@@ -34,8 +34,8 @@
 #import <objc/runtime.h>
 
 @interface CActionSheetDelegateStandIn : NSObject <UIActionSheetDelegate> {
-    NSMutableDictionary *handlersByIndex;
-}
+	NSMutableDictionary *handlersByIndex;
+	}
 
 @property (readwrite, nonatomic, strong) NSMutableDictionary *handlersByIndex;
 
@@ -56,29 +56,29 @@ static void *kUIActionSheet_BlocksExtensions_Standin = "kUIActionSheet_BlocksExt
 @implementation UIActionSheet (UIActionSheet_BlocksExtensions)
 
 - (CActionSheetDelegateStandIn *)standIn
-    {
-    CActionSheetDelegateStandIn *theStandin = objc_getAssociatedObject(self, kUIActionSheet_BlocksExtensions_Standin);
-    if (theStandin == NULL)
-        {
-        NSAssert(self.delegate == NULL, @"Cannot replace delegate with a standin");
-        theStandin = [[CActionSheetDelegateStandIn alloc] init];
-        self.delegate = theStandin;
-        objc_setAssociatedObject(self, kUIActionSheet_BlocksExtensions_Standin, theStandin, OBJC_ASSOCIATION_RETAIN);
-        }
-    return(theStandin);
-    }
+	{
+	CActionSheetDelegateStandIn *theStandin = objc_getAssociatedObject(self, kUIActionSheet_BlocksExtensions_Standin);
+	if (theStandin == NULL)
+		{
+		NSAssert(self.delegate == NULL, @"Cannot replace delegate with a standin");
+		theStandin = [[CActionSheetDelegateStandIn alloc] init];
+		self.delegate = theStandin;
+		objc_setAssociatedObject(self, kUIActionSheet_BlocksExtensions_Standin, theStandin, OBJC_ASSOCIATION_RETAIN);
+		}
+	return (theStandin);
+	}
 
 - (void)setStandIn:(CActionSheetDelegateStandIn *)inStandIn
-    {
-    objc_setAssociatedObject(self, kUIActionSheet_BlocksExtensions_Standin, inStandIn, OBJC_ASSOCIATION_RETAIN);
-    }
+	{
+	objc_setAssociatedObject(self, kUIActionSheet_BlocksExtensions_Standin, inStandIn, OBJC_ASSOCIATION_RETAIN);
+	}
 
 - (NSUInteger)addButtonWithTitle:(NSString *)title handler:(void (^)(void))inHandler
-    {
-    NSUInteger theButtonIndex = [self addButtonWithTitle:title];
-    [self.standIn.handlersByIndex setObject:[inHandler copy] forKey:[NSNumber numberWithUnsignedInteger:theButtonIndex]];
-    return(theButtonIndex);
-    }
+	{
+	NSUInteger theButtonIndex = [self addButtonWithTitle:title];
+	[self.standIn.handlersByIndex setObject:[inHandler copy] forKey:[NSNumber numberWithUnsignedInteger:theButtonIndex]];
+	return (theButtonIndex);
+	}
 
 @end
 
@@ -89,24 +89,24 @@ static void *kUIActionSheet_BlocksExtensions_Standin = "kUIActionSheet_BlocksExt
 @synthesize handlersByIndex;
 
 - (id)init
-{
-if ((self = [super init]) != NULL)
-    {
-    handlersByIndex = [[NSMutableDictionary alloc] init];
-    }
-return(self);
-}
+	{
+	if ((self = [super init]) != NULL)
+		{
+		handlersByIndex = [[NSMutableDictionary alloc] init];
+		}
+	return (self);
+	}
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
-    {
-    void (^theBlock)(void) = [self.handlersByIndex objectForKey:[NSNumber numberWithUnsignedInteger:buttonIndex]];
-    if (theBlock)
-        {
-        theBlock();
-        }
+	{
+	void (^theBlock)(void) = [self.handlersByIndex objectForKey:[NSNumber numberWithUnsignedInteger:buttonIndex]];
+	if (theBlock)
+		{
+		theBlock();
+		}
 
-    actionSheet.delegate = NULL;
-    actionSheet.standIn = NULL;
-    }
+	actionSheet.delegate = NULL;
+	actionSheet.standIn = NULL;
+	}
 
 @end

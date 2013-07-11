@@ -45,71 +45,71 @@
 @synthesize initialLocation;
 
 - (id)initWithTarget:(id)target action:(SEL)action
-    {
-    if ((self = [super initWithTarget:target action:action]) != NULL)
-        {
-        numberOfTouchesRequired = 1;
-        allowableMovement = 10.0;
-        }
-    return(self);
-    }
+	{
+	if ((self = [super initWithTarget:target action:action]) != NULL)
+		{
+		numberOfTouchesRequired = 1;
+		allowableMovement = 10.0;
+		}
+	return (self);
+	}
 
 - (void)setState:(UIGestureRecognizerState)inState
-    {
-    [super setState:inState];
-    }
+	{
+	[super setState:inState];
+	}
 
 - (void)reset
-    {
-    self.state = UIGestureRecognizerStateCancelled;
+	{
+	self.state = UIGestureRecognizerStateCancelled;
 
-    [super reset];
-    }
+	[super reset];
+	}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-    {
-    [super touchesBegan:touches withEvent:event];
+	{
+	[super touchesBegan:touches withEvent:event];
 
-    if (touches.count >= self.numberOfTouchesRequired)
-        {
-        self.state = UIGestureRecognizerStateBegan;
+	if (touches.count >= self.numberOfTouchesRequired)
+		{
+		self.state = UIGestureRecognizerStateBegan;
 
-        self.initialLocation = [self locationInView:self.view];
-        }
-    }
+		self.initialLocation = [self locationInView:self.view];
+		}
+	}
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-    {
-    [super touchesMoved:touches withEvent:event];
+	{
+	[super touchesMoved:touches withEvent:event];
 
-    CGPoint theCurrentPoint = [self locationInView:self.view];
+	CGPoint theCurrentPoint = [self locationInView:self.view];
 
-    CGFloat DX = fabsf(theCurrentPoint.x - self.initialLocation.x);
-    CGFloat DY = fabsf(theCurrentPoint.y - self.initialLocation.y);
+	CGFloat DX = fabsf(theCurrentPoint.x - self.initialLocation.x);
+	CGFloat DY = fabsf(theCurrentPoint.y - self.initialLocation.y);
 
-    if (sqrt(DX * DX + DY * DY) > self.allowableMovement)
-        {
-        self.state = UIGestureRecognizerStateCancelled;
-        }
-    else
-        {
-        self.state = UIGestureRecognizerStateChanged;
-        }
-    }
+	if (sqrt(DX * DX + DY * DY) > self.allowableMovement)
+		{
+		self.state = UIGestureRecognizerStateCancelled;
+		}
+	else
+		{
+		self.state = UIGestureRecognizerStateChanged;
+		}
+	}
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-    {
-    [super touchesEnded:touches withEvent:event];
+	{
+	[super touchesEnded:touches withEvent:event];
 
-    self.state = UIGestureRecognizerStateEnded;
-    }
+	self.state = UIGestureRecognizerStateEnded;
+	}
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-    {
-    [super touchesCancelled:touches withEvent:event];
+	{
+	[super touchesCancelled:touches withEvent:event];
 
-    self.state = UIGestureRecognizerStateCancelled;
-    }
+	self.state = UIGestureRecognizerStateCancelled;
+	}
 
 
 

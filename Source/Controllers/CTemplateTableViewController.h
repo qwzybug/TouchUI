@@ -38,7 +38,7 @@
 	NSArray *sections;
 	NSMutableDictionary *heightsForRows;
 	NSMutableDictionary *cellsByRow;
-}
+	}
 
 @property (readwrite, nonatomic, retain) NSString *templateFilePath;
 @property (readonly, nonatomic, retain) NSDictionary *templateDictionary;

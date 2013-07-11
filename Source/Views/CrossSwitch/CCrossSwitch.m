@@ -35,8 +35,8 @@
 
 #import "Geometry.h"
 
-@interface CCrossSwitch()
-@property(readwrite,nonatomic, retain) CALayer *imageLayer;
+@interface CCrossSwitch ()
+@property(readwrite, nonatomic, retain) CALayer *imageLayer;
 @end
 
 @implementation CCrossSwitch
@@ -44,71 +44,71 @@
 @synthesize imageLayer;
 
 - (id)initWithCoder:(NSCoder *)inCoder
-{
-if ((self = [super initWithCoder:inCoder]) != nil)
 	{
-	self.userInteractionEnabled = YES;
-	self.opaque = NO;
-	self.backgroundColor = [UIColor clearColor];
+	if ((self = [super initWithCoder:inCoder]) != nil)
+		{
+		self.userInteractionEnabled = YES;
+		self.opaque = NO;
+		self.backgroundColor = [UIColor clearColor];
 
-	self.imageLayer = [[CALayer alloc] init];
-	self.imageLayer.frame = self.bounds;
+		self.imageLayer = [[CALayer alloc] init];
+		self.imageLayer.frame = self.bounds;
 //    #warning TODO
 //	self.imageLayer.contents = (id)[UIImage imageNamed:@"CrossSwitchButton.png"].CGImage;
-	if (on == YES)
-		{
-		CATransform3D theTransform = CATransform3DIdentity;
-		theTransform = CATransform3DRotate(theTransform, DegreesToRadians(45), 0.0, 0.0, 1.0);
-		self.imageLayer.transform = theTransform;
-		}
-	else
-		{
-		self.imageLayer.transform = CATransform3DIdentity;
-		}
+		if (on == YES)
+			{
+			CATransform3D theTransform = CATransform3DIdentity;
+			theTransform = CATransform3DRotate(theTransform, DegreesToRadians(45), 0.0, 0.0, 1.0);
+			self.imageLayer.transform = theTransform;
+			}
+		else
+			{
+			self.imageLayer.transform = CATransform3DIdentity;
+			}
 
-	[self.layer addSublayer:self.imageLayer];
+		[self.layer addSublayer:self.imageLayer];
+		}
+	return (self);
 	}
-return(self);
-}
 
 
 - (BOOL)isOn
-{
-return(on);
-}
+	{
+	return (on);
+	}
 
 - (void)setOn:(BOOL)inOn
-{
-[self setOn:inOn animated:YES];
-}
+	{
+	[self setOn:inOn animated:YES];
+	}
 
 - (void)setOn:(BOOL)inOn animated:(BOOL)inAnimated
-{
-if (on != inOn)
 	{
-	on = inOn;
-
-	if (on == YES)
+	if (on != inOn)
 		{
-		CATransform3D theTransform = CATransform3DIdentity;
-		theTransform = CATransform3DRotate(theTransform, DegreesToRadians(45), 0.0, 0.0, 1.0);
-		self.imageLayer.transform = theTransform;
-		}
-	else
-		{
-		self.imageLayer.transform = CATransform3DIdentity;
-		}
+		on = inOn;
 
-	[self sendActionsForControlEvents:UIControlEventValueChanged];
+		if (on == YES)
+			{
+			CATransform3D theTransform = CATransform3DIdentity;
+			theTransform = CATransform3DRotate(theTransform, DegreesToRadians(45), 0.0, 0.0, 1.0);
+			self.imageLayer.transform = theTransform;
+			}
+		else
+			{
+			self.imageLayer.transform = CATransform3DIdentity;
+			}
+
+		[self sendActionsForControlEvents:UIControlEventValueChanged];
+		}
 	}
-}
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-[super beginTrackingWithTouch:touch withEvent:event];
-[self setOn:!self.on animated:YES];
-return(NO);
-}
+	{
+	[super beginTrackingWithTouch:touch withEvent:event];
+	[self setOn:!self.on animated:YES];
+	return (NO);
+	}
 
 //- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 //{

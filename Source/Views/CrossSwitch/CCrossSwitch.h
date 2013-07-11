@@ -34,9 +34,9 @@
 @interface CCrossSwitch : UIControl {
 	BOOL on;
 	CALayer *imageLayer;
-}
+	}
 
-@property(nonatomic,getter=isOn) BOOL on;
+@property(nonatomic, getter = isOn) BOOL on;
 
 - (void)setOn:(BOOL)on animated:(BOOL)animated; // does not send action
 
