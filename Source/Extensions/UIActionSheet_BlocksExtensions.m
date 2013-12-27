@@ -33,20 +33,14 @@
 
 #import <objc/runtime.h>
 
-@interface CActionSheetDelegateStandIn : NSObject <UIActionSheetDelegate> {
-	NSMutableDictionary *handlersByIndex;
-	}
-
+@interface CActionSheetDelegateStandIn : NSObject <UIActionSheetDelegate>
 @property (readwrite, nonatomic, strong) NSMutableDictionary *handlersByIndex;
-
 @end
 
 #pragma mark -
 
 @interface UIActionSheet ()
-
 @property (readwrite, nonatomic, strong) CActionSheetDelegateStandIn *standIn;
-
 @end
 
 #pragma mark -
@@ -72,6 +66,11 @@ static void *kUIActionSheet_BlocksExtensions_Standin = "kUIActionSheet_BlocksExt
 	{
 	objc_setAssociatedObject(self, kUIActionSheet_BlocksExtensions_Standin, inStandIn, OBJC_ASSOCIATION_RETAIN);
 	}
+
+- (void)setHandler:(void (^)(void))inHandler forButtonIndex:(NSInteger)buttonIndex
+    {
+	(self.standIn.handlersByIndex)[@(buttonIndex)] = [inHandler copy];
+    }
 
 - (NSUInteger)addButtonWithTitle:(NSString *)title handler:(void (^)(void))inHandler
 	{

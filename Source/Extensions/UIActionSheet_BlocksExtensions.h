@@ -33,6 +33,7 @@
 
 @interface UIActionSheet (UIActionSheet_BlocksExtensions)
 
+- (void)setHandler:(void (^)(void))inHandler forButtonIndex:(NSInteger)buttonIndex;
 - (NSUInteger)addButtonWithTitle:(NSString *)title handler:(void (^)(void))inHandler;
 
 @end
