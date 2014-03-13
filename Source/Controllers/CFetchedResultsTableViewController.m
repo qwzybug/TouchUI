@@ -43,6 +43,7 @@ const double kPlaceholderHideShowAnimationDuration = 0.4;
 @synthesize fetchRequest;
 @synthesize sectionNameKeypath;
 @synthesize fetchedResultsController;
+@synthesize sectionNameKeyPath;
 @synthesize placeholderView;
 @synthesize tableViewCellClass;
 @synthesize usePlaceholder;

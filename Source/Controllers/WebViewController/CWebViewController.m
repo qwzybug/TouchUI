@@ -76,37 +76,6 @@
 
 #pragma mark UIViewController
 
-- (void)loadView
-	{
-	[super loadView];
-//
-
-	CGRect theFrame = [UIScreen mainScreen].applicationFrame;
-
-	self.view = [[UIView alloc] initWithFrame:theFrame];
-	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-//
-
-	CGRect theWebViewFrame = self.view.bounds;
-	self.webView.frame = theWebViewFrame;
-	[self.view addSubview:self.webView];
-
-	if (self.toolbar)
-		{
-		UIToolbar *theToolbar = self.toolbar;
-		CGRect theToolbarFrame = theToolbar.frame;
-
-		theWebViewFrame.size.height -= theToolbarFrame.size.height;
-		theToolbarFrame.origin.y = CGRectGetMaxY(theWebViewFrame);
-		theToolbarFrame.size.width = theWebViewFrame.size.width;
-
-		self.webView.frame = theWebViewFrame;
-		theToolbar.frame = theToolbarFrame;
-		[self.view addSubview:self.toolbar];
-		}
-	}
-
 - (void)viewDidLoad;
 	{
 	[super viewDidLoad];
@@ -124,6 +93,7 @@
 
 #pragma mark -
 
+<<<<<<< HEAD
 - (UIWebView *)webView
 	{
 	if (webView == NULL)
@@ -214,6 +184,8 @@
 
 #pragma mark -
 
+=======
+>>>>>>> 11c4e988de7d49e59dccc4ad96572b4598191371
 - (void)setRequestedURL:(NSURL *)inURL;
 	{
 	if (requestedURL != inURL)
